@@ -1,0 +1,3829 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Elevhälsa – APT Centrala Resursenheten</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Primary palette - per STYLE_GUIDE.md */
+            --bg: #1a202c;
+            --bg-alt: #2d3748;
+            --text: #f7fafc;
+            --accent: #ed8936;
+            --accent2: #9f7aea;
+            --warning: #f6ad55;
+            --danger: #f56565;
+            --success: #48bb78;
+            --primary: #1a365d;
+            --secondary: #4a5568;
+            --surface: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        /* ===== NAVIGATION FIX ===== */
+        .slide {
+            display: none !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            padding: clamp(1rem, 5%, 3rem);
+        }
+
+        .slide.active {
+            display: flex !important;
+            position: relative;
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.4rem;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-dot.active {
+            background: var(--accent);
+            transform: scale(1.4);
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            font: 600 0.8rem/1 monospace;
+            opacity: 0.4;
+            z-index: 1000;
+        }
+
+        /* Fullscreen button - bottom left next to source buttons */
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 1rem;
+            left: 1.5rem;
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            padding: 0.5rem 0.8rem;
+            color: var(--text);
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .fullscreen-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .fullscreen-btn .exit-icon {
+            display: none;
+        }
+
+        .fullscreen-btn .exit-label {
+            display: none;
+        }
+
+        :fullscreen .fullscreen-btn .enter-icon,
+        :-webkit-full-screen .fullscreen-btn .enter-icon {
+            display: none;
+        }
+
+        :fullscreen .fullscreen-btn .exit-icon,
+        :-webkit-full-screen .fullscreen-btn .exit-icon {
+            display: block;
+        }
+
+        :fullscreen .fullscreen-btn .enter-label,
+        :-webkit-full-screen .fullscreen-btn .enter-label {
+            display: none;
+        }
+
+        :fullscreen .fullscreen-btn .exit-label,
+        :-webkit-full-screen .fullscreen-btn .exit-label {
+            display: inline;
+        }
+
+        /* ===== SLIDE 1: TITLE ===== */
+        .slide-title {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+        }
+
+        .slide-title h1 {
+            font-size: clamp(2rem, 8vw, 7rem);
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-title h2 {
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            font-weight: 400;
+            opacity: 0.85;
+            margin-bottom: 2.5rem;
+        }
+
+        .slide-title .meta {
+            font-size: 0.95rem;
+            opacity: 0.45;
+        }
+
+        /* ===== SLIDE: INTERACTION ===== */
+        .slide-interaction {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #0c4a6e 0%, #164e63 100%);
+        }
+
+        .interaction-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .interaction-text {
+            font-size: clamp(1.2rem, 4vw, 2.2rem);
+            font-weight: 700;
+            max-width: 700px;
+            line-height: 1.4;
+        }
+
+        .interaction-hint {
+            font-size: 1rem;
+            opacity: 0.5;
+            margin-top: 2rem;
+        }
+
+        /* ===== SLIDE: STAT HERO WITH IMAGE ===== */
+        .slide-stat {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: url('assets/digital_divide.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .slide-stat::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .slide-stat>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-number {
+            font-size: clamp(4rem, 20vw, 14rem);
+            font-weight: 900;
+            line-height: 1;
+            background: linear-gradient(135deg, #fcd34d 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1.6rem;
+            opacity: 0.95;
+            margin-top: 1rem;
+            max-width: 600px;
+        }
+
+        .stat-source {
+            font-size: 0.9rem;
+            opacity: 0.5;
+            margin-top: 2rem;
+        }
+
+        /* Source button - bottom left */
+        .source-btn {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .source-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .source-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .source-popup {
+            position: absolute;
+            bottom: 4rem;
+            left: 1.5rem;
+            background: rgba(26, 32, 44, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            max-width: 400px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: all 0.25s;
+            z-index: 20;
+        }
+
+        .source-popup.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .source-popup-title {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .source-popup a {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        /* ===== SLIDE: KINETIC TYPOGRAPHY ===== */
+        .slide-kinetic {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
+        }
+
+        .kinetic-quote {
+            font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+            font-weight: 700;
+            line-height: 1.5;
+            max-width: 900px;
+        }
+
+        .kinetic-word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.35s ease-out;
+            margin: 0 0.1em;
+        }
+
+        .kinetic-word.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .kinetic-word.highlight {
+            color: var(--warning);
+        }
+
+        .kinetic-author {
+            margin-top: 2.5rem;
+            font-size: 1.1rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .kinetic-author.visible {
+            opacity: 0.6;
+        }
+
+        /* ===== SLIDE: SCENARIO WITH EMOTIONAL BACKGROUND ===== */
+        .slide-scenario-bg {
+            background-image: url('assets/child_ai_companion.png') !important;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .slide-scenario-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.75);
+        }
+
+        .slide-scenario-bg>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== SLIDE: REFLECTION BACKGROUND ===== */
+        .slide-reflection-bg {
+            background-image: url('assets/reflection.png') !important;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .slide-reflection-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(26, 32, 44, 0.6);
+        }
+
+        .slide-reflection-bg>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== DOOR NUMBERING ===== */
+        .door-number {
+            position: absolute;
+            top: 0.8rem;
+            left: 0.8rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.3);
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* ===== SLIDE: SPLIT REVEAL ENHANCED ===== */
+        .slide-split-reveal-enhanced {
+            background-image: url('assets/technology_waves_timeline.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .slide-split-reveal-enhanced::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(30, 27, 75, 0.85) 0%, rgba(49, 46, 129, 0.8) 100%);
+        }
+
+        .slide-split-reveal-enhanced .reveal-question,
+        .slide-split-reveal-enhanced .reveal-answer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .slide-split-reveal-enhanced .reveal-question h2 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+
+        .slide-split-reveal-enhanced .answer-content h3 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            background: linear-gradient(135deg, var(--accent) 0%, #fcd34d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-split-reveal-enhanced .reveal-cover {
+            background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(49, 46, 129, 0.95) 100%);
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--accent);
+        }
+
+        /* ===== SLIDE: SPLIT REVEAL ===== */
+        .slide-split-reveal {
+            grid-template-columns: 1fr 1fr;
+            background: linear-gradient(135deg, var(--bg-alt) 0%, var(--bg) 100%);
+        }
+
+        .slide-split-reveal.active {
+            display: grid !important;
+        }
+
+        .reveal-question {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .reveal-question h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .reveal-answer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .reveal-cover {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s;
+            font-size: 4rem;
+        }
+
+        .reveal-answer.revealed .reveal-cover {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .answer-content {
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s 0.2s;
+        }
+
+        .reveal-answer.revealed .answer-content {
+            opacity: 1;
+        }
+
+        .answer-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .answer-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* ===== SLIDE: ICON GRID WITH IMAGE ===== */
+        .slide-icon-grid {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: url('assets/ai_possibilities.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .slide-icon-grid::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.75);
+        }
+
+        .slide-icon-grid>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .icon-grid-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 700px;
+        }
+
+        .icon-card {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 1.8rem;
+            text-align: center;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .icon-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .icon-svg {
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: 0.8rem;
+            stroke: var(--accent);
+        }
+
+        .icon-card-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Expanderad modal */
+        .icon-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(8px);
+        }
+
+        .icon-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .icon-modal {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .icon-modal-overlay.active .icon-modal {
+            transform: scale(1);
+        }
+
+        .icon-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .icon-modal-header svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--accent);
+        }
+
+        .icon-modal-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .icon-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .icon-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .icon-modal-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .icon-modal-prompt {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .icon-modal-prompt-label {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .icon-modal-prompt-text {
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .icon-modal-workflow {
+            background: rgba(72, 187, 120, 0.15);
+            border: 1px solid var(--success);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .icon-modal-workflow h4 {
+            color: var(--success);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .icon-modal-workflow ol {
+            padding-left: 1.2rem;
+            line-height: 1.8;
+        }
+
+        /* ===== SLIDE: CHAT MOCKUP ===== */
+        .slide-chat {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            padding: 2rem;
+        }
+
+        .chat-label {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .chat-container {
+            background: #343541;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 750px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .chat-header {
+            background: #202123;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chat-header-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .chat-header-dot.red {
+            background: #ff5f57;
+        }
+
+        .chat-header-dot.yellow {
+            background: #febc2e;
+        }
+
+        .chat-header-dot.green {
+            background: #28c840;
+        }
+
+        .chat-header-title {
+            margin-left: 0.8rem;
+            font-size: 0.85rem;
+            opacity: 0.6;
+        }
+
+        .chat-messages {
+            padding: 1.2rem;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.user {
+            background: #5436DA;
+        }
+
+        .chat-avatar.ai {
+            background: #10a37f;
+        }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.9rem 1.1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .chat-bubble.user {
+            background: rgba(84, 54, 218, 0.2);
+        }
+
+        /* ===== SLIDE: FAKE NEWS ===== */
+        .slide-fake-news {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            color: #222;
+            position: relative;
+        }
+
+        .fake-news-container {
+            background: white;
+            max-width: 650px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .fake-news-header {
+            background: #b71c1c;
+            color: white;
+            padding: 0.7rem 1.3rem;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .fake-news-content {
+            padding: 1.3rem 1.8rem;
+        }
+
+        .fake-news-headline {
+            font-size: 1.6rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
+            color: #111;
+        }
+
+        .fake-news-byline {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 1.2rem;
+        }
+
+        .fake-news-body {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .fake-news-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: url('assets/fake_news_warning.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .fake-news-overlay.revealed {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .fake-news-overlay-content {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem 3rem;
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+        }
+
+        .fake-news-overlay-content h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+        }
+
+        .fake-news-overlay-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* ===== SLIDE: QUAD FLIP WITH IMAGE ===== */
+        .slide-quad {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 6px;
+            padding: 6px;
+            background-image: url('assets/child_ai_companion.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide-quad.active {
+            display: grid !important;
+        }
+
+        .door {
+            perspective: 1200px;
+            cursor: pointer;
+        }
+
+        .door-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            transform-origin: left center;
+        }
+
+        .door.open .door-inner {
+            transform: rotateY(-110deg);
+        }
+
+        .door-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: rgba(30, 41, 59, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+            transition: background 0.3s, backdrop-filter 0.3s;
+        }
+
+        .door:hover .door-front {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .door-front h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .door-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            padding: 1.3rem;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s 0.4s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .door.open .door-content {
+            opacity: 1;
+        }
+
+        .door-content h4 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .door-content p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 0.3rem;
+        }
+
+        .risk-tag {
+            margin-top: auto;
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 3px solid var(--danger);
+            padding: 0.4rem 0.7rem;
+            font-size: 0.8rem;
+            color: #fca5a5;
+        }
+
+        /* ===== SLIDE: AI INCIDENTS ===== */
+        .slide-incidents {
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .incidents-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: #ef4444;
+        }
+
+        .incidents-subtitle {
+            font-size: 1rem;
+            text-align: center;
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .incidents-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .incident-card {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .incident-card:hover {
+            transform: translateY(-5px);
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.6);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+        }
+
+        .incident-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .incident-name {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .incident-age {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ef4444;
+            margin-bottom: 0.3rem;
+        }
+
+        .incident-platform {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .incident-date {
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+
+        .incident-hint {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
+        /* Incident Modal */
+        .incident-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+        }
+
+        .incident-modal-overlay.active {
+            display: flex;
+        }
+
+        .incident-modal {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 2rem;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .incident-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .incident-modal-close:hover {
+            opacity: 1;
+        }
+
+        .incident-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .incident-modal-header .incident-icon {
+            font-size: 3rem;
+        }
+
+        .incident-modal-header h2 {
+            font-size: 1.5rem;
+            color: #ef4444;
+        }
+
+        .incident-modal-header .age-tag {
+            background: rgba(239, 68, 68, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #fca5a5;
+        }
+
+        .incident-modal-content p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .incident-modal-source {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .incident-modal-source a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .incident-modal-source a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        /* ===== SLIDE: TIMER ===== */
+        .slide-timer {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%);
+        }
+
+        .timer-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timer-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .timer-display {
+            font: 900 7rem/1 monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.8rem 1.8rem;
+            border-radius: 16px;
+        }
+
+        .timer-display.warning {
+            color: var(--warning);
+        }
+
+        .timer-display.danger {
+            color: var(--danger);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .timer-controls {
+            margin-top: 1.5rem;
+            opacity: 0.5;
+            font-size: 0.85rem;
+        }
+
+        /* ===== SLIDE: QUOTE (updated per STYLE_GUIDE.md) ===== */
+        .slide-quote {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-alt) 0%, var(--bg) 100%);
+        }
+
+        .quote-mark {
+            font-size: 5rem;
+            opacity: 0.15;
+            line-height: 1;
+            margin-bottom: -2rem;
+            color: var(--accent);
+        }
+
+        .quote-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 750px;
+            background: rgba(26, 32, 44, 0.85);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+        }
+
+        .quote-author {
+            font-size: 1rem;
+            font-style: normal;
+            opacity: 0.7;
+            margin-top: 1.5rem;
+        }
+
+        /* ===== SLIDE: STEP REVEAL ===== */
+        .slide-step {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0c4a6e 0%, #164e63 100%);
+        }
+
+        .step-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .step-list {
+            list-style: none;
+            max-width: 550px;
+            width: 100%;
+        }
+
+        .step-item {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem 1.3rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.4s ease-out;
+        }
+
+        .step-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .step-content p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* ===== SLIDE: HERO TEXT ===== */
+        .slide-hero {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+        }
+
+        .hero-text {
+            font-size: clamp(1.8rem, 4.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.4;
+            max-width: 750px;
+        }
+
+        /* ===== SLIDE: CONTACT ===== */
+        .slide-contact {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
+        }
+
+        .contact-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .contact-info {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 0.4rem;
+        }
+
+        .contact-info a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE BREAKPOINTS ===== */
+        @media (max-width: 1024px) {
+            .slide-split-reveal {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+            }
+
+            .reveal-question {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 2rem;
+            }
+
+            .icon-grid {
+                gap: 1rem;
+                max-width: 100%;
+            }
+
+            .icon-card {
+                padding: 1.2rem;
+            }
+
+            .slide-quad {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0.4rem 0.8rem;
+            }
+
+            .nav-dot {
+                width: 6px;
+                height: 6px;
+            }
+
+            .icon-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-container {
+                max-width: 100%;
+            }
+
+            .kinetic-quote {
+                font-size: clamp(1rem, 4vw, 1.8rem) !important;
+            }
+
+            .timer-display {
+                font-size: 4rem;
+            }
+
+            .step-list {
+                max-width: 100%;
+            }
+
+            .step-item {
+                padding: 0.8rem;
+            }
+
+            .quote-text {
+                font-size: 1.1rem;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        /* ===== SLIDE: TOKEN PREDICTOR (VEP Redesign) ===== */
+        .slide-token-predictor {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .token-context {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+            color: var(--text);
+        }
+
+        .token-context .typed {
+            color: var(--accent);
+        }
+
+        .token-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 100%;
+            max-width: 500px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-out;
+        }
+
+        .token-options.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .token-option {
+            display: grid;
+            grid-template-columns: 80px 1fr 50px;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .token-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .token-option.selected {
+            background: rgba(237, 137, 54, 0.2);
+            border-color: var(--accent);
+        }
+
+        .token-word {
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        .token-bar-container {
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .token-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent) 0%, #f97316 100%);
+            border-radius: 12px;
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .token-option:nth-child(1) .token-bar {
+            transition-delay: 0ms;
+        }
+
+        .token-option:nth-child(2) .token-bar {
+            transition-delay: 100ms;
+        }
+
+        .token-option:nth-child(3) .token-bar {
+            transition-delay: 200ms;
+        }
+
+        .token-option:nth-child(4) .token-bar {
+            transition-delay: 300ms;
+        }
+
+        .token-percent {
+            font-size: 1rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .token-takeaway {
+            margin-top: 2.5rem;
+            font-size: 1.1rem;
+            opacity: 0;
+            max-width: 500px;
+            line-height: 1.6;
+            transition: opacity 0.5s ease-out 0.5s;
+        }
+
+        .token-takeaway.visible {
+            opacity: 0.7;
+        }
+
+        .token-takeaway em {
+            color: var(--accent);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* Completed state */
+        .token-context.complete {
+            color: #22c55e;
+            transform: scale(1.02);
+            transition: all 0.4s ease-out;
+        }
+
+        .token-options.done {
+            opacity: 0.3;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .token-instruction {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.4;
+        }
+
+        .token-progress {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent);
+            background: rgba(237, 137, 54, 0.15);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+        }
+
+        /* ===== SLIDE: WORDSPACE (Ordrymden) ===== */
+        .slide-wordspace {
+            display: grid !important;
+            grid-template-columns: 1fr 340px;
+            grid-template-rows: auto 1fr auto;
+            gap: 1rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            position: relative;
+        }
+
+        .slide-wordspace.active {
+            display: grid !important;
+        }
+
+        .wordspace-title {
+            grid-column: 1 / -1;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .wordspace-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 350px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        /* Sidebar med stegvisa förklaringar */
+        .wordspace-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .wordspace-step {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border-left: 3px solid transparent;
+            opacity: 0.3;
+            transform: translateX(10px);
+            transition: all 0.4s ease-out;
+        }
+
+        .wordspace-step.active {
+            opacity: 1;
+            transform: translateX(0);
+            border-left-color: var(--accent);
+            background: rgba(237, 137, 54, 0.1);
+        }
+
+        .wordspace-step h4 {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .wordspace-step h4 .step-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .wordspace-step p {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        .wordspace-bottom {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Sentence Builder - visar meningsbildning */
+        .sentence-builder {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 60px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            flex-wrap: wrap;
+        }
+
+        .sentence-prefix {
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+
+        .sentence-word {
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateY(-20px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .sentence-word.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .sentence-word.food {
+            background: rgba(249, 115, 22, 0.3);
+            color: #fb923c;
+        }
+
+        .sentence-word.emotion {
+            background: rgba(168, 85, 247, 0.3);
+            color: #c084fc;
+        }
+
+        .sentence-word.time {
+            background: rgba(34, 211, 238, 0.3);
+            color: #67e8f9;
+        }
+
+        .sentence-word.neutral {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text);
+        }
+
+        .sentence-cursor {
+            width: 3px;
+            height: 1.4rem;
+            background: var(--accent);
+            animation: cursorBlink 0.8s infinite;
+        }
+
+        .sentence-builder-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wordspace-word {
+            position: absolute;
+            padding: 0.5rem 1rem;
+            background: rgba(237, 137, 54, 0.2);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .wordspace-word.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .wordspace-word:hover {
+            background: rgba(237, 137, 54, 0.4);
+            transform: scale(1.1);
+        }
+
+        .wordspace-word.cluster-food {
+            border-color: #f97316;
+            color: #f97316;
+            background: rgba(249, 115, 22, 0.15);
+        }
+
+        .wordspace-word.cluster-emotion {
+            border-color: #a855f7;
+            color: #a855f7;
+            background: rgba(168, 85, 247, 0.15);
+        }
+
+        .wordspace-word.cluster-time {
+            border-color: #22d3ee;
+            color: #22d3ee;
+            background: rgba(34, 211, 238, 0.15);
+        }
+
+        .wordspace-line {
+            position: absolute;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            transform-origin: left center;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .wordspace-line.visible {
+            opacity: 1;
+        }
+
+        .wordspace-takeaway {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.6;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .wordspace-takeaway.visible {
+            opacity: 0.8;
+        }
+
+        .wordspace-takeaway em {
+            color: var(--accent);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .wordspace-legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.5s ease-out 0.3s;
+        }
+
+        .wordspace-legend.visible {
+            opacity: 0.6;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.food {
+            background: #f97316;
+        }
+
+        .legend-dot.emotion {
+            background: #a855f7;
+        }
+
+        .legend-dot.time {
+            background: #22d3ee;
+        }
+
+        /* ===== SLIDE: WORKSHOP ===== */
+        .slide-workshop {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+        }
+
+        .workshop-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .workshop-svg-icon {
+            width: 5rem;
+            height: 5rem;
+            margin-bottom: 1.5rem;
+            stroke: var(--accent);
+        }
+
+        /* VEP V1: Förstärkt Quote-slide */
+        .slide-quote-enhanced {
+            background-image: url('assets/reflection.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .slide-quote-enhanced::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(26, 32, 44, 0.8);
+        }
+
+        .slide-quote-enhanced>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .workshop-title {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .workshop-subtitle {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            opacity: 0.85;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .workshop-url {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .workshop-instruction {
+            font-size: 1rem;
+            opacity: 0.7;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .workshop-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+            max-width: 700px;
+            margin-top: 2rem;
+        }
+
+        .workshop-step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .workshop-step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 0.8rem;
+        }
+
+        .workshop-step-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Slide: Gemini Demo */
+        .slide-demo {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+        }
+
+        .demo-label {
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-title {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .demo-prompts {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .demo-prompt {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            text-align: left;
+        }
+
+        .demo-prompt-label {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .demo-prompt-text {
+            font-size: 1rem;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .demo-note {
+            margin-top: 2rem;
+            font-size: 1rem;
+            opacity: 0.7;
+            max-width: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .workshop-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== SLIDE: TYPEWRITER ===== */
+        .slide-typewriter {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #0a0a0a;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            position: relative;
+        }
+
+        .typewriter-container {
+            max-width: 900px;
+            text-align: left;
+        }
+
+        .typewriter-text {
+            font-size: clamp(1.2rem, 3.5vw, 2rem);
+            line-height: 1.8;
+            font-weight: 400;
+            color: #e0e0e0;
+        }
+
+        .typewriter-char {
+            opacity: 0;
+            display: inline;
+        }
+
+        .typewriter-char.visible {
+            opacity: 1;
+        }
+
+        .typewriter-char.highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background: var(--accent);
+            margin-left: 2px;
+            animation: cursorBlink 0.8s infinite;
+            vertical-align: text-bottom;
+        }
+
+        .typewriter-cursor.hidden {
+            opacity: 0;
+        }
+
+        @keyframes cursorBlink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .typewriter-attribution {
+            margin-top: 2rem;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+            font-family: 'Inter', sans-serif;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .typewriter-attribution.visible {
+            opacity: 1;
+        }
+
+        /* Scanlines */
+        .scanlines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.1) 0px,
+                    rgba(0, 0, 0, 0.1) 1px,
+                    transparent 1px,
+                    transparent 2px);
+            z-index: 100;
+            opacity: 0.3;
+        }
+
+        /* CRT glow */
+        .crt-glow {
+            text-shadow:
+                0 0 5px rgba(237, 137, 54, 0.3),
+                0 0 10px rgba(237, 137, 54, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SLIDE 1: TITLE -->
+    <div class="slide slide-title active" data-id="APT-101">
+        <h1>AI & Elevhälsa</h1>
+        <h2>Möjligheter, risker och er roll</h2>
+        <div class="meta">APT – Centrala resursenheten • 23 januari 2026</div>
+    </div>
+
+    <!-- SLIDE 2: INTERACTION -->
+    <div class="slide slide-interaction" data-id="APT-102">
+        <div class="interaction-text">Tänk efter: När använde DU senast AI för något i ditt arbete?</div>
+        <div class="interaction-hint">Förra veckan? Förra månaden? ... Aldrig?</div>
+    </div>
+
+    <!-- SLIDE 3: STAT HERO -->
+    <div class="slide slide-stat" data-id="APT-103">
+        <div class="stat-number" id="statCounter" data-target="56">0%</div>
+        <div class="stat-label">...av vuxna saknar tillräcklig digital kompetens</div>
+
+        <button class="source-btn" onclick="toggleSourcePopup(this)">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 15h-2v-6h2Zm0-8h-2V7h2Z" />
+            </svg>
+            Källa
+        </button>
+        <div class="source-popup" id="sourcePopupAPT103">
+            <div class="source-popup-title">OECD (2023)</div>
+            <p>"Skills Outlook 2023: Skills for a Resilient Green and Digital Transition"</p>
+            <p style="margin-top:0.5rem;opacity:0.7;">Rapporten visar att 56% av vuxna i OECD-länder saknar
+                grundläggande digitala färdigheter för att hantera ny teknik.</p>
+            <p style="margin-top:0.5rem;"><a
+                    href="https://www.oecd.org/en/publications/oecd-skills-outlook-2023_27452f29-en.html"
+                    target="_blank">Läs rapporten →</a></p>
+        </div>
+    </div>
+    <!-- SLIDE 4: TYPEWRITER (AI-kommissionens citat) -->
+    <div class="slide slide-typewriter" data-id="APT-104b">
+        <div class="scanlines"></div>
+        <div class="typewriter-container">
+            <div class="typewriter-text crt-glow" id="typewriterText"></div>
+            <span class="typewriter-cursor" id="typewriterCursor"></span>
+            <div class="typewriter-attribution" id="typewriterAttribution">— AI-kommissionens färdplan, 2025</div>
+        </div>
+
+        <button class="source-btn" onclick="toggleSourcePopup(this)">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 15h-2v-6h2Zm0-8h-2V7h2Z" />
+            </svg>
+            Källa
+        </button>
+        <div class="source-popup">
+            <div class="source-popup-title">AI-kommissionen (2024)</div>
+            <p>"AI-kommissionens Färdplan för Sverige" (SOU 2025:12)</p>
+            <p style="margin-top:0.5rem;opacity:0.7;">Rapporten överlämnades i november 2024 och ger Sverige en tydlig
+                riktning för AI-utvecklingen i samhället.</p>
+            <p style="margin-top:0.5rem;"><a
+                    href="https://www.regeringen.se/rattsliga-dokument/statens-offentliga-utredningar/2025/01/sou-202512/"
+                    target="_blank">Läs rapporten →</a></p>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: SPLIT REVEAL - Ramverk (Enhanced) -->
+    <div class="slide slide-split-reveal slide-split-reveal-enhanced" data-id="APT-105">
+        <div class="reveal-question">
+            <h2>Är AI en teknikfråga?</h2>
+        </div>
+        <div class="reveal-answer" onclick="this.classList.toggle('revealed')">
+            <div class="reveal-cover">?</div>
+            <div class="answer-content">
+                <h3>Nej.</h3>
+                <p>AI är en <strong>likvärdighetsfråga</strong>.</p>
+                <p style="margin-top: 1rem; opacity: 0.7;">Det som avgör är vem som lär sig använda det.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: TOKEN PREDICTOR - How AI Works (VEP Flerstegs) -->
+    <div class="slide slide-token-predictor" data-id="APT-201">
+        <div class="token-progress" id="tokenProgress">Steg 1/3</div>
+
+        <div class="token-context" id="tokenContext">
+            "Jag älskar att äta..."
+        </div>
+
+        <div class="token-options" id="tokenOptions">
+            <!-- Options generated dynamically by JavaScript -->
+        </div>
+
+        <div class="token-takeaway" id="tokenTakeaway">
+            Så fungerar GPT: den <em>gissar nästa ord</em> baserat på kontext.<br>
+            Ju fler ord, desto bättre gissning. Men fortfarande — bara mönster.
+        </div>
+
+        <div class="token-instruction">SPACE = visa/nästa steg • Klicka = välj ord</div>
+    </div>
+
+
+    <!-- SLIDE 6b: WORDSPACE (Ordrymden) - Under huven -->
+    <div class="slide slide-wordspace" data-id="APT-201b">
+        <div class="wordspace-title">Under huven: Ordrymden</div>
+
+        <div class="wordspace-container" id="wordspaceContainer">
+            <!-- Mat-kluster (orange) -->
+            <div class="wordspace-word cluster-food" style="left: 28%; top: 25%;">mat</div>
+            <div class="wordspace-word cluster-food" style="left: 38%; top: 20%;">pizza</div>
+            <div class="wordspace-word cluster-food" style="left: 32%; top: 35%;">glass</div>
+            <div class="wordspace-word cluster-food" style="left: 22%; top: 38%;">godis</div>
+            <div class="wordspace-word cluster-food" style="left: 45%; top: 30%;">pasta</div>
+
+            <!-- Känsla-kluster (lila) -->
+            <div class="wordspace-word cluster-emotion" style="left: 65%; top: 55%;">kärlek</div>
+            <div class="wordspace-word cluster-emotion" style="left: 72%; top: 48%;">vänskap</div>
+            <div class="wordspace-word cluster-emotion" style="left: 60%; top: 65%;">glädje</div>
+            <div class="wordspace-word cluster-emotion" style="left: 75%; top: 62%;">hopp</div>
+
+            <!-- Tid-kluster (cyan) -->
+            <div class="wordspace-word cluster-time" style="left: 15%; top: 70%;">idag</div>
+            <div class="wordspace-word cluster-time" style="left: 25%; top: 75%;">imorgon</div>
+            <div class="wordspace-word cluster-time" style="left: 18%; top: 60%;">varje</div>
+            <div class="wordspace-word cluster-time" style="left: 32%; top: 68%;">alltid</div>
+        </div>
+
+        <!-- Sidebar med stegvisa förklaringar -->
+        <div class="wordspace-sidebar" id="wordspaceSidebar">
+            <div class="wordspace-step" id="wsStep1">
+                <h4><span class="step-num">1</span> Ord som vektorer</h4>
+                <p>AI omvandlar varje ord till en lång lista med tal — en <em>vektor</em>.</p>
+            </div>
+            <div class="wordspace-step" id="wsStep2">
+                <h4><span class="step-num">2</span> Närhet = likhet</h4>
+                <p>Ord som används i liknande sammanhang hamnar nära varandra i rymden.</p>
+            </div>
+            <div class="wordspace-step" id="wsStep3">
+                <h4><span class="step-num">3</span> Kontext styr val</h4>
+                <p>"Jag älskar att äta..." gör att AI:n tittar mot <em>matklustret</em>.</p>
+            </div>
+            <div class="wordspace-step" id="wsStep4">
+                <h4><span class="step-num">4</span> Meningen byggs</h4>
+                <p>AI:n väljer det mest sannolika ordet och fortsätter därifrån.</p>
+            </div>
+        </div>
+
+        <div class="wordspace-bottom">
+            <!-- Sentence Builder -->
+            <div class="sentence-builder" id="sentenceBuilder">
+                <span class="sentence-prefix">"Jag älskar att äta</span>
+                <span class="sentence-word food" id="sw1">pizza</span>
+                <span class="sentence-word time" id="sw2">varje</span>
+                <span class="sentence-word neutral" id="sw3">dag</span>
+                <span class="sentence-word emotion" id="sw4">med glädje</span>
+                <span class="sentence-word neutral" id="sw5">"</span>
+                <span class="sentence-cursor" id="sentenceCursor"></span>
+            </div>
+
+            <div class="sentence-builder-footer">
+                <div class="wordspace-legend" id="wordspaceLegend">
+                    <div class="legend-item"><span class="legend-dot food"></span> Mat</div>
+                    <div class="legend-item"><span class="legend-dot emotion"></span> Känslor</div>
+                    <div class="legend-item"><span class="legend-dot time"></span> Tid</div>
+                </div>
+                <div class="wordspace-instruction">SPACE = nästa steg</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: ICON GRID (Expanderande) -->
+    <div class="slide slide-icon-grid" data-id="APT-301">
+        <div class="icon-grid-title">Hur kan AI hjälpa er?</div>
+        <div class="icon-grid">
+            <div class="icon-card" onclick="openIconModal('dokumentation')">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <div class="icon-card-label">Dokumentation</div>
+            </div>
+            <div class="icon-card" onclick="openIconModal('oversattning')">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <path
+                        d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+                </svg>
+                <div class="icon-card-label">Översättning</div>
+            </div>
+            <div class="icon-card" onclick="openIconModal('samtalsstod')">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <div class="icon-card-label">Samtalsstöd</div>
+            </div>
+            <div class="icon-card" onclick="openIconModal('kunskap')">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <div class="icon-card-label">Kunskapsinhämtning</div>
+            </div>
+        </div>
+        <div style="margin-top: 1.5rem; opacity: 0.6; font-size: 0.9rem;">Klicka på en ruta för att se prompts och
+            exempel →</div>
+    </div>
+
+    <!-- Modal: Dokumentation -->
+    <div class="icon-modal-overlay" id="modal-dokumentation" onclick="closeIconModal(event)">
+        <div class="icon-modal" onclick="event.stopPropagation()">
+            <button class="icon-modal-close" onclick="closeIconModal()">&times;</button>
+            <div class="icon-modal-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h2>Dokumentation</h2>
+            </div>
+            <div class="icon-modal-content">
+                <p>AI kan hjälpa er skriva empatiska, professionella dokument som sparar tid och minskar stress.</p>
+
+                <div class="icon-modal-prompt">
+                    <div class="icon-modal-prompt-label">Prompt 1: Föräldrabrev</div>
+                    <div class="icon-modal-prompt-text">"Hjälp mig skriva ett empatiskt brev till föräldrar om extra
+                        stöd. Eleven heter [namn] och behöver stöd med [beskrivning]. Tonen ska vara varm och
+                        lösningsfokuserad."</div>
+                </div>
+
+                <div class="icon-modal-prompt">
+                    <div class="icon-modal-prompt-label">Prompt 2: Åtgärdsprogram</div>
+                    <div class="icon-modal-prompt-text">"Skriv ett utkast till åtgärdsprogram för en elev med hög
+                        frånvaro. Inkludera konkreta, mätbara mål och förslag på stödåtgärder."</div>
+                </div>
+
+                <div class="icon-modal-workflow">
+                    <h4>💡 Arbetsflöde</h4>
+                    <ol>
+                        <li>Beskriv situationen kortfattat</li>
+                        <li>Be AI om ett utkast</li>
+                        <li>Granska och anpassa med era egna ord</li>
+                        <li>Spara aldrig personuppgifter i AI!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Översättning -->
+    <div class="icon-modal-overlay" id="modal-oversattning" onclick="closeIconModal(event)">
+        <div class="icon-modal" onclick="event.stopPropagation()">
+            <button class="icon-modal-close" onclick="closeIconModal()">&times;</button>
+            <div class="icon-modal-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <path
+                        d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+                </svg>
+                <h2>Översättning</h2>
+            </div>
+            <div class="icon-modal-content">
+                <p>Nå alla föräldrar på deras modersmål — snabbt och med rätt ton.</p>
+
+                <div class="icon-modal-prompt">
+                    <div class="icon-modal-prompt-label">Prompt 1: Kallelse</div>
+                    <div class="icon-modal-prompt-text">"Översätt till arabiska med vänlig ton: Vi vill boka ett möte
+                        för att prata om ditt barns utveckling. Finns det en tid som passar nästa vecka?"</div>
+                </div>
+
+                <div class="icon-modal-prompt">
+                    <div class="icon-modal-prompt-label">Prompt 2: Information</div>
+                    <div class="icon-modal-prompt-text">"Översätt till dari (persiska): Det är viktigt att barnet äter
+                        frukost innan skolan. Skolan serverar mat från kl 08:00."</div>
+                </div>
+
+                <div class="icon-modal-workflow">
+                    <h4>💡 Tips</h4>
+                    <ol>
+                        <li>Ange alltid önskad ton (formell/vänlig)</li>
+                        <li>Be om RTL-formatering för arabiska/hebreiska</li>
+                        <li>Dubbelkolla med tolk vid känsliga ämnen</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Samtalsstöd -->
+    <div class="icon-modal-overlay" id="modal-samtalsstod" onclick="closeIconModal(event)">
+        <div class="icon-modal" onclick="event.stopPropagation()">
+            <button class="icon-modal-close" onclick="closeIconModal()">&times;</button>
+            <div class="icon-modal-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <h2>Samtalsstöd</h2>
+            </div>
+            <div class="icon-modal-content">
+                <p>Förbered er för svåra samtal och få hjälp att formulera empatiska svar.</p>
+
+                <div class="icon-modal-prompt">
+                    <div class="icon-modal-prompt-label">Prompt: Samtalsförberedelse</div>
+                    <div class="icon-modal-prompt-text">"Jag ska ha ett svårt samtal med föräldrar om misstänkt
+                        mobbning. Hjälp mig förbereda: vad bör jag tänka på? Ge förslag på öppningsfras och hur jag
+                        håller samtalet konstruktivt."</div>
+                </div>
+
+                <div class="icon-modal-prompt">
+                    <div class="icon-modal-prompt-label">Prompt: Konflikthantering</div>
+                    <div class="icon-modal-prompt-text">"En förälder är arg och anklagar skolan för att ha misslyckats.
+                        Hur kan jag bemöta detta empatiskt utan att bli defensiv?"</div>
+                </div>
+
+                <div class="icon-modal-workflow">
+                    <h4>⚠️ Viktigt</h4>
+                    <ol>
+                        <li>AI ersätter INTE handledning eller konsultation</li>
+                        <li>Använd för förberedelse och reflektion</li>
+                        <li>Din professionella bedömning är alltid viktigast</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Kunskapsinhämtning -->
+    <div class="icon-modal-overlay" id="modal-kunskap" onclick="closeIconModal(event)">
+        <div class="icon-modal" onclick="event.stopPropagation()">
+            <button class="icon-modal-close" onclick="closeIconModal()">&times;</button>
+            <div class="icon-modal-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <h2>Kunskapsinhämtning</h2>
+            </div>
+            <div class="icon-modal-content">
+                <p>Snabbt komma in i nya ämnen eller förstå komplexa rapporter.</p>
+
+                <div class="icon-modal-prompt">
+                    <div class="icon-modal-prompt-label">Prompt: NotebookLM</div>
+                    <div class="icon-modal-prompt-text">"💡 Använd Google NotebookLM! Ladda upp era dokument
+                        (styrdokument, policyer, utredningar) och ställ frågor direkt mot dem. AI:n svarar med citat och
+                        källhänvisningar."</div>
+                </div>
+
+                <div class="icon-modal-prompt">
+                    <div class="icon-modal-prompt-label">Prompt: Sammanfattning</div>
+                    <div class="icon-modal-prompt-text">"Sammanfatta Skolverkets vägledning om frånvaro i 5 punkter.
+                        Fokusera på vad som är skolans ansvar och vilka tidsgränser som gäller."</div>
+                </div>
+
+                <div class="icon-modal-workflow">
+                    <h4>🚀 NotebookLM-tips</h4>
+                    <ol>
+                        <li>Ladda upp alla era styrdokument</li>
+                        <li>Fråga: "Vad säger våra riktlinjer om X?"</li>
+                        <li>AI:n citerar exakt var svaret finns</li>
+                        <li>Perfekt för att hålla koll på uppdateringar!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: CHAT MOCKUP - Dokumentation -->
+    <div class="slide slide-chat" data-id="APT-302">
+        <div class="chat-label">Exempel: Dokumentationsavlastning</div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-header-dot red"></div>
+                <div class="chat-header-dot yellow"></div>
+                <div class="chat-header-dot green"></div>
+                <div class="chat-header-title">ChatGPT</div>
+            </div>
+            <div class="chat-messages">
+                <div class="chat-message">
+                    <div class="chat-avatar user">U</div>
+                    <div class="chat-bubble user">Hjälp mig skriva ett empatiskt brev till föräldrar om extra stöd.
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar ai">A</div>
+                    <div class="chat-bubble">Hej [Förälders namn],<br><br>Vi vill dela några observationer om [elevens
+                        namn] och hur vi tillsammans kan stödja hen...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: CHAT MOCKUP - Översättning -->
+    <div class="slide slide-chat" data-id="APT-303">
+        <div class="chat-label">Exempel: Flerspråkig kommunikation</div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-header-dot red"></div>
+                <div class="chat-header-dot yellow"></div>
+                <div class="chat-header-dot green"></div>
+                <div class="chat-header-title">ChatGPT</div>
+            </div>
+            <div class="chat-messages">
+                <div class="chat-message">
+                    <div class="chat-avatar user">U</div>
+                    <div class="chat-bubble user">Översätt kallelsen till arabiska. Behåll en vänlig ton.</div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar ai">A</div>
+                    <div class="chat-bubble" dir="rtl" style="text-align: right;">مرحباً،<br><br>نود دعوتكم إلى اجتماع
+                        تطوير...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 10: BRIDGE (Viktor Freytag: starkare vändpunkt) -->
+    <div class="slide slide-kinetic" data-id="APT-350" data-quote="bridge">
+        <div class="kinetic-quote" id="kineticQuoteBridge"></div>
+    </div>
+
+    <!-- SLIDE 11: KINETIC - Scenario (with emotional background image) -->
+    <div class="slide slide-kinetic slide-scenario-bg" data-id="APT-403" data-quote="scenario">
+        <div class="kinetic-quote" id="kineticQuote2"></div>
+    </div>
+
+    <!-- SLIDE 11B: MICRO-REFLECTION (with AI-generated background) -->
+    <div class="slide slide-interaction slide-reflection-bg" data-id="APT-403b">
+        <div class="interaction-text">Tyst reflektion: Vad skulle DU göra?</div>
+        <div class="interaction-hint">10 sekunder</div>
+    </div>
+
+    <!-- SLIDE: TIMER (moved earlier per VEP prio 4) -->
+    <div class="slide slide-timer" data-id="APT-404">
+        <div class="timer-title">Par-diskussion</div>
+        <div class="timer-subtitle">Vad skulle du göra i scenariot?</div>
+        <div class="timer-display" id="timerDisplay">2:00</div>
+        <div class="timer-controls">SPACE = starta/pausa • R = återställ</div>
+    </div>
+
+    <!-- SLIDE 12: FAKE NEWS -->
+    <div class="slide slide-fake-news" data-id="APT-401"
+        onclick="document.querySelector('.fake-news-overlay').classList.toggle('revealed')">
+        <div class="fake-news-container">
+            <div class="fake-news-header">BREAKING NEWS</div>
+            <div class="fake-news-content">
+                <div class="fake-news-headline">PÅVENS HEMLIGA ÄKTENSKAP!<br>En skandal skakar katolska kyrkan</div>
+                <div class="fake-news-byline">Vatikanstaten • Publicerad för 2 timmar sedan</div>
+                <div class="fake-news-body">
+                    I de heliga korridorerna av Vatikanen har en nyhet briserat som en bomb. Franciskus har enligt
+                    pålitliga källor gift sig i hemlighet...
+                </div>
+            </div>
+        </div>
+        <div class="fake-news-overlay">
+            <div class="fake-news-overlay-content">
+                <h2>FALSKT</h2>
+                <p>Genererat av AI på sekunder</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 13: QUAD FLIP (numbered per Liv/Oscar) -->
+    <div class="slide slide-quad" data-id="APT-402">
+        <div class="door" onclick="this.classList.toggle('open')">
+            <div class="door-inner">
+                <div class="door-front">
+                    <span class="door-number">1</span>
+                    <h3>Tillgänglighet</h3>
+                </div>
+            </div>
+            <div class="door-content">
+                <h4>Alltid tillgänglig</h4>
+                <p>AI är tillgängligt dygnet runt. Ett barn kan vända sig till en AI mitt i natten.</p>
+                <div class="risk-tag">Risk: Undvikande av verkliga relationer</div>
+            </div>
+        </div>
+        <div class="door" onclick="this.classList.toggle('open')">
+            <div class="door-inner">
+                <div class="door-front">
+                    <span class="door-number">2</span>
+                    <h3>Parasocialt</h3>
+                </div>
+            </div>
+            <div class="door-content">
+                <h4>Ensidig relation</h4>
+                <p>Barnet utvecklar känslor, men AI:n kan inte genuint återgälda dem.</p>
+                <div class="risk-tag">Risk: Social förvirring</div>
+            </div>
+        </div>
+        <div class="door" onclick="this.classList.toggle('open')">
+            <div class="door-inner">
+                <div class="door-front">
+                    <span class="door-number">3</span>
+                    <h3>Integritet</h3>
+                </div>
+            </div>
+            <div class="door-content">
+                <h4>Allt loggas</h4>
+                <p>Känsliga bekännelser kan lagras och användas av företag.</p>
+                <div class="risk-tag">Risk: Dataexploatering</div>
+            </div>
+        </div>
+        <div class="door" onclick="this.classList.toggle('open')">
+            <div class="door-inner">
+                <div class="door-front">
+                    <span class="door-number">4</span>
+                    <h3>Normalisering</h3>
+                </div>
+            </div>
+            <div class="door-content">
+                <h4>Första valet</h4>
+                <p>Om AI blir första valet för stöd undviks mänskliga relationer.</p>
+                <div class="risk-tag">Risk: Social isolering</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE: AI INCIDENTS - Documented cases of harm -->
+    <div class="slide slide-incidents" data-id="APT-405">
+        <div class="incidents-title">⚠️ Dokumenterade konsekvenser</div>
+        <div class="incidents-subtitle">Verkliga fall där AI-chatbots orsakat allvarlig skada</div>
+        <div class="incidents-grid">
+            <div class="incident-card" onclick="openIncidentModal('sewell')">
+                <div class="incident-icon">💔</div>
+                <div class="incident-name">Sewell S.</div>
+                <div class="incident-age">14 år</div>
+                <div class="incident-platform">Character.AI</div>
+                <div class="incident-date">Feb 2024</div>
+            </div>
+            <div class="incident-card" onclick="openIncidentModal('adam')">
+                <div class="incident-icon">💔</div>
+                <div class="incident-name">Adam R.</div>
+                <div class="incident-age">16 år</div>
+                <div class="incident-platform">ChatGPT</div>
+                <div class="incident-date">Apr 2025</div>
+            </div>
+            <div class="incident-card" onclick="openIncidentModal('texas11')">
+                <div class="incident-icon">⚠️</div>
+                <div class="incident-name">Texas</div>
+                <div class="incident-age">11 år</div>
+                <div class="incident-platform">Character.AI</div>
+                <div class="incident-date">2024</div>
+            </div>
+            <div class="incident-card" onclick="openIncidentModal('texas17')">
+                <div class="incident-icon">⚠️</div>
+                <div class="incident-name">Texas</div>
+                <div class="incident-age">17 år</div>
+                <div class="incident-platform">Character.AI</div>
+                <div class="incident-date">2024</div>
+            </div>
+            <div class="incident-card" onclick="openIncidentModal('colorado')">
+                <div class="incident-icon">⚠️</div>
+                <div class="incident-name">Colorado</div>
+                <div class="incident-age">13 år</div>
+                <div class="incident-platform">Character.AI</div>
+                <div class="incident-date">2024</div>
+            </div>
+        </div>
+        <div class="incident-hint">Klicka på ett kort för detaljer och källor →</div>
+    </div>
+
+    <!-- Incident Modals -->
+    <div class="incident-modal-overlay" id="modal-sewell" onclick="closeIncidentModal(event)">
+        <div class="incident-modal" onclick="event.stopPropagation()">
+            <button class="incident-modal-close" onclick="closeIncidentModal()">&times;</button>
+            <div class="incident-modal-header">
+                <div class="incident-icon">💔</div>
+                <div>
+                    <h2>Sewell Setzer III</h2>
+                    <span class="age-tag">14 år • Florida, USA</span>
+                </div>
+            </div>
+            <div class="incident-modal-content">
+                <p>Sewell utvecklade en intensiv emotionell relation med en AI-chatbot baserad på <em>Game of
+                        Thrones</em>-karaktären Daenerys Targaryen på Character.AI-plattformen.</p>
+                <p>Under månader av dagliga konversationer bildade han en "romantisk" relation med chatboten. I sina
+                    sista meddelanden innan sin död i februari 2024 ska boten ha svarat: <strong>"Kom hem till mig så
+                        snart som möjligt, min kärlek."</strong></p>
+                <p>Hans mor har stämt Character.AI och Google. Domstolen avslog företagets försvar att chatbotens svar
+                    skyddas av yttrandefrihet.</p>
+            </div>
+            <div class="incident-modal-source">
+                <a href="https://www.cbsnews.com/news/character-ai-lawsuit-teen-suicide-sewell-setzer/"
+                    target="_blank">📰 Läs mer på CBS News →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="incident-modal-overlay" id="modal-adam" onclick="closeIncidentModal(event)">
+        <div class="incident-modal" onclick="event.stopPropagation()">
+            <button class="incident-modal-close" onclick="closeIncidentModal()">&times;</button>
+            <div class="incident-modal-header">
+                <div class="incident-icon">💔</div>
+                <div>
+                    <h2>Adam Raine</h2>
+                    <span class="age-tag">16 år • USA</span>
+                </div>
+            </div>
+            <div class="incident-modal-content">
+                <p>Adam chattade med ChatGPT dagligen i sju månader och behandlade AI:n som en förtrogen vän.</p>
+                <p>Enligt stämningen mot OpenAI nämnde chatboten <strong>självmord 1 275 gånger</strong> under deras
+                    konversationer. När Adam uttryckte suicidala tankar ska AI:n ha misslyckats med att ingripa,
+                    istället validerat hans känslor och t.o.m. erbjudit sig att hjälpa skriva ett avskedsbrev.</p>
+                <p>Adam tog sitt liv i april 2025.</p>
+            </div>
+            <div class="incident-modal-source">
+                <a href="https://www.cbsnews.com/news/chatgpt-lawsuit-teen-suicide-adam-raine/" target="_blank">📰 Läs
+                    mer på CBS News →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="incident-modal-overlay" id="modal-texas11" onclick="closeIncidentModal(event)">
+        <div class="incident-modal" onclick="event.stopPropagation()">
+            <button class="incident-modal-close" onclick="closeIncidentModal()">&times;</button>
+            <div class="incident-modal-header">
+                <div class="incident-icon">⚠️</div>
+                <div>
+                    <h2>Anonym – Texas</h2>
+                    <span class="age-tag">11 år • Texas, USA</span>
+                </div>
+            </div>
+            <div class="incident-modal-content">
+                <p>Föräldrarna hävdar att deras 11-åriga dotter utsattes för skadligt innehåll via Character.AI.</p>
+                <p>Chatboten ska ha <strong>uppmuntrat självskadebeteende</strong> och producerat våldsamt innehåll
+                    riktat mot barnet.</p>
+                <p>Fallet är en del av en växande våg av stämningar mot AI-företag i flera amerikanska delstater.</p>
+            </div>
+            <div class="incident-modal-source">
+                <a href="https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/ai-chatbots-harm-children/"
+                    target="_blank">📰 Läs mer på American Bar Association →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="incident-modal-overlay" id="modal-texas17" onclick="closeIncidentModal(event)">
+        <div class="incident-modal" onclick="event.stopPropagation()">
+            <button class="incident-modal-close" onclick="closeIncidentModal()">&times;</button>
+            <div class="incident-modal-header">
+                <div class="incident-icon">⚠️</div>
+                <div>
+                    <h2>Anonym – Texas</h2>
+                    <span class="age-tag">17 år • Texas, USA</span>
+                </div>
+            </div>
+            <div class="incident-modal-content">
+                <p>En 17-årig pojke i Texas utsattes för <strong>olämpligt sexuellt innehåll</strong> genererat av
+                    Character.AI:s chatbotar.</p>
+                <p>Trots att plattformen officiellt är för användare 18+, kunde pojken enkelt kringgå
+                    åldersverifieringen.</p>
+                <p>Fallet belyser bristen på effektiva skyddsmekanismer för minderåriga på AI-plattformar.</p>
+            </div>
+            <div class="incident-modal-source">
+                <a href="https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/ai-chatbots-harm-children/"
+                    target="_blank">📰 Läs mer på American Bar Association →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="incident-modal-overlay" id="modal-colorado" onclick="closeIncidentModal(event)">
+        <div class="incident-modal" onclick="event.stopPropagation()">
+            <button class="incident-modal-close" onclick="closeIncidentModal()">&times;</button>
+            <div class="incident-modal-header">
+                <div class="incident-icon">⚠️</div>
+                <div>
+                    <h2>Anonym – Colorado</h2>
+                    <span class="age-tag">13 år • Colorado, USA</span>
+                </div>
+            </div>
+            <div class="incident-modal-content">
+                <p>En 13-årig flicka i Colorado utvecklade ett <strong>ohälsosamt beroende</strong> av AI-chatbotar på
+                    Character.AI.</p>
+                <p>Enligt föräldrarna förvärrade interaktionerna hennes ångest och bidrog till ökad social isolering
+                    från verkliga relationer.</p>
+                <p>Chatboten ska ha förstärkt negativa tankemönster istället för att uppmuntra henne att söka hjälp.</p>
+            </div>
+            <div class="incident-modal-source">
+                <a href="https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/ai-chatbots-harm-children/"
+                    target="_blank">📰 Läs mer på American Bar Association →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 15: BRIDGE TO WORKSHOP (VEP: N1+N3) -->
+    <div class="slide slide-kinetic" data-id="APT-500" data-quote="workshop_bridge">
+        <div class="kinetic-quote" id="kineticQuoteBridge2"></div>
+    </div>
+
+    <!-- SLIDE 16: WORKSHOP - NOTEBOOKLM -->
+    <div class="slide slide-workshop" data-id="APT-601">
+        <svg class="workshop-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+        <div class="workshop-title">Bygg er EHT-kunskapsbank</div>
+        <div class="workshop-subtitle">Alla skapar sin egen notebook med startfiler</div>
+        <div class="workshop-url">notebooklm.google.com</div>
+        <div class="workshop-steps">
+            <div class="workshop-step">
+                <div class="workshop-step-number">1</div>
+                <div class="workshop-step-text">Skapa ny notebook</div>
+            </div>
+            <div class="workshop-step">
+                <div class="workshop-step-number">2</div>
+                <div class="workshop-step-text">Ladda upp filerna från mappen</div>
+            </div>
+            <div class="workshop-step">
+                <div class="workshop-step-number">3</div>
+                <div class="workshop-step-text">Ställ en fråga!</div>
+            </div>
+        </div>
+        <div class="workshop-instruction">Länk till startfiler visas på skärmen</div>
+    </div>
+
+    <!-- SLIDE 16: GEMINI DEMO -->
+    <div class="slide slide-demo" data-id="APT-602">
+        <div class="demo-label">Snabbdemo</div>
+        <div class="demo-title">Gemini för vardagsuppgifter</div>
+        <div class="demo-prompts">
+            <div class="demo-prompt">
+                <div class="demo-prompt-label">Dokumentation</div>
+                <div class="demo-prompt-text">"Hjälp mig formulera ett åtgärdsprogram för en elev med hög frånvaro.
+                    Tonen ska vara empatisk och lösningsfokuserad."</div>
+            </div>
+            <div class="demo-prompt">
+                <div class="demo-prompt-label">Översättning</div>
+                <div class="demo-prompt-text">"Översätt till arabiska med vänlig ton: Vi vill boka ett möte för att
+                    prata om ditt barns utveckling."</div>
+            </div>
+        </div>
+        <div class="demo-note">Skillnaden? Gemini svarar från internet. NotebookLM svarar från ERA dokument.</div>
+    </div>
+
+    <!-- SLIDE 18: QUOTE (VEP: V1 - stärkt visuell identitet) -->
+    <div class="slide slide-quote slide-quote-enhanced" data-id="APT-501">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Skolverket uppmanar skolor att ha uttalade förhållningssätt gällande användning av AI.
+        </div>
+        <div class="quote-author">— Skolverket, 2024</div>
+
+        <button class="source-btn" onclick="toggleSourcePopup(this)">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 15h-2v-6h2Zm0-8h-2V7h2Z" />
+            </svg>
+            Källa
+        </button>
+        <div class="source-popup">
+            <div class="source-popup-title">Skolverket (2024)</div>
+            <p>"AI i skolan – råd och riktlinjer för ansvarsfull användning"</p>
+            <p style="margin-top:0.5rem;opacity:0.7;">Skolverket betonar vikten av att skolor utvecklar tydliga
+                riktlinjer för hur AI får och bör användas, med fokus på etik, dataskydd och kritisk granskning.</p>
+            <p style="margin-top:0.5rem;"><a
+                    href="https://www.skolverket.se/skolutveckling/digitalisering/digitala-verktyg/ai-och-skolan"
+                    target="_blank">Läs mer på Skolverket →</a></p>
+        </div>
+    </div>
+
+    <!-- SLIDE 16: STEP REVEAL (Erik Fabel: koppla till ramverk) -->
+    <div class="slide slide-step" data-id="APT-502">
+        <div class="step-title">Ta med er detta</div>
+        <ul class="step-list">
+            <li class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Testa själv denna vecka</h4>
+                    <p>→ Om du testar, minskar du klyftan</p>
+                </div>
+            </li>
+            <li class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Fråga eleverna: "Använder du AI hemma?"</h4>
+                    <p>→ Om du frågar, förstår du klyftan</p>
+                </div>
+            </li>
+            <li class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Diskutera i teamet</h4>
+                    <p>→ Om ni diskuterar, agerar ni på klyftan</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- SLIDE 16: HERO -->
+    <div class="slide slide-hero" data-id="APT-503">
+        <div class="hero-text">Vilken förändring vill du göra baserat på det du hört idag?</div>
+    </div>
+
+    <!-- SLIDE 17: CONTACT -->
+    <div class="slide slide-contact" data-id="APT-504">
+        <div class="contact-title">Frågor?</div>
+        <div class="contact-subtitle">Tack för er tid!</div>
+        <div class="contact-info">Håkan Karlsson</div>
+        <div class="contact-info"><a href="mailto:hakan.karlsson@edu.astorp.se">hakan.karlsson@edu.astorp.se</a></div>
+    </div>
+
+    <!-- FULLSCREEN BUTTON -->
+    <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Fullskärm (F)">
+        <svg class="enter-icon" viewBox="0 0 24 24">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+        </svg>
+        <svg class="exit-icon" viewBox="0 0 24 24">
+            <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+        </svg>
+        <span class="enter-label">Fullskärm</span>
+        <span class="exit-label">Avsluta</span>
+    </button>
+
+    <!-- NAVIGATION -->
+    <div class="nav" id="nav"></div>
+    <div class="slide-counter" id="slideCounter"></div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function initNav() {
+            const nav = document.getElementById('nav');
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => goToSlide(i);
+                nav.appendChild(dot);
+            });
+            updateCounter();
+        }
+
+        function goToSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            document.querySelectorAll('.nav-dot')[currentSlide].classList.remove('active');
+
+            currentSlide = (n + slides.length) % slides.length;
+
+            slides[currentSlide].classList.add('active');
+            document.querySelectorAll('.nav-dot')[currentSlide].classList.add('active');
+
+            updateCounter();
+            initSlideEffects();
+        }
+
+        function updateCounter() {
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${slides.length}`;
+        }
+
+        const quotes = {
+            commission: {
+                text: "Om skolan *inte* introducerar eleverna till AI finns risken att elevernas olika *socioekonomiska* bakgrunder leder till *växande klyftor*.",
+                author: "AI-kommissionens färdplan, 2025"
+            },
+            bridge: {
+                text: "Så långt *möjligheterna*. Men *vem fångar* de som *faller*?",
+                author: null
+            },
+            scenario: {
+                text: "En elev berättar att hen pratar med en AI *varje kväll* och att *den förstår mig bättre* än mina föräldrar.",
+                author: null
+            },
+            workshop_bridge: {
+                text: "Nu är det *er tur*. Bygg något som *minskar klyftan*.",
+                author: null
+            }
+        };
+
+        function initKinetic(container, quoteKey) {
+            const quote = quotes[quoteKey];
+            if (!quote) return;
+
+            container.innerHTML = '';
+            const words = quote.text.split(' ');
+
+            words.forEach((word, i) => {
+                const span = document.createElement('span');
+                span.className = 'kinetic-word';
+                if (word.startsWith('*') && word.endsWith('*')) {
+                    span.classList.add('highlight');
+                    word = word.slice(1, -1);
+                }
+                span.textContent = word;
+                container.appendChild(span);
+
+                setTimeout(() => span.classList.add('visible'), 100 + i * 100);
+            });
+
+            const author = container.nextElementSibling;
+            if (author && quote.author) {
+                setTimeout(() => author.classList.add('visible'), 100 + words.length * 100 + 400);
+            }
+        }
+
+        function initStepReveal() {
+            const items = document.querySelectorAll('.step-item');
+            items.forEach((item, i) => {
+                setTimeout(() => item.classList.add('visible'), 200 + i * 350);
+            });
+        }
+
+        let timerInterval = null;
+        let timerSeconds = 120;
+        let timerRunning = false;
+
+        function updateTimerDisplay() {
+            const display = document.getElementById('timerDisplay');
+            if (!display) return;
+            const mins = Math.floor(timerSeconds / 60);
+            const secs = timerSeconds % 60;
+            display.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+            display.classList.remove('warning', 'danger');
+            if (timerSeconds <= 10) display.classList.add('danger');
+            else if (timerSeconds <= 30) display.classList.add('warning');
+        }
+
+        function toggleTimer() {
+            if (timerRunning) {
+                clearInterval(timerInterval);
+                timerRunning = false;
+            } else {
+                timerInterval = setInterval(() => {
+                    if (timerSeconds > 0) {
+                        timerSeconds--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                    }
+                }, 1000);
+                timerRunning = true;
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            timerSeconds = 120;
+            updateTimerDisplay();
+        }
+
+        // ===== TOKEN PREDICTOR LOGIC (Kontextberoende) =====
+        let tokenStep = 0;
+        let tokenWords = [];
+
+        const basePhrase = "Jag älskar att äta";
+
+        // Steg 1: Första ordvalet (oberoende)
+        const step1Options = [
+            { word: "mat", percent: 8.2 },
+            { word: "pizza", percent: 6.7 },
+            { word: "glass", percent: 5.1 },
+            { word: "godis", percent: 4.3 },
+            { word: "frukost", percent: 3.8 },
+            { word: "lunch", percent: 3.2 },
+            { word: "middag", percent: 2.9 },
+            { word: "ute", percent: 2.1 }
+        ];
+
+        // Steg 2: Beror på vad som valdes i steg 1
+        const step2Matrix = {
+            "mat": [
+                { word: "tillsammans", percent: 11.4 },
+                { word: "med", percent: 9.8 },
+                { word: "hemma", percent: 6.2 },
+                { word: "på", percent: 4.7 },
+                { word: "varje", percent: 3.1 },
+                { word: "och", percent: 2.4 }
+            ],
+            "pizza": [
+                { word: "med", percent: 14.2 },
+                { word: "på", percent: 8.9 },
+                { word: "varje", percent: 5.3 },
+                { word: "hemma", percent: 4.1 },
+                { word: "tillsammans", percent: 3.6 },
+                { word: "när", percent: 2.8 }
+            ],
+            "glass": [
+                { word: "på", percent: 12.8 },
+                { word: "i", percent: 8.4 },
+                { word: "varje", percent: 5.9 },
+                { word: "med", percent: 4.2 },
+                { word: "hemma", percent: 3.3 },
+                { word: "och", percent: 2.1 }
+            ],
+            "godis": [
+                { word: "varje", percent: 9.6 },
+                { word: "på", percent: 7.8 },
+                { word: "hemma", percent: 6.4 },
+                { word: "med", percent: 4.9 },
+                { word: "och", percent: 3.2 },
+                { word: "när", percent: 2.7 }
+            ],
+            "frukost": [
+                { word: "varje", percent: 15.3 },
+                { word: "hemma", percent: 8.7 },
+                { word: "på", percent: 6.2 },
+                { word: "tillsammans", percent: 4.8 },
+                { word: "med", percent: 3.4 },
+                { word: "och", percent: 2.1 }
+            ],
+            "lunch": [
+                { word: "med", percent: 12.6 },
+                { word: "på", percent: 9.4 },
+                { word: "varje", percent: 5.8 },
+                { word: "hemma", percent: 4.3 },
+                { word: "ute", percent: 3.7 },
+                { word: "tillsammans", percent: 2.9 }
+            ],
+            "middag": [
+                { word: "med", percent: 13.8 },
+                { word: "hemma", percent: 8.2 },
+                { word: "tillsammans", percent: 6.9 },
+                { word: "varje", percent: 4.6 },
+                { word: "på", percent: 3.4 },
+                { word: "ute", percent: 2.8 }
+            ],
+            "ute": [
+                { word: "med", percent: 16.4 },
+                { word: "på", percent: 9.1 },
+                { word: "varje", percent: 5.2 },
+                { word: "och", percent: 3.8 },
+                { word: "när", percent: 2.9 },
+                { word: "ibland", percent: 2.3 }
+            ]
+        };
+
+        // Steg 3: Beror på steg 2-valet (förenklad - baseras på preposition/konjunktion)
+        const step3Matrix = {
+            "med": [
+                { word: "vänner", percent: 9.8 },
+                { word: "familjen", percent: 8.4 },
+                { word: "mina", percent: 5.2 },
+                { word: "dig", percent: 4.1 },
+                { word: "kollegor", percent: 3.3 },
+                { word: "extra", percent: 2.7 },
+                { word: "någon", percent: 2.1 }
+            ],
+            "på": [
+                { word: "kvällen", percent: 11.2 },
+                { word: "helgen", percent: 8.6 },
+                { word: "restaurang", percent: 6.3 },
+                { word: "morgonen", percent: 4.8 },
+                { word: "fredagar", percent: 3.4 },
+                { word: "kontoret", percent: 2.6 }
+            ],
+            "varje": [
+                { word: "dag", percent: 18.7 },
+                { word: "kväll", percent: 9.4 },
+                { word: "morgon", percent: 7.2 },
+                { word: "helg", percent: 5.1 },
+                { word: "fredag", percent: 3.8 },
+                { word: "gång", percent: 2.9 }
+            ],
+            "hemma": [
+                { word: "med", percent: 12.3 },
+                { word: "på", percent: 8.1 },
+                { word: "varje", percent: 5.6 },
+                { word: "och", percent: 4.2 },
+                { word: "tillsammans", percent: 3.4 },
+                { word: "ibland", percent: 2.7 }
+            ],
+            "tillsammans": [
+                { word: "med", percent: 24.6 },
+                { word: "på", percent: 6.8 },
+                { word: "varje", percent: 4.2 },
+                { word: "hemma", percent: 3.1 },
+                { word: "och", percent: 2.4 }
+            ],
+            "och": [
+                { word: "dricka", percent: 14.8 },
+                { word: "njuta", percent: 7.2 },
+                { word: "lyssna", percent: 4.6 },
+                { word: "titta", percent: 3.9 },
+                { word: "umgås", percent: 3.2 },
+                { word: "prata", percent: 2.8 }
+            ],
+            "när": [
+                { word: "jag", percent: 22.4 },
+                { word: "det", percent: 8.6 },
+                { word: "vi", percent: 6.3 },
+                { word: "man", percent: 4.1 },
+                { word: "alla", percent: 2.8 }
+            ],
+            "i": [
+                { word: "solen", percent: 11.8 },
+                { word: "parken", percent: 7.4 },
+                { word: "lugn", percent: 5.9 },
+                { word: "fred", percent: 4.2 },
+                { word: "trädgården", percent: 3.1 }
+            ],
+            "ute": [
+                { word: "med", percent: 14.2 },
+                { word: "på", percent: 9.8 },
+                { word: "i", percent: 6.4 },
+                { word: "när", percent: 4.1 },
+                { word: "och", percent: 3.2 }
+            ],
+            "ibland": [
+                { word: "när", percent: 12.6 },
+                { word: "och", percent: 8.4 },
+                { word: "med", percent: 5.7 },
+                { word: "på", percent: 4.1 },
+                { word: "hemma", percent: 2.9 }
+            ]
+        };
+
+        // Steg 4: Avslutande ord som gör meningen komplett
+        const step4Options = [
+            { word: "ofta", percent: 12.4 },
+            { word: "ibland", percent: 9.7 },
+            { word: "alltid", percent: 7.2 },
+            { word: "gärna", percent: 6.8 },
+            { word: "tillsammans", percent: 5.4 },
+            { word: "mycket", percent: 4.1 }
+        ];
+
+        function getStep2Options() {
+            const selectedWord = tokenWords[0] || "mat";
+            return step2Matrix[selectedWord] || step2Matrix["mat"];
+        }
+
+        function getStep3Options() {
+            const selectedWord = tokenWords[1] || "med";
+            return step3Matrix[selectedWord] || step3Matrix["med"];
+        }
+
+        function getCurrentOptions() {
+            if (tokenStep === 0) return step1Options;
+            if (tokenStep === 1) return getStep2Options();
+            if (tokenStep === 2) return getStep3Options();
+            if (tokenStep === 3) return step4Options;
+            return [];
+        }
+
+        function initializeTokenPredictor() {
+            tokenStep = 0;
+            tokenWords = [];
+
+            const tokenContext = document.getElementById('tokenContext');
+            const tokenOptions = document.getElementById('tokenOptions');
+            const tokenTakeaway = document.getElementById('tokenTakeaway');
+            const tokenProgress = document.getElementById('tokenProgress');
+
+            if (!tokenOptions) return;
+
+            // Reset
+            tokenOptions.classList.remove('visible');
+            tokenTakeaway.classList.remove('visible');
+            if (tokenContext) tokenContext.textContent = '"' + basePhrase + '..."';
+            if (tokenProgress) tokenProgress.textContent = 'Steg 1/4';
+
+            updateTokenOptions();
+        }
+
+        function updateTokenOptions() {
+            const tokenOptions = document.getElementById('tokenOptions');
+            if (!tokenOptions) return;
+
+            const options = getCurrentOptions();
+            tokenOptions.innerHTML = '';
+
+            options.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'token-option';
+                div.dataset.word = opt.word;
+                div.dataset.percent = opt.percent;
+                div.onclick = () => selectToken(div);
+                div.innerHTML = `
+                    <span class="token-word">${opt.word}</span>
+                    <div class="token-bar-container">
+                        <div class="token-bar"></div>
+                    </div>
+                    <span class="token-percent">${opt.percent}%</span>
+                `;
+                tokenOptions.appendChild(div);
+            });
+        }
+
+        function showTokenPredictor() {
+            const tokenOptions = document.getElementById('tokenOptions');
+            const tokenTakeaway = document.getElementById('tokenTakeaway');
+
+            if (!tokenOptions) return;
+
+            // If already have options visible and selected, go to next step
+            if (tokenOptions.classList.contains('visible') && tokenOptions.querySelector('.token-option.selected')) {
+                advanceTokenStep();
+                return;
+            }
+
+            // Show current step options
+            tokenOptions.classList.add('visible');
+
+            // Animate bars
+            setTimeout(() => {
+                tokenOptions.querySelectorAll('.token-option').forEach((opt, i) => {
+                    const percent = opt.dataset.percent;
+                    const bar = opt.querySelector('.token-bar');
+                    if (bar) {
+                        setTimeout(() => {
+                            bar.style.width = percent + '%';
+                        }, i * 100);
+                    }
+                });
+            }, 100);
+
+            // Show takeaway after last step (4 steps total)
+            if (tokenStep >= 3) {
+                tokenTakeaway.classList.add('visible');
+            }
+        }
+
+        function selectToken(element) {
+            const tokenContext = document.getElementById('tokenContext');
+            const word = element.dataset.word;
+
+            // Deselect others
+            document.querySelectorAll('.token-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Select this one
+            element.classList.add('selected');
+
+            // Store selected word
+            tokenWords[tokenStep] = word;
+
+            // Update context display
+            if (tokenContext) {
+                let context = basePhrase;
+                tokenWords.forEach(w => {
+                    context += ' ' + w;
+                });
+                tokenContext.textContent = '"' + context + '..."';
+            }
+        }
+
+        function advanceTokenStep() {
+            if (tokenStep >= 3) {
+                // Already at last step - complete the sentence
+                const tokenContext = document.getElementById('tokenContext');
+                const tokenOptions = document.getElementById('tokenOptions');
+                const tokenTakeaway = document.getElementById('tokenTakeaway');
+                const tokenProgress = document.getElementById('tokenProgress');
+
+                // Build complete sentence (no "...")
+                if (tokenContext && tokenWords.length >= 4) {
+                    let context = basePhrase;
+                    tokenWords.forEach(w => {
+                        context += ' ' + w;
+                    });
+                    tokenContext.textContent = '"' + context + '."';
+                    tokenContext.classList.add('complete');
+                }
+
+                // Hide options, show takeaway
+                if (tokenOptions) tokenOptions.classList.add('done');
+                if (tokenTakeaway) tokenTakeaway.classList.add('visible');
+                if (tokenProgress) tokenProgress.textContent = '✓ Klar';
+                return;
+            }
+
+            tokenStep++;
+
+            const tokenProgress = document.getElementById('tokenProgress');
+            if (tokenProgress) tokenProgress.textContent = `Steg ${tokenStep + 1}/4`;
+
+            // Reset bars
+            const tokenOptions = document.getElementById('tokenOptions');
+            tokenOptions.querySelectorAll('.token-bar').forEach(bar => {
+                bar.style.width = '0%';
+            });
+
+            // Update options for new step (now context-dependent!)
+            updateTokenOptions();
+
+            // Show new options with animation
+            setTimeout(() => {
+                tokenOptions.querySelectorAll('.token-option').forEach((opt, i) => {
+                    const percent = opt.dataset.percent;
+                    const bar = opt.querySelector('.token-bar');
+                    if (bar) {
+                        setTimeout(() => {
+                            bar.style.width = percent + '%';
+                        }, i * 100);
+                    }
+                });
+            }, 100);
+        }
+
+        function initSlideEffects() {
+            const slide = slides[currentSlide];
+            const quoteKey = slide.dataset.quote;
+
+            if (quoteKey) {
+                const container = slide.querySelector('.kinetic-quote');
+                if (container) initKinetic(container, quoteKey);
+            }
+
+            if (slide.classList.contains('slide-step')) {
+                initStepReveal();
+            }
+
+            if (slide.classList.contains('slide-timer')) {
+                resetTimer();
+            }
+
+            // Typewriter slide
+            if (slide.classList.contains('slide-typewriter')) {
+                initTypewriter();
+            }
+
+            // Token Predictor slide
+            if (slide.classList.contains('slide-token-predictor')) {
+                initializeTokenPredictor();
+            }
+
+            // Wordspace slide
+            if (slide.classList.contains('slide-wordspace')) {
+                initWordspace();
+            }
+
+            // Stat counter animation
+            if (slide.classList.contains('slide-stat')) {
+                initStatCounter();
+            }
+        }
+
+        // ===== WORDSPACE LOGIC =====
+        let wordspaceStep = 0;
+
+        function initWordspace() {
+            const container = document.getElementById('wordspaceContainer');
+            const legend = document.getElementById('wordspaceLegend');
+            const cursor = document.getElementById('sentenceCursor');
+
+            if (!container) return;
+
+            // Reset step
+            wordspaceStep = 0;
+
+            // Reset all steps in sidebar
+            document.querySelectorAll('.wordspace-step').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Reset words in cluster
+            container.querySelectorAll('.wordspace-word').forEach(word => {
+                word.classList.remove('visible', 'selected');
+                word.style.transform = '';
+                word.style.boxShadow = '';
+            });
+
+            // Reset sentence words
+            document.querySelectorAll('.sentence-word').forEach(word => {
+                word.classList.remove('visible');
+            });
+
+            // Reset cursor
+            if (cursor) cursor.style.display = '';
+            if (legend) legend.classList.remove('visible');
+        }
+
+        function advanceWordspace() {
+            const container = document.getElementById('wordspaceContainer');
+            const legend = document.getElementById('wordspaceLegend');
+            const cursor = document.getElementById('sentenceCursor');
+
+            // If we've completed all steps, go to next slide
+            if (wordspaceStep >= 7) {
+                goToSlide(currentSlide + 1);
+                return;
+            }
+
+            // Safety check
+            if (!container) {
+                goToSlide(currentSlide + 1);
+                return;
+            }
+
+            if (wordspaceStep === 0) {
+                // Step 1: Show words + activate step 1
+                const words = container.querySelectorAll('.wordspace-word');
+                words.forEach((word, i) => {
+                    setTimeout(() => {
+                        word.classList.add('visible');
+                    }, i * 60);
+                });
+                document.getElementById('wsStep1')?.classList.add('active');
+                if (legend) legend.classList.add('visible');
+            } else if (wordspaceStep === 1) {
+                // Step 2: Highlight food cluster + activate step 2
+                document.getElementById('wsStep2')?.classList.add('active');
+                container.querySelectorAll('.cluster-food').forEach(word => {
+                    word.style.transform = 'scale(1.2)';
+                    word.style.boxShadow = '0 0 20px rgba(249, 115, 22, 0.5)';
+                    setTimeout(() => {
+                        word.style.transform = '';
+                        word.style.boxShadow = '';
+                    }, 800);
+                });
+            } else if (wordspaceStep === 2) {
+                // Step 3: Show context - first sentence word (pizza)
+                document.getElementById('wsStep3')?.classList.add('active');
+                document.getElementById('sw1')?.classList.add('visible');
+            } else if (wordspaceStep === 3) {
+                // Step 4: Continue building - show time word (varje)
+                document.getElementById('wsStep4')?.classList.add('active');
+                document.getElementById('sw2')?.classList.add('visible');
+            } else if (wordspaceStep === 4) {
+                // Step 5: Show neutral word (dag)
+                document.getElementById('sw3')?.classList.add('visible');
+            } else if (wordspaceStep === 5) {
+                // Step 6: Show emotion (med glädje)
+                document.getElementById('sw4')?.classList.add('visible');
+                container.querySelectorAll('.cluster-emotion').forEach(word => {
+                    word.style.transform = 'scale(1.1)';
+                    setTimeout(() => word.style.transform = '', 500);
+                });
+            } else if (wordspaceStep === 6) {
+                // Step 7: Close quote and hide cursor
+                document.getElementById('sw5')?.classList.add('visible');
+                if (cursor) cursor.style.display = 'none';
+            }
+
+            wordspaceStep++;
+        }
+
+        // ===== ICON MODAL LOGIC =====
+        function openIconModal(modalId) {
+            const modal = document.getElementById('modal-' + modalId);
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function closeIconModal(event) {
+            if (event && event.target && !event.target.classList.contains('icon-modal-overlay')) {
+                return;
+            }
+            document.querySelectorAll('.icon-modal-overlay.active').forEach(m => {
+                m.classList.remove('active');
+            });
+        }
+
+        // ===== INCIDENT MODAL LOGIC =====
+        function openIncidentModal(modalId) {
+            const modal = document.getElementById('modal-' + modalId);
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function closeIncidentModal(event) {
+            if (event && event.target && !event.target.classList.contains('incident-modal-overlay')) {
+                return;
+            }
+            document.querySelectorAll('.incident-modal-overlay.active').forEach(m => {
+                m.classList.remove('active');
+            });
+        }
+
+        // ===== TYPEWRITER LOGIC =====
+        const typewriterQuote = `Om skolan *inte* introducerar eleverna till AI finns risken att elevernas olika *socioekonomiska* bakgrunder leder till *växande klyftor*.`;
+        let typewriterChars = [];
+        let typewriterIndex = 0;
+        let typewriterInterval = null;
+        let typewriterRunning = false;
+        const typewriterSpeed = 50;
+
+        function parseTypewriterText(text) {
+            const result = [];
+            let inHighlight = false;
+
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] === '*') {
+                    inHighlight = !inHighlight;
+                    continue;
+                }
+                result.push({
+                    char: text[i],
+                    highlight: inHighlight
+                });
+            }
+            return result;
+        }
+
+        function initTypewriter() {
+            const container = document.getElementById('typewriterText');
+            const cursor = document.getElementById('typewriterCursor');
+            const attribution = document.getElementById('typewriterAttribution');
+
+            if (!container) return;
+
+            // Reset
+            stopTypewriter();
+            container.innerHTML = '';
+            typewriterChars = parseTypewriterText(typewriterQuote);
+            typewriterIndex = 0;
+            if (attribution) attribution.classList.remove('visible');
+            if (cursor) cursor.classList.remove('hidden');
+
+            typewriterChars.forEach((item, i) => {
+                const span = document.createElement('span');
+                span.className = 'typewriter-char' + (item.highlight ? ' highlight' : '');
+                span.textContent = item.char;
+                span.dataset.index = i;
+                container.appendChild(span);
+            });
+
+            // Auto-start after 800ms
+            setTimeout(startTypewriter, 800);
+        }
+
+        function typeNextChar() {
+            const container = document.getElementById('typewriterText');
+            const cursor = document.getElementById('typewriterCursor');
+            const attribution = document.getElementById('typewriterAttribution');
+
+            if (typewriterIndex >= typewriterChars.length) {
+                stopTypewriter();
+                if (cursor) cursor.classList.add('hidden');
+                setTimeout(() => {
+                    if (attribution) attribution.classList.add('visible');
+                }, 500);
+                return;
+            }
+
+            const charSpan = container.querySelector(`[data-index="${typewriterIndex}"]`);
+            if (charSpan) {
+                charSpan.classList.add('visible');
+            }
+            typewriterIndex++;
+        }
+
+        function startTypewriter() {
+            if (typewriterRunning) return;
+            typewriterRunning = true;
+            typewriterInterval = setInterval(typeNextChar, typewriterSpeed);
+        }
+
+        function stopTypewriter() {
+            typewriterRunning = false;
+            if (typewriterInterval) {
+                clearInterval(typewriterInterval);
+                typewriterInterval = null;
+            }
+        }
+
+        // ===== FULLSCREEN LOGIC =====
+        function toggleFullscreen() {
+            const elem = document.documentElement;
+
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                // Enter fullscreen
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    // Safari
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    // IE/Edge
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goToSlide(currentSlide + 1);
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goToSlide(currentSlide - 1);
+            else if (e.key === ' ') {
+                e.preventDefault();
+                if (slides[currentSlide].classList.contains('slide-timer')) toggleTimer();
+                else if (slides[currentSlide].classList.contains('slide-token-predictor')) showTokenPredictor();
+                else if (slides[currentSlide].classList.contains('slide-wordspace')) advanceWordspace();
+                else goToSlide(currentSlide + 1);
+            }
+            else if (e.key === 'r' || e.key === 'R') resetTimer();
+            else if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+            else if (e.key === 'Escape') {
+                document.querySelectorAll('.door.open').forEach(d => d.classList.remove('open'));
+                document.querySelectorAll('.reveal-answer.revealed').forEach(r => r.classList.remove('revealed'));
+                document.querySelector('.fake-news-overlay.revealed')?.classList.remove('revealed');
+                closeIconModal(); // Close any open modals
+            }
+        });
+
+        // ===== STAT COUNTER (Count-up) LOGIC =====
+        function initStatCounter() {
+            const counter = document.getElementById('statCounter');
+            if (!counter) return;
+
+            const target = parseInt(counter.dataset.target) || 56;
+            const duration = 4000; // 4 sekunder
+            const startTime = performance.now();
+
+            counter.textContent = '0%';
+
+            function easeOutQuart(t) {
+                return 1 - Math.pow(1 - t, 4);
+            }
+
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easedProgress = easeOutQuart(progress);
+                const currentValue = Math.floor(easedProgress * target);
+
+                counter.textContent = currentValue + '%';
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target + '%';
+                }
+            }
+
+            // Start animation after a brief delay
+            setTimeout(() => {
+                requestAnimationFrame(updateCounter);
+            }, 400);
+        }
+
+        // ===== SOURCE POPUP LOGIC =====
+        function toggleSourcePopup(btn) {
+            const popup = btn.nextElementSibling;
+            if (popup && popup.classList.contains('source-popup')) {
+                popup.classList.toggle('visible');
+            }
+        }
+
+        // Close popup when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.source-btn') && !e.target.closest('.source-popup')) {
+                document.querySelectorAll('.source-popup.visible').forEach(p => p.classList.remove('visible'));
+            }
+        });
+
+        initNav();
+        initSlideEffects();
+    </script>
+
+</body>
+
+</html>
