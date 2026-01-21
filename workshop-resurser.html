@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Elevhälsa – Resurser</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --accent: #f97316;
+            --accent2: #a855f7;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta {
+            opacity: 0.6;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background: rgba(249, 115, 22, 0.2);
+            color: var(--accent);
+            margin-top: 0.5rem;
+        }
+
+        .section-desc {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .external {
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .external .card-tag {
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--accent2);
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            opacity: 0.5;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <h1>AI & Elevhälsa</h1>
+    <p class="meta">APT Centrala Resursenheten • 23 januari 2026 • Workshop-resurser</p>
+
+    <h2>🎯 Hands-on: Testa själv</h2>
+    <p class="section-desc">Öppna dessa under workshopen för att experimentera:</p>
+    <div class="card-grid">
+        <a href="https://chat.openai.com" target="_blank" class="card external">
+            <div class="card-title">ChatGPT</div>
+            <div class="card-desc">OpenAI:s chattbot. Gratis version tillgänglig.</div>
+            <span class="card-tag">AI-verktyg</span>
+        </a>
+        <a href="https://gemini.google.com" target="_blank" class="card external">
+            <div class="card-title">Google Gemini</div>
+            <div class="card-desc">Googles AI-assistent med tillgång till webben.</div>
+            <span class="card-tag">AI-verktyg</span>
+        </a>
+        <a href="https://claude.ai" target="_blank" class="card external">
+            <div class="card-title">Claude</div>
+            <div class="card-desc">Anthropics AI-assistent. Stark på analys och texter.</div>
+            <span class="card-tag">AI-verktyg</span>
+        </a>
+        <a href="https://copilot.microsoft.com" target="_blank" class="card external">
+            <div class="card-title">Microsoft Copilot</div>
+            <div class="card-desc">Microsofts AI i Edge/Bing. Integrerat med Office.</div>
+            <span class="card-tag">AI-verktyg</span>
+        </a>
+    </div>
+
+    <h2>📊 Utvalda slides</h2>
+    <p class="section-desc">Nyckelslides från presentationen att visa vid behov:</p>
+    <div class="card-grid">
+        <a href="https://hktcr.github.io/CRE_APT_jan2026/#3" class="card">
+            <div class="card-title">56% saknar tillgång</div>
+            <div class="card-desc">OECD-statistik om digital ojämlikhet bland 15-åringar.</div>
+            <span class="card-tag">Slide 3</span>
+        </a>
+        <a href="https://hktcr.github.io/CRE_APT_jan2026/#4" class="card">
+            <div class="card-title">AI-kommissionens citat</div>
+            <div class="card-desc">"Om skolan inte introducerar AI..."</div>
+            <span class="card-tag">Slide 4</span>
+        </a>
+        <a href="https://hktcr.github.io/CRE_APT_jan2026/#8" class="card">
+            <div class="card-title">Hur kan AI hjälpa er?</div>
+            <div class="card-desc">Fyra användningsområden: dokumentation, översättning, samtal, kunskap.</div>
+            <span class="card-tag">Slide 8</span>
+        </a>
+        <a href="https://hktcr.github.io/CRE_APT_jan2026/#16" class="card">
+            <div class="card-title">Risker: Quad-flip</div>
+            <div class="card-desc">Tillgänglighet, parasociala relationer, integritet, normalisering.</div>
+            <span class="card-tag">Slide 16</span>
+        </a>
+        <a href="https://hktcr.github.io/CRE_APT_jan2026/#17" class="card">
+            <div class="card-title">Dokumenterade konsekvenser</div>
+            <div class="card-desc">Fem verkliga fall där AI-chatbots skadat barn.</div>
+            <span class="card-tag">Slide 17</span>
+        </a>
+    </div>
+
+    <h2>📚 Källor & fördjupning</h2>
+    <p class="section-desc">Referenser och bakgrundsmaterial:</p>
+    <div class="card-grid">
+        <a href="https://www.regeringen.se/rattsliga-dokument/statens-offentliga-utredningar/2024/11/sou-202490/"
+            target="_blank" class="card external">
+            <div class="card-title">AI-kommissionens färdplan</div>
+            <div class="card-desc">SOU 2024:90 — Sveriges AI-strategi.</div>
+            <span class="card-tag">Källa</span>
+        </a>
+        <a href="https://www.skolverket.se/skolutveckling/digitalisering/artificiell-intelligens-ai-i-skolan"
+            target="_blank" class="card external">
+            <div class="card-title">Skolverket: AI i skolan</div>
+            <div class="card-desc">Skolverkets vägledning för skolor.</div>
+            <span class="card-tag">Källa</span>
+        </a>
+        <a href="https://www.cbsnews.com/news/character-ai-lawsuit-sewell-setzer-teen-suicide/" target="_blank"
+            class="card external">
+            <div class="card-title">CBS: Character.AI-stämning</div>
+            <div class="card-desc">Om 14-årige Sewell Setzer och AI-chatbot.</div>
+            <span class="card-tag">Nyhet</span>
+        </a>
+        <a href="https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
+            target="_blank" class="card external">
+            <div class="card-title">ABA: Texas-stämningarna</div>
+            <div class="card-desc">Juridisk analys av grupptalan mot Character.AI.</div>
+            <span class="card-tag">Juridisk</span>
+        </a>
+    </div>
+
+    <h2>🔗 Fullständig presentation</h2>
+    <div class="card-grid">
+        <a href="https://hktcr.github.io/CRE_APT_jan2026/" class="card">
+            <div class="card-title">AI & Elevhälsa — Fullständig</div>
+            <div class="card-desc">Alla 24 slides med interaktiva element.</div>
+            <span class="card-tag">Presentation</span>
+        </a>
+    </div>
+
+    <footer>
+        Håkan Karlsson • Kommunlektor AI • Åstorps kommun
+    </footer>
+
+</body>
+
+</html>
