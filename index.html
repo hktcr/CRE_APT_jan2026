@@ -3818,9 +3818,18 @@
                 document.querySelectorAll('.source-popup.visible').forEach(p => p.classList.remove('visible'));
             }
         });
+        // URL hash navigation - check for ?slide=N parameter
+        function checkUrlSlide() {
+            const params = new URLSearchParams(window.location.search);
+            const slideNum = parseInt(params.get('slide'));
+            if (slideNum && slideNum >= 1 && slideNum <= slides.length) {
+                goToSlide(slideNum - 1);
+            }
+        }
 
         initNav();
         initSlideEffects();
+        checkUrlSlide();
     </script>
 
 </body>
