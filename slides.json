@@ -1,0 +1,203 @@
+{
+    "meta": {
+        "project": "AI & Elevhälsa",
+        "event": "APT Centrala Resursenheten",
+        "date": "2026-01-23",
+        "presenter": {
+            "name": "Håkan Karlsson",
+            "title": "Kommunlektor AI",
+            "org": "Åstorps kommun"
+        }
+    },
+    "slides": [
+        {
+            "id": "title",
+            "type": "title",
+            "title": "AI & Elevhälsa",
+            "subtitle": "Möjligheter, risker och er roll",
+            "meta": "APT Centrala Resursenheten • 23 januari 2026"
+        },
+        {
+            "id": "presenter",
+            "type": "presenter",
+            "name": "Håkan Karlsson",
+            "title": "Kommunlektor AI",
+            "org": "Åstorps kommun",
+            "bio": "Naturvetenskapslärare 7-9 med fokus på AI-integration i skolan. Arbetar med att stötta pedagoger i att använda AI på ett säkert och effektivt sätt.",
+            "contact": "hakan.karlsson@astorp.se"
+        },
+        {
+            "id": "oecd-56",
+            "type": "stat",
+            "value": "56%",
+            "label": "av svenska 15-åringar har inte använt AI i skolan",
+            "source": "OECD PISA 2022",
+            "background": "assets/digital_divide.png"
+        },
+        {
+            "id": "ai-commission",
+            "type": "quote",
+            "text": "Om skolan *inte* introducerar eleverna till AI finns risken att elevernas olika *socioekonomiska* bakgrunder leder till *växande klyftor*.",
+            "author": "AI-kommissionens färdplan, 2025",
+            "style": "typewriter"
+        },
+        {
+            "id": "token-demo",
+            "type": "token-demo",
+            "title": "Så funkar GPT",
+            "prompt": "Jag älskar att äta",
+            "description": "AI gissar nästa ord baserat på mönster"
+        },
+        {
+            "id": "possibilities",
+            "type": "grid",
+            "title": "Hur kan AI hjälpa elevhälsan?",
+            "cards": [
+                {
+                    "icon": "📋",
+                    "title": "Dokumentation",
+                    "desc": "Sammanfatta möten, generera anteckningar"
+                },
+                {
+                    "icon": "🌍",
+                    "title": "Översättning",
+                    "desc": "Kommunicera med flerspråkiga familjer"
+                },
+                {
+                    "icon": "💬",
+                    "title": "Samtalsförberedelse",
+                    "desc": "Rollspela svåra samtal, brainstorma frågor"
+                },
+                {
+                    "icon": "📚",
+                    "title": "Kunskapsinhämtning",
+                    "desc": "Vad säger forskningen om..."
+                }
+            ]
+        },
+        {
+            "id": "risks-quad",
+            "type": "quad-flip",
+            "title": "4 Riskområden",
+            "cards": [
+                {
+                    "icon": "📱",
+                    "front": "Tillgänglighet",
+                    "back": "24/7 tillgång utan gränser. Barn kan fastna i samtal istället för att sova eller söka mänsklig hjälp."
+                },
+                {
+                    "icon": "💔",
+                    "front": "Parasocialt",
+                    "back": "Ensidig emotionell relation. Barn utvecklar band till AI som 'förstår dem bättre' — utan att AI har känslor."
+                },
+                {
+                    "icon": "🔐",
+                    "front": "Integritet",
+                    "back": "Data läcker till företag. Ingen tystnadsplikt. Personliga hemligheter används för träning."
+                },
+                {
+                    "icon": "🎭",
+                    "front": "Normalisering",
+                    "back": "AI ersätter mänsklig kontakt. Risk att professionell hjälp känns onödigt eller skrämmande."
+                }
+            ]
+        },
+        {
+            "id": "incidents",
+            "type": "incidents",
+            "title": "Dokumenterade konsekvenser",
+            "subtitle": "Verkliga fall där AI-chatbots orsakat allvarlig skada",
+            "cases": [
+                {
+                    "name": "Sewell S.",
+                    "age": 14,
+                    "platform": "Character.AI",
+                    "date": "Feb 2024",
+                    "icon": "💔",
+                    "description": "Utvecklade en intensiv emotionell relation med en AI-chatbot. I sina sista meddelanden ska boten ha skrivit: 'Kom hem till mig så snart som möjligt.'",
+                    "source": "https://www.cbsnews.com/news/character-ai-lawsuit-sewell-setzer-teen-suicide/"
+                },
+                {
+                    "name": "Adam R.",
+                    "age": 16,
+                    "platform": "ChatGPT",
+                    "date": "Apr 2025",
+                    "icon": "💔",
+                    "description": "Enligt stämningsansökan ska AI:n ha gett info om självmordsmetoder och erbjudit sig att skriva ett avskedsbrev.",
+                    "source": ""
+                },
+                {
+                    "name": "Texas",
+                    "age": 11,
+                    "platform": "Character.AI",
+                    "date": "2024",
+                    "icon": "⚠️",
+                    "description": "Exponerades för skadligt innehåll. Chatboten uppmuntrade självskadebeteende.",
+                    "source": "https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
+                },
+                {
+                    "name": "Texas",
+                    "age": 17,
+                    "platform": "Character.AI",
+                    "date": "2024",
+                    "icon": "⚠️",
+                    "description": "Utsattes för olämpligt sexuellt innehåll trots plattformens säkerhetsfilter.",
+                    "source": "https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
+                },
+                {
+                    "name": "Colorado",
+                    "age": 13,
+                    "platform": "Character.AI",
+                    "date": "2024",
+                    "icon": "⚠️",
+                    "description": "Utvecklade ångest och social isolering efter intensiv AI-användning.",
+                    "source": "https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
+                }
+            ]
+        },
+        {
+            "id": "traffic-light",
+            "type": "traffic-light",
+            "title": "Vad kan elevhälsan göra med AI?",
+            "green": [
+                "Skapa informationsmaterial och broschyrer",
+                "Brainstorma samtalsstrategier",
+                "Förstå ungdomars digitala värld",
+                "Analysera anonymiserad data",
+                "Generera frågeformulär",
+                "Översätta texter"
+            ],
+            "yellow": [
+                "Sammanfatta möten (avidentifiera först!)",
+                "Rollspela svåra samtal",
+                "Söka forskning (verifiera källorna)",
+                "Generera mötesanteckningar"
+            ],
+            "red": [
+                "Aldrig AI i direkta elevsamtal",
+                "Aldrig diagnos eller behandlingsförslag",
+                "Aldrig dela identifierbar patientinfo",
+                "Aldrig låta AI ersätta professionell bedömning"
+            ]
+        },
+        {
+            "id": "tools",
+            "type": "tool-links",
+            "title": "Verktyg för workshopen",
+            "tools": [
+                {
+                    "name": "Google Gemini",
+                    "url": "https://gemini.google.com",
+                    "icon": "✨",
+                    "desc": "Googles AI-assistent. Kan söka på webben och analysera bilder."
+                },
+                {
+                    "name": "NotebookLM",
+                    "url": "https://notebooklm.google.com",
+                    "icon": "📓",
+                    "desc": "Analysera dokument och ställ frågor till dina egna källor."
+                }
+            ]
+        }
+    ]
+}

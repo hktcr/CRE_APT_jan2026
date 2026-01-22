@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Shell</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --accent: #f97316;
+            --accent2: #a855f7;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --red: #ef4444;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ===== CARD GRID VIEW ===== */
+        .card-view {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card-view.hidden {
+            display: none;
+        }
+
+        .slide-card {
+            aspect-ratio: 16/10;
+            background: var(--surface);
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .slide-card:first-child {
+            border-color: var(--accent);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .card-id {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.65rem;
+            opacity: 0.4;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .card-type {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            font-size: 0.6rem;
+            opacity: 0.5;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        /* ===== SLIDE FULLSCREEN VIEW ===== */
+        .slide-view {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .slide-view.active {
+            display: flex;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-prev {
+            left: 1rem;
+        }
+
+        .nav-next {
+            right: 1rem;
+        }
+
+        .slide-id-display {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            opacity: 0.4;
+        }
+
+        /* ===== SLIDE TYPE: TITLE ===== */
+        .slide-title-type {
+            text-align: center;
+        }
+
+        .slide-title-type h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .slide-title-type .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            opacity: 0.8;
+        }
+
+        .slide-title-type .meta {
+            margin-top: 2rem;
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        /* ===== SLIDE TYPE: PRESENTER ===== */
+        .slide-presenter {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .slide-presenter .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .slide-presenter h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-presenter .title-org {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .slide-presenter .bio {
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .slide-presenter .contact {
+            margin-top: 1.5rem;
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        /* ===== SLIDE TYPE: STAT ===== */
+        .slide-stat {
+            text-align: center;
+        }
+
+        .slide-stat .stat-value {
+            font-size: clamp(6rem, 20vw, 14rem);
+            font-weight: 900;
+            line-height: 1;
+            background: linear-gradient(135deg, #fcd34d, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-stat .stat-label {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            opacity: 0.9;
+            margin-top: 1rem;
+            max-width: 700px;
+        }
+
+        .slide-stat .stat-source {
+            margin-top: 2rem;
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        /* ===== SLIDE TYPE: QUOTE ===== */
+        .slide-quote {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .slide-quote.typewriter {
+            font-family: 'JetBrains Mono', monospace;
+            color: #00ff88;
+        }
+
+        .slide-quote .quote-text {
+            font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+            line-height: 1.6;
+        }
+
+        .slide-quote.typewriter .quote-text {
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .slide-quote .highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .slide-quote .quote-author {
+            margin-top: 2rem;
+            opacity: 0.6;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slide-quote .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background: currentColor;
+            margin-left: 0.2em;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ===== SLIDE TYPE: GRID ===== */
+        .slide-grid {
+            text-align: center;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .slide-grid h2 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .grid-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .grid-card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .grid-card-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .grid-card-desc {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* ===== SLIDE TYPE: QUAD-FLIP ===== */
+        .slide-quad {
+            text-align: center;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .slide-quad h2 {
+            font-size: 1.8rem;
+            color: var(--red);
+            margin-bottom: 2rem;
+        }
+
+        .quad-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .quad-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 150px;
+        }
+
+        .quad-card:hover {
+            border-color: var(--yellow);
+        }
+
+        .quad-card.flipped {
+            background: rgba(234, 179, 8, 0.1);
+            border-color: var(--yellow);
+        }
+
+        .quad-front {
+            transition: opacity 0.3s;
+        }
+
+        .quad-back {
+            display: none;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .quad-card.flipped .quad-front {
+            display: none;
+        }
+
+        .quad-card.flipped .quad-back {
+            display: block;
+        }
+
+        .quad-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quad-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* ===== SLIDE TYPE: TRAFFIC-LIGHT ===== */
+        .slide-traffic {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .slide-traffic h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .traffic-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .traffic-col {
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+
+        .traffic-col.green {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid var(--green);
+        }
+
+        .traffic-col.yellow {
+            background: rgba(234, 179, 8, 0.15);
+            border: 2px solid var(--yellow);
+        }
+
+        .traffic-col.red {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid var(--red);
+        }
+
+        .traffic-header {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .traffic-col.green .traffic-header {
+            color: var(--green);
+        }
+
+        .traffic-col.yellow .traffic-header {
+            color: var(--yellow);
+        }
+
+        .traffic-col.red .traffic-header {
+            color: var(--red);
+        }
+
+        .traffic-list {
+            list-style: none;
+        }
+
+        .traffic-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .traffic-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* ===== SLIDE TYPE: INCIDENTS ===== */
+        .slide-incidents {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .slide-incidents h2 {
+            color: var(--yellow);
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-incidents .subtitle {
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .incidents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .incident-card {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .incident-card:hover {
+            border-color: var(--red);
+            transform: translateY(-3px);
+        }
+
+        .incident-icon {
+            font-size: 1.5rem;
+        }
+
+        .incident-name {
+            font-weight: 700;
+            margin: 0.3rem 0;
+        }
+
+        .incident-age {
+            color: var(--red);
+            font-weight: 600;
+        }
+
+        .incident-platform {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* ===== SLIDE TYPE: TOOL-LINKS ===== */
+        .slide-tools {
+            text-align: center;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .slide-tools h2 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+            border: 2px solid var(--green);
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-desc {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* ===== SLIDE TYPE: TOKEN-DEMO ===== */
+        .slide-token-demo {
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .slide-token-demo h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-token-demo .desc {
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .demo-box {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .prompt-area {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .predicted {
+            color: var(--green);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .predicted.visible {
+            opacity: 1;
+        }
+
+        .token-cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background: var(--accent);
+            margin-left: 0.1em;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        .options {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            background: rgba(249, 115, 22, 0.15);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .option:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .option.selected {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--bg);
+        }
+
+        .probability {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-left: 0.5rem;
+        }
+
+        .explanation {
+            background: rgba(168, 85, 247, 0.1);
+            border-left: 4px solid var(--accent2);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .reset-btn {
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Modal for incidents */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal h3 {
+            color: var(--red);
+            margin-bottom: 1rem;
+        }
+
+        .modal p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .modal a {
+            color: var(--yellow);
+        }
+
+        @media (max-width: 768px) {
+
+            .traffic-grid,
+            .quad-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card-view" id="cardView"></div>
+
+    <div class="slide-view" id="slideView">
+        <button class="close-btn" onclick="closeSlide()">✕</button>
+        <button class="nav-btn nav-prev" onclick="prevSlide()">←</button>
+        <button class="nav-btn nav-next" onclick="nextSlide()">→</button>
+        <div class="slide-content" id="slideContent"></div>
+        <div class="slide-id-display" id="slideIdDisplay"></div>
+    </div>
+
+    <div class="modal-overlay" id="incidentModal" onclick="closeIncidentModal(event)">
+        <div class="modal" id="incidentModalContent" onclick="event.stopPropagation()"></div>
+    </div>
+
+    <script>
+        let slidesData = [];
+        let currentSlideIndex = 0;
+
+        // Load slides from JSON
+        async function loadSlides() {
+            try {
+                const response = await fetch('slides.json');
+                const data = await response.json();
+                slidesData = data.slides;
+                renderCardView();
+            } catch (error) {
+                console.error('Failed to load slides:', error);
+                document.getElementById('cardView').innerHTML = '<p style="padding:2rem;opacity:0.5">Kunde inte ladda slides.json</p>';
+            }
+        }
+
+        // Render card grid
+        function renderCardView() {
+            const container = document.getElementById('cardView');
+            container.innerHTML = slidesData.map((slide, index) => `
+                <div class="slide-card" onclick="openSlide(${index})">
+                    <span class="card-type">${slide.type}</span>
+                    <span class="card-icon">${getTypeIcon(slide.type)}</span>
+                    <span class="card-title">${slide.title || slide.name || slide.value || 'Slide'}</span>
+                    <span class="card-id">${slide.id}</span>
+                </div>
+            `).join('');
+        }
+
+        function getTypeIcon(type) {
+            const icons = {
+                'title': '🎬',
+                'presenter': '👤',
+                'stat': '📊',
+                'quote': '💬',
+                'grid': '📦',
+                'quad-flip': '🔄',
+                'traffic-light': '🚦',
+                'incidents': '⚠️',
+                'tool-links': '🔧',
+                'token-demo': '🧠'
+            };
+            return icons[type] || '📄';
+        }
+
+        // Open slide in fullscreen
+        function openSlide(index) {
+            currentSlideIndex = index;
+            renderCurrentSlide();
+            document.getElementById('cardView').classList.add('hidden');
+            document.getElementById('slideView').classList.add('active');
+        }
+
+        function closeSlide() {
+            document.getElementById('slideView').classList.remove('active');
+            document.getElementById('cardView').classList.remove('hidden');
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderCurrentSlide();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slidesData.length - 1) {
+                currentSlideIndex++;
+                renderCurrentSlide();
+            }
+        }
+
+        function renderCurrentSlide() {
+            const slide = slidesData[currentSlideIndex];
+            const content = document.getElementById('slideContent');
+            document.getElementById('slideIdDisplay').textContent = `${currentSlideIndex + 1}/${slidesData.length} • ${slide.id}`;
+
+            switch (slide.type) {
+                case 'title': content.innerHTML = renderTitle(slide); break;
+                case 'presenter': content.innerHTML = renderPresenter(slide); break;
+                case 'stat': content.innerHTML = renderStat(slide); break;
+                case 'quote': content.innerHTML = renderQuote(slide); break;
+                case 'grid': content.innerHTML = renderGrid(slide); break;
+                case 'quad-flip': content.innerHTML = renderQuadFlip(slide); break;
+                case 'traffic-light': content.innerHTML = renderTrafficLight(slide); break;
+                case 'incidents': content.innerHTML = renderIncidents(slide); break;
+                case 'tool-links': content.innerHTML = renderToolLinks(slide); break;
+                case 'token-demo': content.innerHTML = renderTokenDemo(slide); break;
+                default: content.innerHTML = `<p>Unknown slide type: ${slide.type}</p>`;
+            }
+        }
+
+        // ===== SLIDE RENDERERS =====
+        function renderTitle(s) {
+            return `<div class="slide-title-type">
+                <h1>${s.title}</h1>
+                <div class="subtitle">${s.subtitle || ''}</div>
+                <div class="meta">${s.meta || ''}</div>
+            </div>`;
+        }
+
+        function renderPresenter(s) {
+            return `<div class="slide-presenter">
+                <div class="avatar">👤</div>
+                <h2>${s.name}</h2>
+                <div class="title-org">${s.title} • ${s.org}</div>
+                <div class="bio">${s.bio || ''}</div>
+                ${s.contact ? `<div class="contact">${s.contact}</div>` : ''}
+            </div>`;
+        }
+
+        function renderStat(s) {
+            return `<div class="slide-stat">
+                <div class="stat-value">${s.value}</div>
+                <div class="stat-label">${s.label}</div>
+                <div class="stat-source">Källa: ${s.source}</div>
+            </div>`;
+        }
+
+        function renderQuote(s) {
+            const isTypewriter = s.style === 'typewriter';
+            const text = s.text.replace(/\*([^*]+)\*/g, '<span class="highlight">$1</span>');
+            return `<div class="slide-quote ${isTypewriter ? 'typewriter' : ''}">
+                <div class="quote-text">"${text}"${isTypewriter ? '<span class="cursor"></span>' : ''}</div>
+                ${s.author ? `<div class="quote-author">— ${s.author}</div>` : ''}
+            </div>`;
+        }
+
+        function renderGrid(s) {
+            return `<div class="slide-grid">
+                <h2>${s.title}</h2>
+                <div class="grid-cards">
+                    ${s.cards.map(c => `
+                        <div class="grid-card">
+                            <div class="grid-card-icon">${c.icon}</div>
+                            <div class="grid-card-title">${c.title}</div>
+                            <div class="grid-card-desc">${c.desc}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+        }
+
+        function renderQuadFlip(s) {
+            return `<div class="slide-quad">
+                <h2>⚠️ ${s.title}</h2>
+                <div class="quad-grid">
+                    ${s.cards.map(c => `
+                        <div class="quad-card" onclick="this.classList.toggle('flipped')">
+                            <div class="quad-front">
+                                <div class="quad-icon">${c.icon}</div>
+                                <div class="quad-title">${c.front}</div>
+                            </div>
+                            <div class="quad-back">${c.back}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+        }
+
+        function renderTrafficLight(s) {
+            return `<div class="slide-traffic">
+                <h2>${s.title}</h2>
+                <div class="traffic-grid">
+                    <div class="traffic-col green">
+                        <div class="traffic-header">✅ Grönt ljus</div>
+                        <ul class="traffic-list">${s.green.map(i => `<li>${i}</li>`).join('')}</ul>
+                    </div>
+                    <div class="traffic-col yellow">
+                        <div class="traffic-header">⚠️ Gult ljus</div>
+                        <ul class="traffic-list">${s.yellow.map(i => `<li>${i}</li>`).join('')}</ul>
+                    </div>
+                    <div class="traffic-col red">
+                        <div class="traffic-header">🛑 Rött ljus</div>
+                        <ul class="traffic-list">${s.red.map(i => `<li>${i}</li>`).join('')}</ul>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderIncidents(s) {
+            return `<div class="slide-incidents">
+                <h2>⚠️ ${s.title}</h2>
+                <div class="subtitle">${s.subtitle}</div>
+                <div class="incidents-grid">
+                    ${s.cases.map((c, i) => `
+                        <div class="incident-card" onclick="showIncident(${currentSlideIndex}, ${i})">
+                            <div class="incident-icon">${c.icon}</div>
+                            <div class="incident-name">${c.name}</div>
+                            <div class="incident-age">${c.age} år</div>
+                            <div class="incident-platform">${c.platform} • ${c.date}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+        }
+
+        function showIncident(slideIdx, caseIdx) {
+            const incident = slidesData[slideIdx].cases[caseIdx];
+            document.getElementById('incidentModalContent').innerHTML = `
+                <h3>${incident.icon} ${incident.name}, ${incident.age} år</h3>
+                <p>${incident.description}</p>
+                ${incident.source ? `<p><a href="${incident.source}" target="_blank">Läs mer →</a></p>` : ''}
+            `;
+            document.getElementById('incidentModal').classList.add('active');
+        }
+
+        function closeIncidentModal(e) {
+            document.getElementById('incidentModal').classList.remove('active');
+        }
+
+        function renderToolLinks(s) {
+            return `<div class="slide-tools">
+                <h2>${s.title}</h2>
+                <div class="tools-grid">
+                    ${s.tools.map(t => `
+                        <a href="${t.url}" target="_blank" class="tool-card">
+                            <div class="tool-icon">${t.icon}</div>
+                            <div class="tool-name">${t.name}</div>
+                            <div class="tool-desc">${t.desc}</div>
+                        </a>
+                    `).join('')}
+                </div>
+            </div>`;
+        }
+
+        function renderTokenDemo(s) {
+            return `<div class="slide-token-demo">
+                <h2>${s.title}</h2>
+                <div class="desc">${s.description}</div>
+                <div class="demo-box">
+                    <div class="prompt-area">
+                        "${s.prompt}<span class="predicted" id="w1"></span><span class="predicted" id="w2"></span><span class="predicted" id="w3"></span><span class="token-cursor" id="tokenCursor"></span>"
+                    </div>
+                    <div class="options" id="tokenOptions">
+                        <div class="option" onclick="selectToken(this,'pizza')">pizza <span class="probability">34%</span></div>
+                        <div class="option" onclick="selectToken(this,'glass')">glass <span class="probability">28%</span></div>
+                        <div class="option" onclick="selectToken(this,'mat')">mat <span class="probability">19%</span></div>
+                        <div class="option" onclick="selectToken(this,'kärlek')">kärlek <span class="probability">8%</span></div>
+                    </div>
+                    <div class="explanation" id="tokenExplanation">
+                        <strong>👆 Klicka på ett ord!</strong><br>AI:n ser "${s.prompt}" och beräknar sannolikheten för varje möjligt nästa ord.
+                    </div>
+                    <button class="reset-btn" onclick="resetTokenDemo()">↻ Börja om</button>
+                </div>
+            </div>`;
+        }
+
+        let tokenStep = 0;
+        function selectToken(el, word) {
+            if (tokenStep >= 3) return;
+            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            const span = document.getElementById('w' + (tokenStep + 1));
+            span.textContent = ' ' + word;
+            span.classList.add('visible');
+            tokenStep++;
+            if (tokenStep >= 3) {
+                document.getElementById('tokenOptions').style.display = 'none';
+                document.getElementById('tokenCursor').style.display = 'none';
+                document.getElementById('tokenExplanation').innerHTML = '<strong>✨ Klart!</strong><br><br>Så fungerar GPT: den gissar nästa ord baserat på statistiska mönster. Ingen förståelse, inga känslor — bara mönster.';
+            }
+        }
+        function resetTokenDemo() {
+            tokenStep = 0;
+            ['w1', 'w2', 'w3'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.textContent = ''; el.classList.remove('visible'); }
+            });
+            const cursor = document.getElementById('tokenCursor');
+            const opts = document.getElementById('tokenOptions');
+            if (cursor) cursor.style.display = 'inline-block';
+            if (opts) opts.style.display = 'flex';
+            renderCurrentSlide();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('slideView').classList.contains('active')) return;
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'Escape') closeSlide();
+        });
+
+        // Init
+        loadSlides();
+    </script>
+</body>
+
+</html>
