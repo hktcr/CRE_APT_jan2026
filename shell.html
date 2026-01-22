@@ -1074,6 +1074,12 @@
         }
 
         let tokenStep = 0;
+        const tokenOptions = [
+            [{ word: 'pizza', prob: '34%' }, { word: 'glass', prob: '28%' }, { word: 'mat', prob: '19%' }, { word: 'kärlek', prob: '8%' }],
+            [{ word: 'varje', prob: '41%' }, { word: 'med', prob: '22%' }, { word: 'på', prob: '18%' }, { word: 'tillsammans', prob: '12%' }],
+            [{ word: 'dag', prob: '52%' }, { word: 'kväll', prob: '24%' }, { word: 'morgon', prob: '15%' }, { word: 'gång', prob: '9%' }]
+        ];
+
         function selectToken(el, word) {
             if (tokenStep >= 3) return;
             document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
@@ -1082,12 +1088,24 @@
             span.textContent = ' ' + word;
             span.classList.add('visible');
             tokenStep++;
+
             if (tokenStep >= 3) {
                 document.getElementById('tokenOptions').style.display = 'none';
                 document.getElementById('tokenCursor').style.display = 'none';
                 document.getElementById('tokenExplanation').innerHTML = '<strong>✨ Klart!</strong><br><br>Så fungerar GPT: den gissar nästa ord baserat på statistiska mönster. Ingen förståelse, inga känslor — bara mönster.';
+            } else {
+                // Show next set of options after short delay
+                setTimeout(() => {
+                    const opts = tokenOptions[tokenStep];
+                    const container = document.getElementById('tokenOptions');
+                    container.innerHTML = opts.map(o =>
+                        `<div class="option" onclick="selectToken(this,'${o.word}')">${o.word} <span class="probability">${o.prob}</span></div>`
+                    ).join('');
+                    document.getElementById('tokenExplanation').innerHTML = '<strong>Bra!</strong> Nu ser AI:n mer kontext och gissar igen. Varje ord påverkar nästa gissning.';
+                }, 300);
             }
         }
+
         function resetTokenDemo() {
             tokenStep = 0;
             ['w1', 'w2', 'w3'].forEach(id => {
@@ -1097,8 +1115,14 @@
             const cursor = document.getElementById('tokenCursor');
             const opts = document.getElementById('tokenOptions');
             if (cursor) cursor.style.display = 'inline-block';
-            if (opts) opts.style.display = 'flex';
-            renderCurrentSlide();
+            if (opts) {
+                opts.style.display = 'flex';
+                opts.innerHTML = tokenOptions[0].map(o =>
+                    `<div class="option" onclick="selectToken(this,'${o.word}')">${o.word} <span class="probability">${o.prob}</span></div>`
+                ).join('');
+            }
+            const expl = document.getElementById('tokenExplanation');
+            if (expl) expl.innerHTML = '<strong>👆 Klicka på ett ord!</strong><br>AI:n ser prompten och beräknar sannolikheten för varje möjligt nästa ord.';
         }
 
         // Keyboard navigation - only Escape to close
