@@ -27,6 +27,87 @@
             "contact": "hakan.karlsson@astorp.se"
         },
         {
+            "id": "tredje-stolen",
+            "type": "quote",
+            "text": "När en kurator sätter sig i samtalsrummet med en elev, är det allt oftare *inte bara två parter* närvarande. Det finns en osynlig *tredje stol* i rummet – ockuperad av de algoritmer som eleven interagerat med.",
+            "author": "Ramverk för workshopen",
+            "style": "typewriter"
+        },
+        {
+            "id": "rand-statistik",
+            "type": "stat",
+            "value": "20%",
+            "label": "av unga vuxna (18-21 år) använder AI-chattbotar för råd om psykisk hälsa. 93% uppger att de fann råden hjälpsamma.",
+            "source": "RAND Corporation, 2025",
+            "sources": [
+                {
+                    "name": "RAND: Youth and AI Mental Health",
+                    "url": "https://www.rand.org/"
+                }
+            ]
+        },
+        {
+            "id": "gps-metafor",
+            "type": "grid",
+            "title": "GPS-metaforen: AI som vägvisare",
+            "cards": [
+                {
+                    "icon": "🗺️",
+                    "title": "Styrkan",
+                    "desc": "Beräknar snabbaste rutten baserat på miljontals tidigare fall"
+                },
+                {
+                    "icon": "⚠️",
+                    "title": "Svagheten",
+                    "desc": "Vet inte om vägen spolats bort eller att det pågår vägarbete"
+                },
+                {
+                    "icon": "👁️",
+                    "title": "Du är föraren",
+                    "desc": "AI är kartan – professionen måste titta ut genom vindrutan"
+                },
+                {
+                    "icon": "🚧",
+                    "title": "Utan människa",
+                    "desc": "Utan mänsklig översyn kör vi i diket"
+                }
+            ]
+        },
+        {
+            "id": "falsk-empati",
+            "type": "quote",
+            "text": "AI kan simulera empati med extrem precision: *'Jag förstår att du känner dig ledsen, det låter väldigt tungt.'* Men systemet *känner ingenting*. Det är en textgenerator. För sårbara unga kan det vara svårt att skilja på simulering och äkta omsorg.",
+            "author": "Falsk empati – den syntetiska vännen",
+            "style": "typewriter"
+        },
+        {
+            "id": "gemini-vs-notebooklm",
+            "type": "grid",
+            "title": "Två verktyg – två syften",
+            "cards": [
+                {
+                    "icon": "✨",
+                    "title": "Gemini",
+                    "desc": "Kreativ generalist – bollplank, utkast, rollspel. Kan hallucinera!"
+                },
+                {
+                    "icon": "📓",
+                    "title": "NotebookLM",
+                    "desc": "Grundad analytiker – svar låsta till DINA dokument. Fotnoter!"
+                },
+                {
+                    "icon": "🎨",
+                    "title": "Gemini för...",
+                    "desc": "Textförenkling, idégenerering, simulera svåra samtal"
+                },
+                {
+                    "icon": "🔍",
+                    "title": "NotebookLM för...",
+                    "desc": "Dokumentanalys, regelverks-frågor, litteraturöversikt"
+                }
+            ]
+        },
+        {
             "id": "oecd-56",
             "type": "stat",
             "value": "56%",
