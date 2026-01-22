@@ -1055,14 +1055,18 @@
         // Render card grid
         function renderCardView() {
             const container = document.getElementById('cardView');
-            container.innerHTML = slidesData.map((slide, index) => `
-                <div class="slide-card" onclick="openSlide(${index})">
+            container.innerHTML = slidesData.map((slide, index) => {
+                const bgStyle = slide.background
+                    ? `background-image: linear-gradient(rgba(10, 10, 30, 0.5), rgba(10, 10, 30, 0.7)), url('${slide.background}'); background-size: cover; background-position: center;`
+                    : '';
+                return `
+                <div class="slide-card" onclick="openSlide(${index})" style="${bgStyle}">
                     <span class="card-type">${slide.type}</span>
-                    <span class="card-icon">${getTypeIcon(slide.type)}</span>
+                    <span class="card-icon">${slide.background ? '' : getTypeIcon(slide.type)}</span>
                     <span class="card-title">${slide.title || slide.name || slide.value || 'Slide'}</span>
                     <span class="card-id">${slide.id}</span>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function getTypeIcon(type) {
