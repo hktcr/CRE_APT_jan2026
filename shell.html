@@ -1111,7 +1111,17 @@
         function renderCurrentSlide() {
             const slide = slidesData[currentSlideIndex];
             const content = document.getElementById('slideContent');
+            const slideView = document.getElementById('slideView');
             document.getElementById('slideIdDisplay').textContent = `${currentSlideIndex + 1}/${slidesData.length} • ${slide.id}`;
+
+            // Apply background image if specified
+            if (slide.background) {
+                slideView.style.backgroundImage = `linear-gradient(rgba(10, 10, 30, 0.7), rgba(10, 10, 30, 0.8)), url('${slide.background}')`;
+                slideView.style.backgroundSize = 'cover';
+                slideView.style.backgroundPosition = 'center';
+            } else {
+                slideView.style.backgroundImage = '';
+            }
 
             switch (slide.type) {
                 case 'title': content.innerHTML = renderTitle(slide); break;

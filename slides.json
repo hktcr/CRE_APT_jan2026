@@ -31,7 +31,8 @@
             "type": "quote",
             "text": "När en kurator sätter sig i samtalsrummet med en elev, är det allt oftare *inte bara två parter* närvarande. Det finns en osynlig *tredje stol* i rummet – ockuperad av de algoritmer som eleven interagerat med.",
             "author": "Ramverk för workshopen",
-            "style": "typewriter"
+            "style": "typewriter",
+            "background": "assets/tredje_stolen.png"
         },
         {
             "id": "rand-statistik",
@@ -71,14 +72,16 @@
                     "title": "Utan människa",
                     "desc": "Utan mänsklig översyn kör vi i diket"
                 }
-            ]
+            ],
+            "background": "assets/gps_metafor.png"
         },
         {
             "id": "falsk-empati",
             "type": "quote",
             "text": "AI kan simulera empati med extrem precision: *'Jag förstår att du känner dig ledsen, det låter väldigt tungt.'* Men systemet *känner ingenting*. Det är en textgenerator. För sårbara unga kan det vara svårt att skilja på simulering och äkta omsorg.",
             "author": "Falsk empati – den syntetiska vännen",
-            "style": "typewriter"
+            "style": "typewriter",
+            "background": "assets/falsk_empati.png"
         },
         {
             "id": "gemini-vs-notebooklm",
@@ -105,7 +108,8 @@
                     "title": "NotebookLM för...",
                     "desc": "Dokumentanalys, regelverks-frågor, litteraturöversikt"
                 }
-            ]
+            ],
+            "background": "assets/gemini_vs_notebooklm.png"
         },
         {
             "id": "oecd-56",
@@ -277,7 +281,8 @@
                     "title": "AI-kompisar",
                     "desc": "\"Har du testat att prata med AI? Hur kändes det?\""
                 }
-            ]
+            ],
+            "background": "assets/samtalsnycklar.png"
         },
         {
             "id": "aldrig-i-prompten",
@@ -304,14 +309,16 @@
                     "title": "Syntetiska fall",
                     "back": "Använd AI för att SKAPA fiktiva fall att diskutera"
                 }
-            ]
+            ],
+            "background": "assets/gdpr_shield.png"
         },
         {
             "id": "human-in-the-loop",
             "type": "quote",
             "text": "*Human in the loop*: Ingen text genererad av AI får skickas till elever eller föräldrar utan att en *människa noggrant granskat* och redigerat. Du är alltid *ansvarig* för texten – oavsett vem som skrev utkastet.",
             "author": "Grundprincipen för AI-användning",
-            "style": "typewriter"
+            "style": "typewriter",
+            "background": "assets/human_in_loop.png"
         },
         {
             "id": "traffic-light",
