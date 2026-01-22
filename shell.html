@@ -1074,11 +1074,110 @@
         }
 
         let tokenStep = 0;
-        const tokenOptions = [
-            [{ word: 'pizza', prob: '34%' }, { word: 'glass', prob: '28%' }, { word: 'mat', prob: '19%' }, { word: 'kärlek', prob: '8%' }],
-            [{ word: 'varje', prob: '41%' }, { word: 'med', prob: '22%' }, { word: 'på', prob: '18%' }, { word: 'tillsammans', prob: '12%' }],
-            [{ word: 'dag', prob: '52%' }, { word: 'kväll', prob: '24%' }, { word: 'morgon', prob: '15%' }, { word: 'gång', prob: '9%' }]
-        ];
+        let selectedWords = [];
+
+        // Complete branching tree: each word choice affects next options
+        const tokenTree = {
+            // Step 1: "Jag älskar att äta ___"
+            start: [
+                { word: 'pizza', prob: '34%' },
+                { word: 'glass', prob: '28%' },
+                { word: 'mat', prob: '19%' },
+                { word: 'frukt', prob: '11%' }
+            ],
+            // Step 2: depends on step 1
+            pizza: [
+                { word: 'varje', prob: '41%' },
+                { word: 'med', prob: '28%' },
+                { word: 'på', prob: '18%' },
+                { word: 'efter', prob: '8%' }
+            ],
+            glass: [
+                { word: 'på', prob: '38%' },
+                { word: 'under', prob: '26%' },
+                { word: 'när', prob: '21%' },
+                { word: 'med', prob: '12%' }
+            ],
+            mat: [
+                { word: 'som', prob: '35%' },
+                { word: 'tillsammans', prob: '28%' },
+                { word: 'med', prob: '22%' },
+                { word: 'från', prob: '12%' }
+            ],
+            frukt: [
+                { word: 'och', prob: '42%' },
+                { word: 'varje', prob: '26%' },
+                { word: 'till', prob: '18%' },
+                { word: 'på', prob: '11%' }
+            ],
+            // Step 3: depends on step 2
+            varje: [
+                { word: 'dag', prob: '52%' },
+                { word: 'kväll', prob: '24%' },
+                { word: 'fredag', prob: '14%' },
+                { word: 'vecka', prob: '7%' }
+            ],
+            med: [
+                { word: 'vänner', prob: '38%' },
+                { word: 'familjen', prob: '32%' },
+                { word: 'extra', prob: '18%' },
+                { word: 'ost', prob: '9%' }
+            ],
+            på: [
+                { word: 'sommaren', prob: '44%' },
+                { word: 'fredagar', prob: '28%' },
+                { word: 'kvällen', prob: '17%' },
+                { word: 'stranden', prob: '8%' }
+            ],
+            efter: [
+                { word: 'jobbet', prob: '41%' },
+                { word: 'träningen', prob: '32%' },
+                { word: 'skolan', prob: '18%' },
+                { word: 'middagen', prob: '6%' }
+            ],
+            under: [
+                { word: 'sommaren', prob: '48%' },
+                { word: 'helgen', prob: '28%' },
+                { word: 'semestern', prob: '16%' },
+                { word: 'filmen', prob: '5%' }
+            ],
+            när: [
+                { word: 'solen', prob: '36%' },
+                { word: 'det', prob: '31%' },
+                { word: 'jag', prob: '22%' },
+                { word: 'vi', prob: '8%' }
+            ],
+            som: [
+                { word: 'mamma', prob: '34%' },
+                { word: 'farmor', prob: '28%' },
+                { word: 'kommer', prob: '22%' },
+                { word: 'smakar', prob: '13%' }
+            ],
+            tillsammans: [
+                { word: 'med', prob: '62%' },
+                { word: 'i', prob: '18%' },
+                { word: 'på', prob: '12%' },
+                { word: 'hemma', prob: '5%' }
+            ],
+            från: [
+                { word: 'Sverige', prob: '31%' },
+                { word: 'butiken', prob: '28%' },
+                { word: 'trädgården', prob: '24%' },
+                { word: 'marknaden', prob: '14%' }
+            ],
+            och: [
+                { word: 'grönsaker', prob: '38%' },
+                { word: 'bär', prob: '32%' },
+                { word: 'nötter', prob: '18%' },
+                { word: 'juice', prob: '9%' }
+            ],
+            till: [
+                { word: 'frukost', prob: '42%' },
+                { word: 'mellanmål', prob: '28%' },
+                { word: 'lunch', prob: '18%' },
+                { word: 'dessert', prob: '9%' }
+            ]
+        };
 
         function selectToken(el, word) {
             if (tokenStep >= 3) return;
@@ -1087,27 +1186,29 @@
             const span = document.getElementById('w' + (tokenStep + 1));
             span.textContent = ' ' + word;
             span.classList.add('visible');
+            selectedWords.push(word);
             tokenStep++;
 
             if (tokenStep >= 3) {
                 document.getElementById('tokenOptions').style.display = 'none';
                 document.getElementById('tokenCursor').style.display = 'none';
-                document.getElementById('tokenExplanation').innerHTML = '<strong>✨ Klart!</strong><br><br>Så fungerar GPT: den gissar nästa ord baserat på statistiska mönster. Ingen förståelse, inga känslor — bara mönster.';
+                document.getElementById('tokenExplanation').innerHTML = '<strong>✨ Klart!</strong><br><br>Så fungerar GPT: den gissar nästa ord baserat på statistiska mönster. <em>Varje ord du valde ändrade vilka alternativ som dök upp</em> — precis som i verkligheten.';
             } else {
-                // Show next set of options after short delay
+                // Show next set of options based on what was just selected
                 setTimeout(() => {
-                    const opts = tokenOptions[tokenStep];
+                    const nextOpts = tokenTree[word] || tokenTree.varje;
                     const container = document.getElementById('tokenOptions');
-                    container.innerHTML = opts.map(o =>
+                    container.innerHTML = nextOpts.map(o =>
                         `<div class="option" onclick="selectToken(this,'${o.word}')">${o.word} <span class="probability">${o.prob}</span></div>`
                     ).join('');
-                    document.getElementById('tokenExplanation').innerHTML = '<strong>Bra!</strong> Nu ser AI:n mer kontext och gissar igen. Varje ord påverkar nästa gissning.';
+                    document.getElementById('tokenExplanation').innerHTML = `<strong>Bra!</strong> Du valde "<em>${word}</em>" — nu har kontexten ändrats och AI:n beräknar nya sannolikheter.`;
                 }, 300);
             }
         }
 
         function resetTokenDemo() {
             tokenStep = 0;
+            selectedWords = [];
             ['w1', 'w2', 'w3'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) { el.textContent = ''; el.classList.remove('visible'); }
@@ -1117,7 +1218,7 @@
             if (cursor) cursor.style.display = 'inline-block';
             if (opts) {
                 opts.style.display = 'flex';
-                opts.innerHTML = tokenOptions[0].map(o =>
+                opts.innerHTML = tokenTree.start.map(o =>
                     `<div class="option" onclick="selectToken(this,'${o.word}')">${o.word} <span class="probability">${o.prob}</span></div>`
                 ).join('');
             }
