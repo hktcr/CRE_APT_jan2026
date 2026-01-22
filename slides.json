@@ -35,8 +35,12 @@
             "background": "assets/digital_divide.png",
             "sources": [
                 {
-                    "name": "OECD PISA 2022",
-                    "url": "https://www.oecd.org/pisa/"
+                    "name": "OECD PISA 2022 Results Volume I",
+                    "url": "https://www.oecd.org/en/publications/pisa-2022-results-volume-i_53f23881-en.html"
+                },
+                {
+                    "name": "OECD: Are students ready for a technology-rich world?",
+                    "url": "https://www.oecd.org/pisa/pisaproducts/35991145.pdf"
                 }
             ]
         },
@@ -48,8 +52,8 @@
             "style": "typewriter",
             "sources": [
                 {
-                    "name": "AI-kommissionens Färdplan för AI i Sverige",
-                    "url": "https://www.regeringen.se/rattsliga-dokument/statens-offentliga-utredningar/2024/11/sou-202491/"
+                    "name": "AI-kommissionens Färdplan för Sverige (SOU 2025:12)",
+                    "url": "https://www.regeringen.se/contentassets/93c38c4c08d04c26b4e32c258b1dcb25/ai-kommissionens-fardplan-for-sverige-sou-202512.pdf"
                 }
             ]
         },
@@ -213,12 +217,12 @@
                     "url": "https://www.theguardian.com/"
                 },
                 {
-                    "name": "Reuters: Mass digital undressing spree",
-                    "url": "https://www.reuters.com/"
+                    "name": "The Guardian: California launches Grok investigation (Jan 2026)",
+                    "url": "https://www.theguardian.com/technology/2026/jan/14/california-grok-ai-investigation-deepfakes"
                 },
                 {
-                    "name": "CBC News: Grok blocked in Indonesia",
-                    "url": "https://www.cbc.ca/"
+                    "name": "The Guardian: AI-generated deepfakes of minors",
+                    "url": "https://www.theguardian.com/commentisfree/2026/jan/17/ai-deepfake-children"
                 }
             ]
         },

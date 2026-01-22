@@ -897,6 +897,120 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Large screen optimization for auditorium presentations */
+        @media (min-width: 1200px) {
+            .slide-content {
+                padding: 3rem;
+            }
+
+            /* Bigger titles */
+            .slide-title-type h1 {
+                font-size: clamp(4rem, 8vw, 8rem);
+            }
+
+            .slide-title-type .subtitle {
+                font-size: clamp(1.5rem, 3vw, 2.5rem);
+            }
+
+            /* Bigger stats */
+            .slide-stat .stat-value {
+                font-size: clamp(10rem, 25vw, 20rem);
+            }
+
+            .slide-stat .stat-label {
+                font-size: clamp(1.8rem, 4vw, 3rem);
+                max-width: 1000px;
+            }
+
+            /* Bigger quotes */
+            .slide-quote {
+                max-width: 1200px;
+            }
+
+            .slide-quote .quote-text {
+                font-size: clamp(2rem, 4vw, 3.5rem);
+            }
+
+            .slide-quote .quote-author {
+                font-size: 1.5rem;
+            }
+
+            /* Bigger grid cards */
+            .grid-cards {
+                gap: 2rem;
+            }
+
+            .grid-card {
+                padding: 2.5rem;
+            }
+
+            .grid-card-icon {
+                font-size: 4rem;
+            }
+
+            .grid-card-title {
+                font-size: 1.6rem;
+            }
+
+            .grid-card-desc {
+                font-size: 1.2rem;
+            }
+
+            /* Bigger quad flip cards */
+            .quad-card {
+                min-height: 280px;
+            }
+
+            .quad-icon {
+                font-size: 4rem;
+            }
+
+            .quad-title {
+                font-size: 1.4rem;
+            }
+
+            .quad-back {
+                font-size: 1.3rem;
+            }
+
+            /* Bigger traffic light */
+            .traffic-column h3 {
+                font-size: 1.6rem;
+            }
+
+            .traffic-item {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+
+            /* Bigger prompt demo */
+            .slide-prompt-demo {
+                max-width: 1100px;
+            }
+
+            .prompt-box pre {
+                font-size: 1.3rem;
+            }
+
+            /* Bigger token demo */
+            .slide-token-demo {
+                max-width: 1000px;
+            }
+
+            .demo-box {
+                padding: 3rem;
+            }
+
+            .prompt-area {
+                font-size: 2rem;
+            }
+
+            .option {
+                font-size: 1.4rem;
+                padding: 1.2rem 2rem;
+            }
+        }
     </style>
 </head>
 
