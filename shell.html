@@ -841,6 +841,55 @@
             color: var(--yellow);
         }
 
+        /* Source button */
+        .source-btn {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .source-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--yellow);
+        }
+
+        .sources-modal h3 {
+            color: var(--yellow);
+            margin-bottom: 1rem;
+        }
+
+        .sources-modal .source-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sources-modal .source-item:last-child {
+            border-bottom: none;
+        }
+
+        .sources-modal .source-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .sources-modal .source-url {
+            font-size: 0.85rem;
+            color: var(--yellow);
+            word-break: break-all;
+        }
+
         @media (max-width: 768px) {
 
             .traffic-grid,
@@ -863,6 +912,14 @@
     <div class="modal-overlay" id="incidentModal" onclick="closeIncidentModal(event)">
         <div class="modal" id="incidentModalContent" onclick="event.stopPropagation()"></div>
     </div>
+
+    <div class="modal-overlay" id="sourcesModal" onclick="closeSourcesModal(event)">
+        <div class="modal sources-modal" id="sourcesModalContent" onclick="event.stopPropagation()"></div>
+    </div>
+
+    <button class="source-btn" id="sourceBtn" style="display:none" onclick="showSources()">
+        📚 Källor
+    </button>
 
     <script>
         let slidesData = [];
@@ -956,6 +1013,7 @@
                 case 'prompt-demo': content.innerHTML = renderPromptDemo(slide); break;
                 default: content.innerHTML = `<p>Unknown slide type: ${slide.type}</p>`;
             }
+            updateSourceButton();
         }
 
         // ===== SLIDE RENDERERS =====
@@ -1133,6 +1191,37 @@
 
         function closeIncidentModal(e) {
             document.getElementById('incidentModal').classList.remove('active');
+        }
+
+        function showSources() {
+            const slide = slidesData[currentSlideIndex];
+            if (!slide.sources || slide.sources.length === 0) return;
+
+            const content = document.getElementById('sourcesModalContent');
+            content.innerHTML = `
+                <h3>📚 Källor</h3>
+                ${slide.sources.map(s => `
+                    <div class="source-item">
+                        <div class="source-name">${s.name}</div>
+                        ${s.url ? `<a href="${s.url}" target="_blank" class="source-url">${s.url}</a>` : ''}
+                    </div>
+                `).join('')}
+            `;
+            document.getElementById('sourcesModal').classList.add('active');
+        }
+
+        function closeSourcesModal(e) {
+            document.getElementById('sourcesModal').classList.remove('active');
+        }
+
+        function updateSourceButton() {
+            const slide = slidesData[currentSlideIndex];
+            const btn = document.getElementById('sourceBtn');
+            if (slide.sources && slide.sources.length > 0) {
+                btn.style.display = 'flex';
+            } else {
+                btn.style.display = 'none';
+            }
         }
 
         function renderPromptDemo(s) {

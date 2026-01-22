@@ -32,14 +32,26 @@
             "value": "56%",
             "label": "av svenska 15-åringar har inte använt AI i skolan",
             "source": "OECD PISA 2022",
-            "background": "assets/digital_divide.png"
+            "background": "assets/digital_divide.png",
+            "sources": [
+                {
+                    "name": "OECD PISA 2022",
+                    "url": "https://www.oecd.org/pisa/"
+                }
+            ]
         },
         {
             "id": "ai-commission",
             "type": "quote",
             "text": "Om skolan *inte* introducerar eleverna till AI finns risken att elevernas olika *socioekonomiska* bakgrunder leder till *växande klyftor*.",
             "author": "AI-kommissionens färdplan, 2025",
-            "style": "typewriter"
+            "style": "typewriter",
+            "sources": [
+                {
+                    "name": "AI-kommissionens Färdplan för AI i Sverige",
+                    "url": "https://www.regeringen.se/rattsliga-dokument/statens-offentliga-utredningar/2024/11/sou-202491/"
+                }
+            ]
         },
         {
             "id": "token-demo",
@@ -194,7 +206,21 @@
             "type": "quote",
             "text": "Elon Musks AI-chatbot *Grok* användes för att skapa *avklädda deepfake-bilder* av kvinnor och barn. Indonesien och Malaysia har *blockerat* plattformen. EU utreder. Kalifornien kallar det en 'lavin av barnporr'.",
             "author": "Januari 2026 – The Guardian, Reuters m.fl.",
-            "style": "typewriter"
+            "style": "typewriter",
+            "sources": [
+                {
+                    "name": "The Guardian: California investigation",
+                    "url": "https://www.theguardian.com/"
+                },
+                {
+                    "name": "Reuters: Mass digital undressing spree",
+                    "url": "https://www.reuters.com/"
+                },
+                {
+                    "name": "CBC News: Grok blocked in Indonesia",
+                    "url": "https://www.cbc.ca/"
+                }
+            ]
         },
         {
             "id": "tools",
