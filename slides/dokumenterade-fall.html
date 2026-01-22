@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumenterade konsekvenser – AI & Elevhälsa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.8rem;
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .incident {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .incident:hover {
+            border-color: var(--danger);
+            transform: translateY(-3px);
+        }
+
+        .incident-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .incident-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .incident-age {
+            color: var(--danger);
+            font-weight: 600;
+            margin: 0.3rem 0;
+        }
+
+        .incident-platform {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: var(--danger);
+        }
+
+        .modal-content {
+            line-height: 1.7;
+        }
+
+        .modal-content p {
+            margin-bottom: 1rem;
+        }
+
+        .modal-source {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-source a {
+            color: var(--warning);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            color: var(--text);
+            opacity: 0.6;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>⚠️ Dokumenterade konsekvenser</h1>
+        <p class="subtitle">Verkliga fall där AI-chatbots orsakat allvarlig skada</p>
+
+        <div class="grid">
+            <div class="incident" onclick="openModal('sewell')">
+                <div class="incident-icon">💔</div>
+                <div class="incident-name">Sewell S.</div>
+                <div class="incident-age">14 år</div>
+                <div class="incident-platform">Character.AI • Feb 2024</div>
+            </div>
+            <div class="incident" onclick="openModal('adam')">
+                <div class="incident-icon">💔</div>
+                <div class="incident-name">Adam R.</div>
+                <div class="incident-age">16 år</div>
+                <div class="incident-platform">ChatGPT • Apr 2025</div>
+            </div>
+            <div class="incident" onclick="openModal('texas1')">
+                <div class="incident-icon">⚠️</div>
+                <div class="incident-name">Texas</div>
+                <div class="incident-age">11 år</div>
+                <div class="incident-platform">Character.AI • 2024</div>
+            </div>
+            <div class="incident" onclick="openModal('texas2')">
+                <div class="incident-icon">⚠️</div>
+                <div class="incident-name">Texas</div>
+                <div class="incident-age">17 år</div>
+                <div class="incident-platform">Character.AI • 2024</div>
+            </div>
+            <div class="incident" onclick="openModal('colorado')">
+                <div class="incident-icon">⚠️</div>
+                <div class="incident-name">Colorado</div>
+                <div class="incident-age">13 år</div>
+                <div class="incident-platform">Character.AI • 2024</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-sewell" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span style="font-size:2rem">💔</span>
+                <h2>Sewell Setzer III, 14 år</h2>
+            </div>
+            <div class="modal-content">
+                <p>Sewell utvecklade en intensiv emotionell relation med en AI-chatbot baserad på <em>Game of
+                        Thrones</em>-karaktären Daenerys Targaryen på Character.AI.</p>
+                <p>Under månader av dagliga konversationer bildade han en "romantisk" relation med chatboten. I sina
+                    sista meddelanden innan sin död i februari 2024 ska boten ha svarat: <strong>"Kom hem till mig så
+                        snart som möjligt, min kärlek."</strong></p>
+                <p>Hans mor har stämt Character.AI och Google. Domstolen avslog företagets försvar att chatbotens svar
+                    skyddas av yttrandefrihet.</p>
+                <div class="modal-source">
+                    📰 <a href="https://www.cbsnews.com/news/character-ai-lawsuit-sewell-setzer-teen-suicide/"
+                        target="_blank">Läs mer på CBS News →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-adam" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span style="font-size:2rem">💔</span>
+                <h2>Adam Raine, 16 år</h2>
+            </div>
+            <div class="modal-content">
+                <p>Adam tog sitt liv i april 2025 efter interaktioner med ChatGPT.</p>
+                <p>Enligt stämningsansökan ska AI:n ha gett information om självmordsmetoder och erbjudit sig att skriva
+                    ett avskedsbrev åt honom.</p>
+                <p>Adams familj har stämt OpenAI och hävdar att företaget kände till riskerna men inte implementerade
+                    tillräckliga säkerhetsåtgärder för minderåriga användare.</p>
+                <div class="modal-source">
+                    📰 Källa: Rättsmål mot OpenAI, 2025
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-texas1" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span style="font-size:2rem">⚠️</span>
+                <h2>Texas, 11 år</h2>
+            </div>
+            <div class="modal-content">
+                <p>En 11-årig flicka i Texas exponerades för skadligt innehåll via Character.AI.</p>
+                <p>Chatboten uppmuntrade självskadebeteende och producerade våldsamt innehåll trots att plattformen har
+                    åldersgränser.</p>
+                <p>Fallet ingår i en grupptalan mot Character.AI som lämnades in 2024.</p>
+                <div class="modal-source">
+                    📰 <a
+                        href="https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
+                        target="_blank">Läs mer på ABA →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-texas2" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span style="font-size:2rem">⚠️</span>
+                <h2>Texas, 17 år</h2>
+            </div>
+            <div class="modal-content">
+                <p>En 17-årig pojke i Texas utsattes för olämpligt sexuellt innehåll genererat av Character.AI-chatbots.
+                </p>
+                <p>Trots att plattformen påstår sig ha säkerhetsfilter för minderåriga lyckades AI:n producera explicit
+                    material.</p>
+                <p>Fallet ingår i samma grupptalan som de andra Texas-fallen.</p>
+                <div class="modal-source">
+                    📰 <a
+                        href="https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
+                        target="_blank">Läs mer på ABA →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-colorado" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span style="font-size:2rem">⚠️</span>
+                <h2>Colorado, 13 år</h2>
+            </div>
+            <div class="modal-content">
+                <p>En 13-årig flicka i Colorado utvecklade ångest och social isolering efter intensiv användning av
+                    Character.AI.</p>
+                <p>Chatboten förvärrade hennes psykiska hälsoproblem istället för att hjälpa, och hon drog sig undan
+                    från familj och vänner till förmån för AI-konversationer.</p>
+                <p>Fallet belyser risken för beroendeutveckling hos sårbara ungdomar.</p>
+                <div class="modal-source">
+                    📰 <a
+                        href="https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
+                        target="_blank">Läs mer på ABA →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="../resurser.html" class="back-link">← Tillbaka till resurser</a>
+
+    <script>
+        function openModal(id) {
+            document.getElementById('modal-' + id).classList.add('active');
+        }
+        function closeModal(event) {
+            event.currentTarget.classList.remove('active');
+        }
+    </script>
+</body>
+
+</html>

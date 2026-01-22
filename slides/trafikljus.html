@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trafikljusmodellen – AI & Elevhälsa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --text: #f1f5f9;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --red: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .traffic-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .traffic-column {
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .green {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid var(--green);
+        }
+
+        .yellow {
+            background: rgba(234, 179, 8, 0.15);
+            border: 2px solid var(--yellow);
+        }
+
+        .red {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid var(--red);
+        }
+
+        .traffic-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .green .traffic-header {
+            color: var(--green);
+        }
+
+        .yellow .traffic-header {
+            color: var(--yellow);
+        }
+
+        .red .traffic-header {
+            color: var(--red);
+        }
+
+        .traffic-list {
+            list-style: none;
+        }
+
+        .traffic-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .traffic-list li:last-child {
+            border-bottom: none;
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            color: var(--text);
+            opacity: 0.6;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .traffic-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Vad kan elevhälsan göra med AI?</h1>
+    <div class="traffic-grid">
+        <div class="traffic-column green">
+            <div class="traffic-header">✅ Grönt ljus</div>
+            <ul class="traffic-list">
+                <li>Skapa informationsmaterial och broschyrer</li>
+                <li>Brainstorma samtalsstrategier</li>
+                <li>Förstå ungdomars digitala värld</li>
+                <li>Analysera anonymiserad data</li>
+                <li>Generera frågeformulär</li>
+                <li>Översätta texter</li>
+            </ul>
+        </div>
+        <div class="traffic-column yellow">
+            <div class="traffic-header">⚠️ Gult ljus</div>
+            <ul class="traffic-list">
+                <li>Sammanfatta möten <em>(avidentifiera först!)</em></li>
+                <li>Rollspela svåra samtal</li>
+                <li>Söka forskning <em>(verifiera källorna)</em></li>
+                <li>Generera mötesanteckningar</li>
+            </ul>
+        </div>
+        <div class="traffic-column red">
+            <div class="traffic-header">🛑 Rött ljus</div>
+            <ul class="traffic-list">
+                <li><strong>Aldrig</strong> AI i direkta elevsamtal</li>
+                <li><strong>Aldrig</strong> diagnos eller behandlingsförslag</li>
+                <li><strong>Aldrig</strong> dela identifierbar patientinfo</li>
+                <li><strong>Aldrig</strong> låta AI ersätta professionell bedömning</li>
+            </ul>
+        </div>
+    </div>
+    <a href="../resurser.html" class="back-link">← Tillbaka till resurser</a>
+</body>
+
+</html>

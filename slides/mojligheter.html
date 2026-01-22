@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hur kan AI hjälpa er? – AI & Elevhälsa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --accent: #f97316;
+            --accent2: #a855f7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            background-image: url('../assets/ai_possibilities.png');
+            background-size: cover;
+            background-position: center;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            color: var(--text);
+            opacity: 0.6;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <h1>Hur kan AI hjälpa elevhälsan?</h1>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">📋</div>
+                <div class="card-title">Dokumentation</div>
+                <div class="card-desc">Sammanfatta möten, generera anteckningar, strukturera journaler</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌍</div>
+                <div class="card-title">Översättning</div>
+                <div class="card-desc">Kommunicera med flerspråkiga familjer och elever</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">💬</div>
+                <div class="card-title">Samtalsförberedelse</div>
+                <div class="card-desc">Rollspela svåra samtal, brainstorma frågor</div>
+            </div>
+            <div class="card">
+                <div class="card-icon">📚</div>
+                <div class="card-title">Kunskapsinhämtning</div>
+                <div class="card-desc">"Vad säger forskningen om..."</div>
+            </div>
+        </div>
+    </div>
+    <a href="../resurser.html" class="back-link">← Tillbaka till resurser</a>
+</body>
+
+</html>

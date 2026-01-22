@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-kommissionen – AI & Elevhälsa</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --text: #00ff88;
+            --accent: #ff6b35;
+            --glow: rgba(0, 255, 136, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* CRT scanlines */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg,
+                    rgba(0, 0, 0, 0.15) 0px,
+                    rgba(0, 0, 0, 0.15) 1px,
+                    transparent 1px,
+                    transparent 2px);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .quote-container {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+            line-height: 1.6;
+            text-shadow: 0 0 20px var(--glow);
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .quote-author {
+            margin-top: 2.5rem;
+            font-size: 1rem;
+            opacity: 0.6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background: var(--text);
+            margin-left: 0.2em;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            color: var(--text);
+            opacity: 0.5;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quote-container">
+        <div class="quote-text">
+            "Om skolan <span class="highlight">inte</span> introducerar eleverna till AI finns risken att elevernas
+            olika <span class="highlight">socioekonomiska</span> bakgrunder leder till <span class="highlight">växande
+                klyftor</span>."<span class="cursor"></span>
+        </div>
+        <div class="quote-author">— AI-kommissionens färdplan, 2025</div>
+    </div>
+    <a href="../resurser.html" class="back-link">← Tillbaka till resurser</a>
+</body>
+
+</html>

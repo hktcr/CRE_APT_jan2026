@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Så funkar GPT – AI & Elevhälsa</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --accent: #f97316;
+            --accent2: #a855f7;
+            --green: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .demo-container {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .prompt-area {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .fixed-text {
+            color: var(--text);
+        }
+
+        .predicted {
+            color: var(--green);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .predicted.visible {
+            opacity: 1;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background: var(--accent);
+            margin-left: 0.1em;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .options {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            background: rgba(249, 115, 22, 0.15);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .option:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .option.selected {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--bg);
+        }
+
+        .probability {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-left: 0.5rem;
+        }
+
+        .explanation {
+            background: rgba(168, 85, 247, 0.1);
+            border-left: 4px solid var(--accent2);
+            padding: 1rem 1.2rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .reset-btn {
+            margin-top: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            color: var(--text);
+            opacity: 0.6;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Så funkar GPT</h1>
+    <p class="subtitle">AI gissar nästa ord baserat på mönster</p>
+
+    <div class="demo-container">
+        <div class="prompt-area">
+            <span class="fixed-text">"Jag älskar att äta</span>
+            <span class="predicted" id="word1"></span>
+            <span class="predicted" id="word2"></span>
+            <span class="predicted" id="word3"></span>
+            <span class="cursor" id="cursor"></span>
+            <span class="fixed-text">"</span>
+        </div>
+
+        <div class="options" id="options">
+            <div class="option" onclick="selectWord(this, 'pizza', 1)">pizza <span class="probability">34%</span></div>
+            <div class="option" onclick="selectWord(this, 'glass', 2)">glass <span class="probability">28%</span></div>
+            <div class="option" onclick="selectWord(this, 'mat', 3)">mat <span class="probability">19%</span></div>
+            <div class="option" onclick="selectWord(this, 'kärlek', 4)">kärlek <span class="probability">8%</span></div>
+        </div>
+
+        <div class="explanation" id="explanation">
+            <strong>👆 Klicka på ett ord!</strong><br>
+            AI:n ser "Jag älskar att äta" och beräknar sannolikheten för varje möjligt nästa ord baserat på miljontals
+            texter den tränats på.
+        </div>
+
+        <button class="reset-btn" onclick="reset()">↻ Börja om</button>
+    </div>
+
+    <a href="../resurser.html" class="back-link">← Tillbaka till resurser</a>
+
+    <script>
+        let step = 0;
+        const words = ['word1', 'word2', 'word3'];
+        const nextOptions = [
+            [
+                { word: 'varje', prob: '41%' },
+                { word: 'med', prob: '22%' },
+                { word: 'på', prob: '18%' },
+                { word: 'tillsammans', prob: '12%' }
+            ],
+            [
+                { word: 'dag', prob: '52%' },
+                { word: 'kväll', prob: '24%' },
+                { word: 'morgon', prob: '15%' },
+                { word: 'gång', prob: '9%' }
+            ]
+        ];
+
+        function selectWord(el, word, rank) {
+            if (step >= 3) return;
+
+            document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+
+            const span = document.getElementById(words[step]);
+            span.textContent = ' ' + word;
+            span.classList.add('visible');
+
+            step++;
+
+            if (step < 3) {
+                setTimeout(() => {
+                    updateOptions(nextOptions[step - 1]);
+                    document.getElementById('explanation').innerHTML =
+                        '<strong>Bra!</strong> Nu ser AI:n mer kontext och gissar igen. Varje ord påverkar nästa gissning.';
+                }, 500);
+            } else {
+                document.getElementById('options').style.display = 'none';
+                document.getElementById('cursor').style.display = 'none';
+                document.getElementById('explanation').innerHTML =
+                    '<strong>✨ Klart!</strong><br><br>Så fungerar GPT: den <em>gissar nästa ord</em> baserat på statistiska mönster. Den har ingen förståelse, inga känslor, inga minnen — bara mönster.';
+            }
+        }
+
+        function updateOptions(opts) {
+            const container = document.getElementById('options');
+            container.innerHTML = opts.map((o, i) =>
+                `<div class="option" onclick="selectWord(this, '${o.word}', ${i + 1})">${o.word} <span class="probability">${o.prob}</span></div>`
+            ).join('');
+        }
+
+        function reset() {
+            step = 0;
+            words.forEach(id => {
+                const el = document.getElementById(id);
+                el.textContent = '';
+                el.classList.remove('visible');
+            });
+            document.getElementById('cursor').style.display = 'inline-block';
+            document.getElementById('options').style.display = 'flex';
+            document.getElementById('options').innerHTML = `
+                <div class="option" onclick="selectWord(this, 'pizza', 1)">pizza <span class="probability">34%</span></div>
+                <div class="option" onclick="selectWord(this, 'glass', 2)">glass <span class="probability">28%</span></div>
+                <div class="option" onclick="selectWord(this, 'mat', 3)">mat <span class="probability">19%</span></div>
+                <div class="option" onclick="selectWord(this, 'kärlek', 4)">kärlek <span class="probability">8%</span></div>
+            `;
+            document.getElementById('explanation').innerHTML =
+                '<strong>👆 Klicka på ett ord!</strong><br>AI:n ser "Jag älskar att äta" och beräknar sannolikheten för varje möjligt nästa ord baserat på miljontals texter den tränats på.';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4 Riskområden – AI & Elevhälsa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+            margin-bottom: 2rem;
+            color: var(--danger);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 900px;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--warning);
+            transform: scale(1.02);
+        }
+
+        .card-front {
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .card-back {
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card.flipped .card-front {
+            display: none;
+        }
+
+        .card.flipped .card-back {
+            display: block;
+        }
+
+        .hint {
+            margin-top: 2rem;
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            color: var(--text);
+            opacity: 0.6;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>⚠️ 4 Riskområden</h1>
+    <div class="grid">
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-icon">📱</div>
+                <div class="card-title">Tillgänglighet</div>
+            </div>
+            <div class="card-back">
+                <strong>24/7 tillgång utan gränser</strong><br><br>
+                AI är alltid tillgänglig, även mitt i natten. Barn kan fastna i samtal istället för att sova eller söka
+                mänsklig hjälp.
+            </div>
+        </div>
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-icon">💔</div>
+                <div class="card-title">Parasocialt</div>
+            </div>
+            <div class="card-back">
+                <strong>Ensidig emotionell relation</strong><br><br>
+                Barn utvecklar känslomässiga band till AI som "förstår dem bättre" än föräldrar — utan att AI har några
+                känslor alls.
+            </div>
+        </div>
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-icon">🔐</div>
+                <div class="card-title">Integritet</div>
+            </div>
+            <div class="card-back">
+                <strong>Data läcker till företag</strong><br><br>
+                Personliga hemligheter delas med AI-företag. Ingen tystnadsplikt. Data kan användas för träning.
+            </div>
+        </div>
+        <div class="card" onclick="this.classList.toggle('flipped')">
+            <div class="card-front">
+                <div class="card-icon">🎭</div>
+                <div class="card-title">Normalisering</div>
+            </div>
+            <div class="card-back">
+                <strong>AI ersätter mänsklig kontakt</strong><br><br>
+                Risk att söka AI-stöd blir "normalt" — och att professionell hjälp känns onödigt eller skrämmande.
+            </div>
+        </div>
+    </div>
+    <p class="hint">Klicka på ett kort för att se mer</p>
+    <a href="../resurser.html" class="back-link">← Tillbaka till resurser</a>
+</body>
+
+</html>
