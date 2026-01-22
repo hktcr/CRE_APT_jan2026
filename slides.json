@@ -181,6 +181,22 @@
             ]
         },
         {
+            "id": "vep-prompt",
+            "type": "prompt-demo",
+            "title": "Prompt: Virtuell Expertpanel",
+            "subtitle": "En kraftfull teknik för att få nyanserade AI-svar",
+            "prompt": "Tillsätt en virtuell expertpanel med relevanta experter som säkerställer att alla perspektiv på [ÄMNE] belyses. Varje expert ska presentera sin syn, sedan ska panelen diskutera och identifiera områden där de är eniga respektive oense. Avsluta med en syntes.",
+            "example_topic": "hur vi kan stötta en elev som pratar med AI istället för vänner",
+            "why": "VEP-tekniken tvingar AI att ge mer nyanserade svar istället för ett generiskt perspektiv. Perfekt för komplexa elevhälsofrågor."
+        },
+        {
+            "id": "grok-incident",
+            "type": "quote",
+            "text": "Elon Musks AI-chatbot *Grok* användes för att skapa *avklädda deepfake-bilder* av kvinnor och barn. Indonesien och Malaysia har *blockerat* plattformen. EU utreder. Kalifornien kallar det en 'lavin av barnporr'.",
+            "author": "Januari 2026 – The Guardian, Reuters m.fl.",
+            "style": "typewriter"
+        },
+        {
             "id": "tools",
             "type": "tool-links",
             "title": "Verktyg för workshopen",
