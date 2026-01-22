@@ -150,30 +150,7 @@
         }
 
         .nav-btn {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            font-size: 1.3rem;
-            cursor: pointer;
-            z-index: 101;
-        }
-
-        .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .nav-prev {
-            left: 1rem;
-        }
-
-        .nav-next {
-            right: 1rem;
+            display: none;
         }
 
         .slide-id-display {
@@ -781,8 +758,6 @@
 
     <div class="slide-view" id="slideView">
         <button class="close-btn" onclick="closeSlide()">✕</button>
-        <button class="nav-btn nav-prev" onclick="prevSlide()">←</button>
-        <button class="nav-btn nav-next" onclick="nextSlide()">→</button>
         <div class="slide-content" id="slideContent"></div>
         <div class="slide-id-display" id="slideIdDisplay"></div>
     </div>
@@ -913,11 +888,69 @@
 
         function renderQuote(s) {
             const isTypewriter = s.style === 'typewriter';
-            const text = s.text.replace(/\*([^*]+)\*/g, '<span class="highlight">$1</span>');
-            return `<div class="slide-quote ${isTypewriter ? 'typewriter' : ''}">
-                <div class="quote-text">"${text}"${isTypewriter ? '<span class="cursor"></span>' : ''}</div>
-                ${s.author ? `<div class="quote-author">— ${s.author}</div>` : ''}
-            </div>`;
+            const rawText = s.text;
+            if (isTypewriter) {
+                // Return container, will animate after render
+                setTimeout(() => typewriterAnimate(rawText, s.author), 100);
+                return `<div class="slide-quote typewriter">
+                    <div class="quote-text" id="typewriterText"></div>
+                    <div class="quote-author" id="typewriterAuthor" style="opacity:0"></div>
+                </div>`;
+            } else {
+                const text = rawText.replace(/\*([^*]+)\*/g, '<span class="highlight">$1</span>');
+                return `<div class="slide-quote">
+                    <div class="quote-text">"${text}"</div>
+                    ${s.author ? `<div class="quote-author">— ${s.author}</div>` : ''}
+                </div>`;
+            }
+        }
+
+        function typewriterAnimate(rawText, author) {
+            const container = document.getElementById('typewriterText');
+            const authorEl = document.getElementById('typewriterAuthor');
+            if (!container) return;
+
+            // Process text to handle *highlights*
+            let chars = [];
+            let inHighlight = false;
+            let i = 0;
+            while (i < rawText.length) {
+                if (rawText[i] === '*') {
+                    inHighlight = !inHighlight;
+                    i++;
+                } else {
+                    chars.push({ char: rawText[i], highlight: inHighlight });
+                    i++;
+                }
+            }
+
+            container.innerHTML = '"';
+            let charIndex = 0;
+
+            function typeNext() {
+                if (charIndex < chars.length) {
+                    const c = chars[charIndex];
+                    if (c.highlight) {
+                        container.innerHTML = container.innerHTML.replace(/<span class="cursor"><\/span>$/, '');
+                        container.innerHTML += `<span class="highlight">${c.char}</span><span class="cursor"></span>`;
+                    } else {
+                        container.innerHTML = container.innerHTML.replace(/<span class="cursor"><\/span>$/, '');
+                        container.innerHTML += c.char + '<span class="cursor"></span>';
+                    }
+                    charIndex++;
+                    setTimeout(typeNext, 30 + Math.random() * 40);
+                } else {
+                    container.innerHTML = container.innerHTML.replace(/<span class="cursor"><\/span>$/, '');
+                    container.innerHTML += '"<span class="cursor"></span>';
+                    if (author && authorEl) {
+                        authorEl.textContent = '— ' + author;
+                        authorEl.style.opacity = '0.6';
+                    }
+                }
+            }
+
+            container.innerHTML = '"<span class="cursor"></span>';
+            setTimeout(typeNext, 500);
         }
 
         function renderGrid(s) {
@@ -1068,11 +1101,9 @@
             renderCurrentSlide();
         }
 
-        // Keyboard navigation
+        // Keyboard navigation - only Escape to close
         document.addEventListener('keydown', (e) => {
             if (!document.getElementById('slideView').classList.contains('active')) return;
-            if (e.key === 'ArrowLeft') prevSlide();
-            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
             if (e.key === 'Escape') closeSlide();
         });
 
