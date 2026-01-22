@@ -253,6 +253,67 @@
             ]
         },
         {
+            "id": "samtalsnycklar",
+            "type": "grid",
+            "title": "Samtalsnycklar: Fråga om AI-användning",
+            "cards": [
+                {
+                    "icon": "💬",
+                    "title": "Vem pratar du med?",
+                    "desc": "\"När du mår dåligt – vem pratar du med?\" (inkludera AI/chattbotar)"
+                },
+                {
+                    "icon": "📱",
+                    "title": "Förstår telefonen?",
+                    "desc": "\"Känner du att din telefon förstår dig bättre än dina vänner?\""
+                },
+                {
+                    "icon": "🌙",
+                    "title": "Kvällsrutiner",
+                    "desc": "\"Vad gör du när du inte kan sova? Finns det någon app du pratar med?\""
+                },
+                {
+                    "icon": "🤖",
+                    "title": "AI-kompisar",
+                    "desc": "\"Har du testat att prata med AI? Hur kändes det?\""
+                }
+            ]
+        },
+        {
+            "id": "aldrig-i-prompten",
+            "type": "quad-flip",
+            "title": "Aldrig i prompten (GDPR)",
+            "cards": [
+                {
+                    "icon": "🚫",
+                    "title": "Elevnamn",
+                    "back": "Aldrig namn, personnummer eller födelsedatum"
+                },
+                {
+                    "icon": "🏫",
+                    "title": "Skolidentitet",
+                    "back": "Inte 'pojke i 5A på Centralskolan' – bakvägsidentifiering!"
+                },
+                {
+                    "icon": "📋",
+                    "title": "Journaltext",
+                    "back": "Ladda aldrig upp riktiga utredningar i publik molntjänst"
+                },
+                {
+                    "icon": "✅",
+                    "title": "Syntetiska fall",
+                    "back": "Använd AI för att SKAPA fiktiva fall att diskutera"
+                }
+            ]
+        },
+        {
+            "id": "human-in-the-loop",
+            "type": "quote",
+            "text": "*Human in the loop*: Ingen text genererad av AI får skickas till elever eller föräldrar utan att en *människa noggrant granskat* och redigerat. Du är alltid *ansvarig* för texten – oavsett vem som skrev utkastet.",
+            "author": "Grundprincipen för AI-användning",
+            "style": "typewriter"
+        },
+        {
             "id": "traffic-light",
             "type": "traffic-light",
             "title": "Vad kan elevhälsan göra med AI?",
