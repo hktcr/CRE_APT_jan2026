@@ -206,28 +206,28 @@
         },
         {
             "id": "possibilities",
-            "type": "grid",
+            "type": "quad-flip",
             "title": "Hur kan AI hjälpa elevhälsan?",
             "cards": [
                 {
                     "icon": "📋",
-                    "title": "Dokumentation",
-                    "desc": "Sammanfatta möten, generera anteckningar"
+                    "front": "Dokumentation",
+                    "back": "✅ Sammanfatta möten och generera anteckningar. ⚠️ Risk: Avidentifiera alltid innan du skickar text till AI."
                 },
                 {
                     "icon": "🌍",
-                    "title": "Översättning",
-                    "desc": "Kommunicera med flerspråkiga familjer"
+                    "front": "Översättning",
+                    "back": "✅ Kommunicera med flerspråkiga familjer i realtid. ⚠️ Risk: Kontrollera alltid känslig terminologi med tolk."
                 },
                 {
                     "icon": "💬",
-                    "title": "Samtalsförberedelse",
-                    "desc": "Rollspela svåra samtal, brainstorma frågor"
+                    "front": "Samtalsförberedelse",
+                    "back": "✅ Rollspela svåra samtal, brainstorma frågor. ⚠️ Risk: Använd fiktiva fall, inte verkliga elever."
                 },
                 {
                     "icon": "📚",
-                    "title": "Kunskapsinhämtning",
-                    "desc": "Vad säger forskningen om..."
+                    "front": "Kunskapsinhämtning",
+                    "back": "✅ Snabbt få översikt: 'Vad säger forskningen om...' ⚠️ Risk: Verifiera alltid källor – AI kan hallucinera."
                 }
             ]
         },
