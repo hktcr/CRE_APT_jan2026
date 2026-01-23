@@ -1289,14 +1289,29 @@
                 const bgStyle = slide.background
                     ? `background-image: linear-gradient(rgba(10, 10, 30, 0.5), rgba(10, 10, 30, 0.7)), url('${slide.background}'); background-size: cover; background-position: center;`
                     : '';
+                const cardTitle = getCardTitle(slide);
                 return `
                 <div class="slide-card" onclick="openSlide(${index})" style="${bgStyle}">
                     <span class="card-type">${slide.type}</span>
                     <span class="card-icon">${slide.background ? '' : getTypeIcon(slide.type)}</span>
-                    <span class="card-title">${slide.title || slide.name || slide.value || 'Slide'}</span>
+                    <span class="card-title">${cardTitle}</span>
                     <span class="card-id">${slide.id}</span>
                 </div>
             `}).join('');
+        }
+
+        function getCardTitle(slide) {
+            // Prioritera title, sedan author för quotes, sedan andra fält
+            if (slide.title) return slide.title;
+            if (slide.type === 'quote' && slide.author) return slide.author;
+            if (slide.name) return slide.name;
+            if (slide.value) return slide.value;
+            if (slide.type === 'quote' && slide.text) {
+                // Extrahera första 30 tecken av texten
+                const cleanText = slide.text.replace(/\*/g, '').substring(0, 35);
+                return cleanText + '...';
+            }
+            return 'Slide';
         }
 
         function getTypeIcon(type) {
@@ -1311,7 +1326,9 @@
                 'incidents': '⚠️',
                 'tool-links': '🔧',
                 'token-demo': '🧠',
-                'step-slide': '📖'
+                'step-slide': '📖',
+                'prompt-demo': '✨',
+                'video-link': '🎬'
             };
             return icons[type] || '📄';
         }
