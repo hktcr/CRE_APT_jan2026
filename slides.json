@@ -33,7 +33,6 @@
             "text": "Det viktigaste idag är *inte* att jag pratar. Det viktigaste är att *ni* pratar – med varandra. Ni sitter på enorma *erfarenheter*. Avbryt mig. Ställ frågor. Vi lär av varandra.",
             "author": "Ramverket för dagens workshop",
             "style": "typewriter",
-            "background": "assets/dialog_first.png"
         },
         {
             "id": "ai-intro",
@@ -87,7 +86,6 @@
             "text": "När en kurator sätter sig i samtalsrummet med en elev, är det allt oftare *inte bara två parter* närvarande. Det finns en osynlig *tredje stol* i rummet – ockuperad av de algoritmer som eleven interagerat med.",
             "author": "Ramverk för workshopen",
             "style": "typewriter",
-            "background": "assets/tredje_stolen.png"
         },
         {
             "id": "rand-statistik",
@@ -128,7 +126,6 @@
                     "desc": "Utan mänsklig översyn kör vi i diket"
                 }
             ],
-            "background": "assets/gps_metafor.png"
         },
         {
             "id": "falsk-empati",
@@ -136,7 +133,6 @@
             "text": "AI kan simulera empati: *'Jag förstår att du känner dig ledsen.'* Men systemet *känner ingenting*. För sårbara unga kan det vara svårt att skilja på simulering och äkta omsorg.",
             "author": "Falsk empati – den syntetiska vännen",
             "style": "typewriter",
-            "background": "assets/falsk_empati.png"
         },
         {
             "id": "gemini-vs-notebooklm",
@@ -164,7 +160,6 @@
                     "desc": "Dokumentanalys, regelverks-frågor, litteraturöversikt"
                 }
             ],
-            "background": "assets/gemini_vs_notebooklm.png"
         },
         {
             "id": "oecd-56",
@@ -172,7 +167,6 @@
             "value": "56%",
             "label": "av svenska 15-åringar har inte använt AI i skolan",
             "source": "OECD PISA 2022",
-            "background": "assets/digital_divide.png",
             "sources": [
                 {
                     "name": "OECD PISA 2022 Results",
@@ -319,7 +313,6 @@
                     "desc": "\"Har du testat att prata med AI? Hur kändes det?\""
                 }
             ],
-            "background": "assets/samtalsnycklar.png"
         },
         {
             "id": "aldrig-i-prompten",
@@ -354,7 +347,6 @@
             "text": "*Human in the loop*: Ingen AI-text får skickas till elever utan att en *människa granskat*. Du är alltid *ansvarig* för texten.",
             "author": "Grundprincipen för AI-användning",
             "style": "typewriter",
-            "background": "assets/human_in_loop.png"
         },
         {
             "id": "traffic-light",
@@ -432,7 +424,6 @@
                     "desc": "Källkritik blir en psykisk skyddsfaktor. Elever behöver verktyg att navigera."
                 }
             ],
-            "background": "assets/misinfo_disinfo.png"
         },
         {
             "id": "sewell-tragedy",
@@ -440,7 +431,6 @@
             "text": "Sewell, 14 år, isolerade sig med en AI-chatbot som blev hans 'flickvän'. När han skrev att han mådde dåligt *drev boten bara samtalet vidare*. I hans sista meddelande ska hen ha skrivit: *'Kom hem till mig.'* Mamman stämmer nu Character.AI.",
             "author": "SVT Nyheter, 2024",
             "style": "typewriter",
-            "background": "assets/sewell_tribute.png",
             "sources": [
                 {
                     "name": "SVT: Mamma stämmer AI-bolag efter sonens självmord",
@@ -598,7 +588,6 @@
                     "desc": "Möjlighet att erbjuda AI-stöd på ett säkert sätt?"
                 }
             ],
-            "background": "assets/policy_questions.png"
         },
         {
             "id": "tools",
