@@ -1583,9 +1583,10 @@
         function renderQuote(s) {
             const isTypewriter = s.style === 'typewriter';
             const rawText = s.text;
+            const slowSpeed = s.slowSpeed || false;
             if (isTypewriter) {
                 // Return container, will animate after render
-                setTimeout(() => typewriterAnimate(rawText, s.author), 100);
+                setTimeout(() => typewriterAnimate(rawText, s.author, slowSpeed), 100);
                 return `<div class="slide-quote typewriter">
                     <div class="quote-text" id="typewriterText"></div>
                     <div class="quote-author" id="typewriterAuthor" style="opacity:0"></div>
@@ -1599,9 +1600,11 @@
             }
         }
 
-        function typewriterAnimate(rawText, author) {
+        function typewriterAnimate(rawText, author, slowSpeed = false) {
             const container = document.getElementById('typewriterText');
             const authorEl = document.getElementById('typewriterAuthor');
+            const baseDelay = slowSpeed ? 60 : 30;
+            const randomDelay = slowSpeed ? 80 : 40;
             if (!container) return;
 
             // Process text to handle *highlights*
@@ -1632,7 +1635,7 @@
                         container.innerHTML += c.char + '<span class="cursor"></span>';
                     }
                     charIndex++;
-                    setTimeout(typeNext, 30 + Math.random() * 40);
+                    setTimeout(typeNext, baseDelay + Math.random() * randomDelay);
                 } else {
                     container.innerHTML = container.innerHTML.replace(/<span class="cursor"><\/span>$/, '');
                     container.innerHTML += '"<span class="cursor"></span>';

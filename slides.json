@@ -428,9 +428,10 @@
         {
             "id": "sewell-tragedy",
             "type": "quote",
-            "text": "Sewell, 14 år, isolerade sig med en AI-chatbot som blev hans 'flickvän'. När han skrev att han mådde dåligt *drev boten bara samtalet vidare*. I hans sista meddelande ska hen ha skrivit: *'Kom hem till mig.'* Mamman stämmer nu Character.AI.",
+            "text": "Sewell, 14 år, isolerade sig med en AI-chatbot som blev hans 'flickvän'. När han skrev att han mådde dåligt *drev boten bara samtalet vidare*. I hans sista meddelande ska hen ha skrivit: *'Kom hem till mig.'*",
             "author": "SVT Nyheter, 2024",
             "style": "typewriter",
+            "slowSpeed": true,
             "sources": [
                 {
                     "name": "SVT: Mamma stämmer AI-bolag efter sonens självmord",
@@ -487,33 +488,16 @@
         },
         {
             "id": "hinton-varning",
-            "type": "grid",
-            "title": "Geoffrey Hinton: 'AI:s gudfader' varnar",
-            "cards": [
-                {
-                    "icon": "🏆",
-                    "title": "Vem är Hinton?",
-                    "desc": "Nobelpristagare 2024. Utvecklade neurala nätverk. Lämnade Google för att varna."
-                },
-                {
-                    "icon": "⚠️",
-                    "title": "Varningen",
-                    "desc": "'Internet kommer översvämmas av falska foton, videor och texter.'"
-                },
-                {
-                    "icon": "🤷",
-                    "title": "Konsekvensen",
-                    "desc": "'Den genomsnittliga personen kommer inte längre kunna veta vad som är sant.'"
-                },
-                {
-                    "icon": "🔮",
-                    "title": "Framtiden",
-                    "desc": "'Jag önskar att jag hade ett bra svar på hur vi ska hantera detta.'"
-                }
-            ],
+            "type": "presenter",
+            "name": "Geoffrey Hinton",
+            "title": "Nobelpristagare AI 2024",
+            "org": "F.d. Google, University of Toronto",
+            "bio": "'Internet kommer översvämmas av falska foton, videor och texter. Den genomsnittliga personen kommer inte längre kunna veta vad som är sant.'",
+            "contact": "Lämnade Google 2023 för att varna för AI-risker",
+            "avatar": "assets/hinton_portrait.png",
             "sources": [
                 {
-                    "name": "NYT: The Godfather of A.I. Leaves Google and Warns of Danger Ahead",
+                    "name": "NYT: The Godfather of A.I. Leaves Google",
                     "url": "https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html"
                 }
             ]
