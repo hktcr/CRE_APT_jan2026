@@ -27,6 +27,14 @@
             "contact": "hakan.karlsson@astorp.se"
         },
         {
+            "id": "dialog-first",
+            "type": "quote",
+            "text": "Det viktigaste idag är *inte* att jag pratar. Det viktigaste är att *ni* pratar – med varandra. Ni sitter på enorma *erfarenheter* från elevsamtal. Jag vill höra era *frågor*, era *funderingar* och era *berättelser*. Avbryt mig. Ställ frågor. Vi lär av varandra.",
+            "author": "Ramverket för dagens workshop",
+            "style": "typewriter",
+            "background": "assets/dialog_first.png"
+        },
+        {
             "id": "ai-intro",
             "type": "step-slide",
             "title": "AI är inget nytt!",
@@ -487,6 +495,145 @@
             "url": "https://www.youtube.com/shorts/myqbxs2n1eE",
             "description": "En kort video som visar hur lätt det är att skapa övertygande deepfakes. Viktigt att visa elever och föräldrar.",
             "icon": "🎬"
+        },
+        {
+            "id": "temperatur",
+            "type": "grid",
+            "title": "Temperatur: Slump vs. Förutsägbarhet",
+            "cards": [
+                {
+                    "icon": "🎲",
+                    "title": "Hög temperatur",
+                    "desc": "Mer slump, mer kreativt, mer oförutsägbart. Bra för brainstorming."
+                },
+                {
+                    "icon": "🎯",
+                    "title": "Låg temperatur",
+                    "desc": "Mer förutsägbart, väljer oftast det vanligaste ordet. Bra för fakta."
+                },
+                {
+                    "icon": "📊",
+                    "title": "Sannolikhetsfördelning",
+                    "desc": "Vid 'Jag kan inte lita på...' är 'honom' 60%, 'någon' 15%, 'dem' 8%..."
+                },
+                {
+                    "icon": "⚙️",
+                    "title": "I praktiken",
+                    "desc": "De flesta AI-verktyg sköter detta automatiskt baserat på uppgiftstyp."
+                }
+            ]
+        },
+        {
+            "id": "ai-detektion",
+            "type": "quote",
+            "text": "Det finns *inga* system som säkert kan bedöma om en text är skapad av *AI*. Alla verktyg som påstår sig kunna detta har *hög felmarginal* – och kan orättvist straffa elever som skriver på ett sätt detektorn tolkar som 'AI-liknande'.",
+            "author": "Teknisk verklighet 2026",
+            "style": "typewriter"
+        },
+        {
+            "id": "hinton-varning",
+            "type": "grid",
+            "title": "Geoffrey Hinton: 'AI:s gudfader' varnar",
+            "cards": [
+                {
+                    "icon": "🏆",
+                    "title": "Vem är Hinton?",
+                    "desc": "Nobelpristagare 2024. Utvecklade neurala nätverk. Lämnade Google för att varna."
+                },
+                {
+                    "icon": "⚠️",
+                    "title": "Varningen",
+                    "desc": "'Internet kommer översvämmas av falska foton, videor och texter.'"
+                },
+                {
+                    "icon": "🤷",
+                    "title": "Konsekvensen",
+                    "desc": "'Den genomsnittliga personen kommer inte längre kunna veta vad som är sant.'"
+                },
+                {
+                    "icon": "🔮",
+                    "title": "Framtiden",
+                    "desc": "'Jag önskar att jag hade ett bra svar på hur vi ska hantera detta.'"
+                }
+            ],
+            "sources": [
+                {
+                    "name": "NYT: The Godfather of A.I. Leaves Google and Warns of Danger Ahead",
+                    "url": "https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html"
+                }
+            ]
+        },
+        {
+            "id": "eu-ai-act",
+            "type": "step-slide",
+            "title": "EU AI Act: Förbjudna AI-system",
+            "steps": [
+                {
+                    "type": "headline",
+                    "title": "EU AI Act",
+                    "subtitle": "Första reglerna gäller från 2 februari 2025"
+                },
+                {
+                    "type": "list",
+                    "items": [
+                        {
+                            "title": "Social poängsättning",
+                            "desc": "Förbjudet att klassificera medborgare baserat på beteende"
+                        },
+                        {
+                            "title": "Känsloanalys i skolor",
+                            "desc": "Förbjudet att använda AI för att analysera elevers känslor"
+                        },
+                        {
+                            "title": "Biometrisk kategorisering",
+                            "desc": "Förbjudet att klassificera efter ras, religion, sexualitet"
+                        },
+                        {
+                            "title": "Brottsriskbedömning",
+                            "desc": "Förbjudet att bedöma brottsrisk baserat på personlighetsdrag"
+                        },
+                        {
+                            "title": "Subliminal manipulation",
+                            "desc": "Förbjudet att utnyttja sårbarheter hos barn, äldre eller funktionsnedsatta"
+                        }
+                    ],
+                    "footer": "Övriga bestämmelser gäller från 2 augusti 2026"
+                }
+            ],
+            "sources": [
+                {
+                    "name": "EU: AI Act First Rules Applicable",
+                    "url": "https://digital-strategy.ec.europa.eu/en/policies/ai-act"
+                }
+            ]
+        },
+        {
+            "id": "policy-reflektion",
+            "type": "grid",
+            "title": "Har vi...?",
+            "cards": [
+                {
+                    "icon": "📋",
+                    "title": "Policyer?",
+                    "desc": "Tydliga riktlinjer för AI-användning i elevhälsoarbete?"
+                },
+                {
+                    "icon": "🚨",
+                    "title": "Krisberedskap?",
+                    "desc": "Rutiner när elever hänvisar till AI-samtal?"
+                },
+                {
+                    "icon": "📚",
+                    "title": "Kompetensutveckling?",
+                    "desc": "Plan för att hålla oss uppdaterade?"
+                },
+                {
+                    "icon": "🤝",
+                    "title": "Tillgång till tjänster?",
+                    "desc": "Möjlighet att erbjuda AI-stöd på ett säkert sätt?"
+                }
+            ],
+            "background": "assets/policy_questions.png"
         },
         {
             "id": "tools",
