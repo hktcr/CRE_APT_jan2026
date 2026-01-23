@@ -507,6 +507,91 @@
             font-size: 1.1rem;
         }
 
+        /* ===== SLIDE TYPE: MODAL-CARDS ===== */
+        .slide-modal-cards {
+            text-align: center;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .slide-modal-cards h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .modal-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .modal-card:hover {
+            border-color: var(--accent);
+            background: var(--card-bg-hover);
+            transform: translateY(-4px);
+        }
+
+        .modal-card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-card-icon img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .modal-card-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .card-modal-content {
+            text-align: left;
+        }
+
+        .card-modal-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .card-modal-icon {
+            float: right;
+            margin-left: 1.5rem;
+            font-size: 4rem;
+        }
+
+        .card-modal-icon img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+        }
+
+        .card-modal-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .card-modal-text strong {
+            color: var(--accent);
+        }
+
         /* ===== SLIDE TYPE: TRAFFIC-LIGHT ===== */
         .slide-traffic {
             width: 100%;
@@ -1452,6 +1537,7 @@
                 case 'quote': content.innerHTML = renderQuote(slide); break;
                 case 'grid': content.innerHTML = renderGrid(slide); break;
                 case 'quad-flip': content.innerHTML = renderQuadFlip(slide); break;
+                case 'modal-cards': content.innerHTML = renderModalCards(slide); break;
                 case 'traffic-light': content.innerHTML = renderTrafficLight(slide); break;
                 case 'incidents': content.innerHTML = renderIncidents(slide); break;
                 case 'tool-links': content.innerHTML = renderToolLinks(slide); break;
@@ -1591,6 +1677,37 @@
                     `).join('')}
                 </div>
             </div>`;
+        }
+
+        function renderModalCards(s) {
+            return `<div class="slide-modal-cards">
+                <h2>${s.title}</h2>
+                <div class="modal-cards-grid">
+                    ${s.cards.map((c, i) => `
+                        <div class="modal-card" onclick="showCardModal(${currentSlideIndex}, ${i})">
+                            <div class="modal-card-icon">
+                                ${c.icon.endsWith('.png') ? `<img src="${c.icon}" alt="${c.front}">` : c.icon}
+                            </div>
+                            <div class="modal-card-title">${c.front}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+        }
+
+        function showCardModal(slideIdx, cardIdx) {
+            const card = slidesData[slideIdx].cards[cardIdx];
+            const backText = card.back.replace(/\\n/g, '<br>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            document.getElementById('incidentModalContent').innerHTML = `
+                <div class="card-modal-content">
+                    <div class="card-modal-icon">
+                        ${card.icon.endsWith('.png') ? `<img src="${card.icon}" alt="${card.front}">` : card.icon}
+                    </div>
+                    <h3>${card.front}</h3>
+                    <div class="card-modal-text">${backText}</div>
+                </div>
+            `;
+            document.getElementById('incidentModal').classList.add('active');
         }
 
         function renderTrafficLight(s) {

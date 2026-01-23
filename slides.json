@@ -83,8 +83,8 @@
         {
             "id": "tredje-stolen",
             "type": "quote",
-            "text": "När en kurator sätter sig i samtalsrummet med en elev, är det allt oftare *inte bara två parter* närvarande. Det finns en osynlig *tredje stol* i rummet – ockuperad av de algoritmer som eleven interagerat med.",
-            "author": "Ramverk för workshopen",
+            "text": "I samtalsrummet finns nu ofta en *osynlig tredje stol* – ockuperad av de algoritmer eleven redan pratat med.",
+            "author": "",
             "style": "typewriter"
         },
         {
@@ -130,8 +130,8 @@
         {
             "id": "falsk-empati",
             "type": "quote",
-            "text": "AI kan simulera empati: *'Jag förstår att du känner dig ledsen.'* Men systemet *känner ingenting*. För sårbara unga kan det vara svårt att skilja på simulering och äkta omsorg.",
-            "author": "Falsk empati – den syntetiska vännen",
+            "text": "*'Jag förstår att du känner dig ledsen.'* AI simulerar empati – men känner *ingenting*. För sårbara unga kan skillnaden vara svår att se.",
+            "author": "Sherry Turkle, MIT",
             "style": "typewriter"
         },
         {
@@ -200,55 +200,55 @@
         },
         {
             "id": "possibilities",
-            "type": "quad-flip",
+            "type": "modal-cards",
             "title": "Hur kan AI hjälpa elevhälsan?",
             "cards": [
                 {
-                    "icon": "📋",
+                    "icon": "assets/icon_documentation.png",
                     "front": "Dokumentation",
-                    "back": "✅ Sammanfatta möten och generera anteckningar. ⚠️ Risk: Avidentifiera alltid innan du skickar text till AI."
+                    "back": "**Möjligheter:** Sammanfatta möten, generera utkast till anteckningar, strukturera journaltext.\n\n**Risker:** Känsliga personuppgifter får aldrig skickas till publika AI-tjänster. Avidentifiera alltid text innan du klistrar in den.\n\n**Tips:** Be AI skapa en mall – fyll sedan i själv."
                 },
                 {
-                    "icon": "🌍",
+                    "icon": "assets/icon_translation.png",
                     "front": "Översättning",
-                    "back": "✅ Kommunicera med flerspråkiga familjer i realtid. ⚠️ Risk: Kontrollera alltid känslig terminologi med tolk."
+                    "back": "**Möjligheter:** Kommunicera med flerspråkiga familjer, översätt dokument snabbt, förbered tolkmöten.\n\n**Risker:** AI-översättningar kan missa kulturella nyanser och fackterminologi. Känslig information kan hamna i molnet.\n\n**Tips:** Använd för utkast, men verifiera med tolk vid viktiga samtal."
                 },
                 {
-                    "icon": "💬",
+                    "icon": "assets/icon_conversation.png",
                     "front": "Samtalsförberedelse",
-                    "back": "✅ Rollspela svåra samtal, brainstorma frågor. ⚠️ Risk: Använd fiktiva fall, inte verkliga elever."
+                    "back": "**Möjligheter:** Rollspela svåra samtal, brainstorma frågor, få perspektiv på komplexa situationer.\n\n**Risker:** Använd aldrig verkliga elever i prompten. AI kan ge olämpliga råd som strider mot riktlinjer.\n\n**Tips:** Skapa syntetiska fall: 'En fiktiv 14-åring som...'"
                 },
                 {
-                    "icon": "📚",
+                    "icon": "assets/icon_research.png",
                     "front": "Kunskapsinhämtning",
-                    "back": "✅ Snabbt få översikt: 'Vad säger forskningen om...' ⚠️ Risk: Verifiera alltid källor – AI kan hallucinera."
+                    "back": "**Möjligheter:** Snabbt få översikt över forskning, förstå komplexa begrepp, sammanfatta långa texter.\n\n**Risker:** AI hallucinerar – påhittade källor och felaktiga fakta är vanligt. Kan vara utdaterad.\n\n**Tips:** Verifiera alltid med primärkällor. Använd NotebookLM för källkontroll."
                 }
             ]
         },
         {
             "id": "risks-quad",
-            "type": "quad-flip",
+            "type": "modal-cards",
             "title": "4 riskområden",
             "cards": [
                 {
-                    "icon": "📱",
-                    "front": "Tillgänglighet",
-                    "back": "24/7 utan gränser. Barn kan fastna istället för att sova."
+                    "icon": "assets/risk_availability_1769165391438.png",
+                    "front": "Tillgänglighet 24/7",
+                    "back": "**Problemet:** AI-chatbotar är tillgängliga dygnet runt utan gränser eller pauser.\n\n**Konsekvenser:** Barn kan fastna i nattliga samtal istället för att sova. Ingen vuxen vet vad som händer. Beroendeliknande mönster kan utvecklas.\n\n**Varningstecken:** Sömnbrist, telefon under kudden, hemlighetsmakeri kring skärmtid."
                 },
                 {
-                    "icon": "💔",
-                    "front": "Parasocialt",
-                    "back": "Ensidig relation. AI 'förstår dem bättre' – utan känslor."
+                    "icon": "assets/risk_parasocial_1769165407487.png",
+                    "front": "Parasocial relation",
+                    "back": "**Problemet:** Unga utvecklar ensidiga emotionella band till AI som 'förstår dem bättre än någon annan'.\n\n**Konsekvenser:** AI saknar känslor men låtsas ha dem. Barnet investerar känslor som aldrig besvaras på riktigt. Kan ersätta riktiga relationer.\n\n**Varningstecken:** 'Min AI-kompis förstår mig', isolering från vänner."
                 },
                 {
-                    "icon": "🔐",
+                    "icon": "assets/risk_privacy_1769165422372.png",
                     "front": "Integritet",
-                    "back": "Ingen tystnadsplikt. Data läcker till företag."
+                    "back": "**Problemet:** AI-chatbotar har ingen tystnadsplikt. All data lagras och kan användas.\n\n**Konsekvenser:** Personliga hemligheter används för träning. Data kan läcka eller säljas. Ingen sekretess som hos skolkurator.\n\n**Varningstecken:** Barn delar djupt personlig info med AI istället för vuxna."
                 },
                 {
-                    "icon": "🎭",
+                    "icon": "assets/risk_normalization_1769165437848.png",
                     "front": "Normalisering",
-                    "back": "AI ersätter mänsklig kontakt. Professionell hjälp känns onödig."
+                    "back": "**Problemet:** AI ersätter mänsklig kontakt och professionell hjälp känns onödig.\n\n**Konsekvenser:** Tröskeln att söka riktig hjälp höjs. AI kan ge farliga råd. Allvarliga problem förblir oupptäckta.\n\n**Varningstecken:** 'Jag behöver ingen kurator, jag har min AI'."
                 }
             ]
         },
