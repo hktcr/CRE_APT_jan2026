@@ -32,7 +32,7 @@
             "type": "quote",
             "text": "Det viktigaste idag är *inte* att jag pratar. Det viktigaste är att *ni* pratar – med varandra. Ni sitter på enorma *erfarenheter*. Avbryt mig. Ställ frågor. Vi lär av varandra.",
             "author": "Ramverket för dagens workshop",
-            "style": "typewriter",
+            "style": "typewriter"
         },
         {
             "id": "ai-intro",
@@ -85,7 +85,7 @@
             "type": "quote",
             "text": "När en kurator sätter sig i samtalsrummet med en elev, är det allt oftare *inte bara två parter* närvarande. Det finns en osynlig *tredje stol* i rummet – ockuperad av de algoritmer som eleven interagerat med.",
             "author": "Ramverk för workshopen",
-            "style": "typewriter",
+            "style": "typewriter"
         },
         {
             "id": "rand-statistik",
@@ -125,14 +125,14 @@
                     "title": "Utan människa",
                     "desc": "Utan mänsklig översyn kör vi i diket"
                 }
-            ],
+            ]
         },
         {
             "id": "falsk-empati",
             "type": "quote",
             "text": "AI kan simulera empati: *'Jag förstår att du känner dig ledsen.'* Men systemet *känner ingenting*. För sårbara unga kan det vara svårt att skilja på simulering och äkta omsorg.",
             "author": "Falsk empati – den syntetiska vännen",
-            "style": "typewriter",
+            "style": "typewriter"
         },
         {
             "id": "gemini-vs-notebooklm",
@@ -159,7 +159,7 @@
                     "title": "NotebookLM för...",
                     "desc": "Dokumentanalys, regelverks-frågor, litteraturöversikt"
                 }
-            ],
+            ]
         },
         {
             "id": "oecd-56",
@@ -312,7 +312,7 @@
                     "title": "AI-kompisar",
                     "desc": "\"Har du testat att prata med AI? Hur kändes det?\""
                 }
-            ],
+            ]
         },
         {
             "id": "aldrig-i-prompten",
@@ -346,7 +346,7 @@
             "type": "quote",
             "text": "*Human in the loop*: Ingen AI-text får skickas till elever utan att en *människa granskat*. Du är alltid *ansvarig* för texten.",
             "author": "Grundprincipen för AI-användning",
-            "style": "typewriter",
+            "style": "typewriter"
         },
         {
             "id": "traffic-light",
@@ -423,7 +423,7 @@
                     "title": "Elevhälsans roll",
                     "desc": "Källkritik blir en psykisk skyddsfaktor. Elever behöver verktyg att navigera."
                 }
-            ],
+            ]
         },
         {
             "id": "sewell-tragedy",
@@ -587,7 +587,7 @@
                     "title": "Tillgång till tjänster?",
                     "desc": "Möjlighet att erbjuda AI-stöd på ett säkert sätt?"
                 }
-            ],
+            ]
         },
         {
             "id": "tools",
