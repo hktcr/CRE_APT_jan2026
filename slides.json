@@ -14,7 +14,7 @@
             "id": "title",
             "type": "title",
             "title": "AI & Elevhälsa",
-            "subtitle": "Möjligheter, risker och er roll",
+            "subtitle": "Möjligheter och risker",
             "meta": "APT Centrala Resursenheten • 23 januari 2026"
         },
         {
@@ -233,7 +233,7 @@
         {
             "id": "risks-quad",
             "type": "quad-flip",
-            "title": "4 Riskområden",
+            "title": "4 riskområden",
             "cards": [
                 {
                     "icon": "📱",
@@ -383,7 +383,7 @@
         {
             "id": "vep-prompt",
             "type": "prompt-demo",
-            "title": "Prompt: Virtuell Expertpanel",
+            "title": "Prompt: Virtuell expertpanel",
             "subtitle": "En kraftfull teknik för att få nyanserade AI-svar",
             "prompt": "Tillsätt en virtuell expertpanel med relevanta experter som säkerställer att alla perspektiv på [ÄMNE] belyses. Varje expert ska presentera sin syn, sedan ska panelen diskutera och identifiera områden där de är eniga respektive oense. Avsluta med en syntes.",
             "example_topic": "hur vi kan stötta en elev som pratar med AI istället för vänner",
@@ -464,7 +464,7 @@
         {
             "id": "temperatur",
             "type": "grid",
-            "title": "Temperatur: Slump vs. Förutsägbarhet",
+            "title": "Temperatur: Slump vs. förutsägbarhet",
             "cards": [
                 {
                     "icon": "🎲",
