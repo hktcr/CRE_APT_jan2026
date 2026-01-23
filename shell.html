@@ -10,15 +10,30 @@
         rel="stylesheet">
     <style>
         :root {
-            --bg: #0f172a;
-            --surface: #1e293b;
+            /* Bakgrundsfärger - ändra här för att byta tema */
+            --bg: #000000;
+            /* Helt svart bakgrund */
+            --surface: #1a1a1a;
+            /* Mörkgrå ytor */
+            --card-bg: #2a2a2a;
+            /* Kortens bakgrund */
+            --card-bg-hover: #333333;
+            /* Kort vid hover */
+
+            /* Textfärger */
             --text: #f1f5f9;
+            --text-muted: rgba(255, 255, 255, 0.7);
+
+            /* Accentfärger */
             --accent: #f97316;
             --accent2: #a855f7;
             --green: #22c55e;
             --yellow: #eab308;
             --red: #ef4444;
-            --border: rgba(255, 255, 255, 0.1);
+
+            /* Ramar */
+            --border: rgba(255, 255, 255, 0.15);
+            --border-hover: rgba(255, 255, 255, 0.3);
         }
 
         * {
@@ -50,7 +65,7 @@
 
         .slide-card {
             aspect-ratio: 16/10;
-            background: var(--surface);
+            background: var(--card-bg);
             border-radius: 12px;
             border: 2px solid var(--border);
             cursor: pointer;
@@ -390,10 +405,10 @@
         }
 
         .grid-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            background: var(--card-bg);
             border-radius: 16px;
             padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid var(--border);
             text-align: left;
             transition: all 0.3s;
         }
@@ -441,22 +456,27 @@
         }
 
         .quad-card {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
             border: 2px solid var(--border);
             cursor: pointer;
             transition: all 0.3s;
-            min-height: 150px;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .quad-card:hover {
-            border-color: var(--yellow);
+            border-color: var(--border-hover);
+            background: var(--card-bg-hover);
+            transform: translateY(-3px);
         }
 
         .quad-card.flipped {
-            background: rgba(234, 179, 8, 0.1);
-            border-color: var(--yellow);
+            background: var(--card-bg-hover);
+            border-color: var(--accent);
         }
 
         .quad-front {
@@ -591,8 +611,8 @@
         }
 
         .incident-card {
-            background: linear-gradient(180deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
-            border: 2px solid rgba(239, 68, 68, 0.4);
+            background: var(--card-bg);
+            border: 2px solid var(--red);
             border-radius: 16px;
             padding: 1.8rem;
             cursor: pointer;
