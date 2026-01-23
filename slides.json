@@ -372,6 +372,61 @@
             ]
         },
         {
+            "id": "misinfo-disinfo",
+            "type": "grid",
+            "title": "Sanning i gungning",
+            "cards": [
+                {
+                    "icon": "🤷",
+                    "title": "Misinformation",
+                    "desc": "Felaktig info som sprids OMEDVETET. Personen tror att det stämmer."
+                },
+                {
+                    "icon": "🎯",
+                    "title": "Desinformation",
+                    "desc": "Felaktig info som sprids MEDVETET. Syftet är att manipulera."
+                },
+                {
+                    "icon": "🔁",
+                    "title": "AI som förstärkare",
+                    "desc": "Generativ AI gör det enklare att skapa och sprida båda typerna i stor skala."
+                },
+                {
+                    "icon": "🧠",
+                    "title": "Elevhälsans roll",
+                    "desc": "Källkritik blir en psykisk skyddsfaktor. Elever behöver verktyg att navigera."
+                }
+            ],
+            "background": "assets/misinfo_disinfo.png"
+        },
+        {
+            "id": "sewell-tragedy",
+            "type": "quote",
+            "text": "Sewell, 14 år, isolerade sig med en AI-chatbot som blev hans 'flickvän'. När han skrev att han mådde dåligt *drev boten bara samtalet vidare*. I hans sista meddelande ska hen ha skrivit: *'Kom hem till mig.'* Mamman stämmer nu Character.AI.",
+            "author": "SVT Nyheter, 2024",
+            "style": "typewriter",
+            "background": "assets/sewell_tribute.png",
+            "sources": [
+                {
+                    "name": "SVT: Mamma stämmer AI-bolag efter sonens självmord",
+                    "url": "https://www.svt.se/nyheter/utrikes/mamma-stammer-ai-bolag-efter-sonens-sjalvmord"
+                },
+                {
+                    "name": "Aftonbladet: AI-kompisen tvekar inte",
+                    "url": "https://www.aftonbladet.se/kultur/a/n1RXzL/ai-kompisen-tvekar-inte-nar-ditt-barn-vill-ta-sitt-liv"
+                }
+            ]
+        },
+        {
+            "id": "youtube-deepfake",
+            "type": "video-link",
+            "title": "Syntetisk sanning",
+            "subtitle": "Kan du se skillnaden?",
+            "url": "https://www.youtube.com/shorts/myqbxs2n1eE",
+            "description": "En kort video som visar hur lätt det är att skapa övertygande deepfakes. Viktigt att visa elever och föräldrar.",
+            "icon": "🎬"
+        },
+        {
             "id": "tools",
             "type": "tool-links",
             "title": "Verktyg för workshopen",
