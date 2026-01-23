@@ -323,31 +323,30 @@
         },
         {
             "id": "aldrig-i-prompten",
-            "type": "quad-flip",
+            "type": "grid",
             "title": "Aldrig i prompten (GDPR)",
             "cards": [
                 {
                     "icon": "🚫",
                     "title": "Elevnamn",
-                    "back": "Aldrig namn, personnummer eller födelsedatum"
+                    "desc": "Aldrig namn, personnummer eller födelsedatum"
                 },
                 {
                     "icon": "🏫",
                     "title": "Skolidentitet",
-                    "back": "Inte 'pojke i 5A på Centralskolan' – bakvägsidentifiering!"
+                    "desc": "Inte 'pojke i 5A på Centralskolan' – bakvägsidentifiering!"
                 },
                 {
                     "icon": "📋",
                     "title": "Journaltext",
-                    "back": "Ladda aldrig upp riktiga utredningar i publik molntjänst"
+                    "desc": "Ladda aldrig upp riktiga utredningar i publik molntjänst"
                 },
                 {
                     "icon": "✅",
                     "title": "Syntetiska fall",
-                    "back": "Använd AI för att SKAPA fiktiva fall att diskutera"
+                    "desc": "Använd AI för att SKAPA fiktiva fall att diskutera"
                 }
-            ],
-            "background": "assets/gdpr_shield.png"
+            ]
         },
         {
             "id": "human-in-the-loop",
