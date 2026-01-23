@@ -27,6 +27,68 @@
             "contact": "hakan.karlsson@astorp.se"
         },
         {
+            "id": "ai-intro",
+            "type": "step-slide",
+            "title": "AI är inget nytt!",
+            "steps": [
+                {
+                    "type": "headline",
+                    "title": "AI är inget nytt!",
+                    "subtitle": "Vi har redan vant oss!"
+                },
+                {
+                    "type": "definition",
+                    "text": "AI är teknik som gör att datorer kan utföra uppgifter som förknippas med mänsklig intelligens."
+                },
+                {
+                    "type": "list",
+                    "items": [
+                        {
+                            "title": "Mobilkamera",
+                            "desc": "Ansiktsigenkänning, scenidentifiering, bildförbättring"
+                        },
+                        {
+                            "title": "Sociala medier",
+                            "desc": "AI-algoritmer anpassar innehåll och ger rekommendationer"
+                        },
+                        {
+                            "title": "Röstassistenter",
+                            "desc": "Siri, Alexa, Google Assistant förstår röstkommandon"
+                        },
+                        {
+                            "title": "Kartor och navigation",
+                            "desc": "Optimala rutter och beräknad ankomsttid"
+                        },
+                        {
+                            "title": "E-postfilter",
+                            "desc": "AI sorterar bort oönskad e-post"
+                        },
+                        {
+                            "title": "Automatiska översättningar",
+                            "desc": "Realtidsöversättning av text och tal"
+                        },
+                        {
+                            "title": "Shoppingrekommendationer",
+                            "desc": "AI analyserar köphistorik och beteende"
+                        },
+                        {
+                            "title": "Rättstavning och grammatik",
+                            "desc": "AI kontrollerar och föreslår förbättringar"
+                        },
+                        {
+                            "title": "Chattbottar",
+                            "desc": "AI-drivna kundservicebottar svarar på frågor"
+                        },
+                        {
+                            "title": "Prediktiv text",
+                            "desc": "AI föreslår nästa ord vid textinmatning"
+                        }
+                    ],
+                    "footer": "... och otroligt mycket mer ..."
+                }
+            ]
+        },
+        {
             "id": "tredje-stolen",
             "type": "quote",
             "text": "När en kurator sätter sig i samtalsrummet med en elev, är det allt oftare *inte bara två parter* närvarande. Det finns en osynlig *tredje stol* i rummet – ockuperad av de algoritmer som eleven interagerat med.",
