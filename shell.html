@@ -149,6 +149,50 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
+        /* ===== DIMMER BUTTON ===== */
+        .dimmer-btn {
+            position: fixed;
+            top: 1rem;
+            right: 5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.3s;
+        }
+
+        .dimmer-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dimmer-btn.active {
+            background: var(--accent);
+        }
+
+        .slide-view.dimmed::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .slide-view.dimmed .slide-content {
+            z-index: 2;
+            position: relative;
+        }
+
+        .slide-view.dimmed .close-btn,
+        .slide-view.dimmed .dimmer-btn {
+            z-index: 102;
+        }
+
         .nav-btn {
             display: none;
         }
@@ -192,41 +236,49 @@
         /* ===== SLIDE TYPE: PRESENTER ===== */
         .slide-presenter {
             text-align: center;
-            max-width: 600px;
+            max-width: 800px;
         }
 
         .slide-presenter .avatar {
-            width: 120px;
-            height: 120px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent), var(--accent2));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            margin: 0 auto 1.5rem;
+            font-size: 4rem;
+            margin: 0 auto 2rem;
+            overflow: hidden;
+        }
+
+        .slide-presenter .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .slide-presenter h2 {
-            font-size: 2rem;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             margin-bottom: 0.5rem;
         }
 
         .slide-presenter .title-org {
             color: var(--accent);
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            margin-bottom: 2rem;
         }
 
         .slide-presenter .bio {
-            opacity: 0.8;
-            line-height: 1.7;
+            opacity: 0.9;
+            line-height: 1.8;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
         }
 
         .slide-presenter .contact {
-            margin-top: 1.5rem;
-            opacity: 0.5;
-            font-size: 0.9rem;
+            margin-top: 2rem;
+            opacity: 0.6;
+            font-size: 1rem;
         }
 
         /* ===== SLIDE TYPE: STAT ===== */
@@ -1196,6 +1248,7 @@
 
     <div class="slide-view" id="slideView">
         <button class="close-btn" onclick="closeSlide()">✕</button>
+        <button class="dimmer-btn" id="dimmerBtn" onclick="toggleDimmer()" title="Dimma bakgrund">🌙</button>
         <div class="slide-content" id="slideContent"></div>
         <div class="slide-id-display" id="slideIdDisplay"></div>
     </div>
@@ -1273,7 +1326,16 @@
 
         function closeSlide() {
             document.getElementById('slideView').classList.remove('active');
+            document.getElementById('slideView').classList.remove('dimmed');
+            document.getElementById('dimmerBtn').classList.remove('active');
             document.getElementById('cardView').classList.remove('hidden');
+        }
+
+        function toggleDimmer() {
+            const slideView = document.getElementById('slideView');
+            const dimmerBtn = document.getElementById('dimmerBtn');
+            slideView.classList.toggle('dimmed');
+            dimmerBtn.classList.toggle('active');
         }
 
         function prevSlide() {
@@ -1334,8 +1396,11 @@
         }
 
         function renderPresenter(s) {
+            const avatarContent = s.avatar
+                ? `<img src="${s.avatar}" alt="${s.name}">`
+                : '👤';
             return `<div class="slide-presenter">
-                <div class="avatar">👤</div>
+                <div class="avatar">${avatarContent}</div>
                 <h2>${s.name}</h2>
                 <div class="title-org">${s.title} • ${s.org}</div>
                 <div class="bio">${s.bio || ''}</div>

@@ -24,7 +24,8 @@
             "title": "Kommunlektor",
             "org": "Åstorps kommun",
             "bio": "Lärare i NO/Ma vid Björnekullaskolan. Vetenskaplig bakgrund i beräkningsbiologi och evolutionär ekologi/biologi.",
-            "contact": "hakan.karlsson@astorp.se"
+            "contact": "hakan.karlsson@astorp.se",
+            "avatar": "assets/presenter_avatar.png"
         },
         {
             "id": "dialog-first",
@@ -200,7 +201,7 @@
             "id": "token-demo",
             "type": "token-demo",
             "title": "Så funkar GPT",
-            "prompt": "Jag älskar att äta",
+            "prompt": "Jag älskar pizza med extra",
             "description": "AI gissar nästa ord baserat på mönster"
         },
         {
