@@ -29,7 +29,7 @@
         {
             "id": "dialog-first",
             "type": "quote",
-            "text": "Det viktigaste idag är *inte* att jag pratar. Det viktigaste är att *ni* pratar – med varandra. Ni sitter på enorma *erfarenheter* från elevsamtal. Jag vill höra era *frågor*, era *funderingar* och era *berättelser*. Avbryt mig. Ställ frågor. Vi lär av varandra.",
+            "text": "Det viktigaste idag är *inte* att jag pratar. Det viktigaste är att *ni* pratar – med varandra. Ni sitter på enorma *erfarenheter*. Avbryt mig. Ställ frågor. Vi lär av varandra.",
             "author": "Ramverket för dagens workshop",
             "style": "typewriter",
             "background": "assets/dialog_first.png"
@@ -53,43 +53,27 @@
                     "items": [
                         {
                             "title": "Mobilkamera",
-                            "desc": "Ansiktsigenkänning, scenidentifiering, bildförbättring"
+                            "desc": "Ansiktsigenkänning och bildförbättring"
                         },
                         {
                             "title": "Sociala medier",
-                            "desc": "AI-algoritmer anpassar innehåll och ger rekommendationer"
+                            "desc": "Personliga flöden och rekommendationer"
                         },
                         {
                             "title": "Röstassistenter",
-                            "desc": "Siri, Alexa, Google Assistant förstår röstkommandon"
+                            "desc": "Siri, Alexa, Google Assistant"
                         },
                         {
-                            "title": "Kartor och navigation",
-                            "desc": "Optimala rutter och beräknad ankomsttid"
+                            "title": "Navigation",
+                            "desc": "Optimala rutter i realtid"
                         },
                         {
-                            "title": "E-postfilter",
-                            "desc": "AI sorterar bort oönskad e-post"
+                            "title": "E-post",
+                            "desc": "Skräppostfilter och sortering"
                         },
                         {
-                            "title": "Automatiska översättningar",
-                            "desc": "Realtidsöversättning av text och tal"
-                        },
-                        {
-                            "title": "Shoppingrekommendationer",
-                            "desc": "AI analyserar köphistorik och beteende"
-                        },
-                        {
-                            "title": "Rättstavning och grammatik",
-                            "desc": "AI kontrollerar och föreslår förbättringar"
-                        },
-                        {
-                            "title": "Chattbottar",
-                            "desc": "AI-drivna kundservicebottar svarar på frågor"
-                        },
-                        {
-                            "title": "Prediktiv text",
-                            "desc": "AI föreslår nästa ord vid textinmatning"
+                            "title": "Översättning",
+                            "desc": "Google Translate i fickan"
                         }
                     ],
                     "footer": "... och otroligt mycket mer ..."
@@ -148,7 +132,7 @@
         {
             "id": "falsk-empati",
             "type": "quote",
-            "text": "AI kan simulera empati med extrem precision: *'Jag förstår att du känner dig ledsen, det låter väldigt tungt.'* Men systemet *känner ingenting*. Det är en textgenerator. För sårbara unga kan det vara svårt att skilja på simulering och äkta omsorg.",
+            "text": "AI kan simulera empati: *'Jag förstår att du känner dig ledsen.'* Men systemet *känner ingenting*. För sårbara unga kan det vara svårt att skilja på simulering och äkta omsorg.",
             "author": "Falsk empati – den syntetiska vännen",
             "style": "typewriter",
             "background": "assets/falsk_empati.png"
@@ -254,22 +238,22 @@
                 {
                     "icon": "📱",
                     "front": "Tillgänglighet",
-                    "back": "24/7 tillgång utan gränser. Barn kan fastna i samtal istället för att sova eller söka mänsklig hjälp."
+                    "back": "24/7 utan gränser. Barn kan fastna istället för att sova."
                 },
                 {
                     "icon": "💔",
                     "front": "Parasocialt",
-                    "back": "Ensidig emotionell relation. Barn utvecklar band till AI som 'förstår dem bättre' — utan att AI har känslor."
+                    "back": "Ensidig relation. AI 'förstår dem bättre' – utan känslor."
                 },
                 {
                     "icon": "🔐",
                     "front": "Integritet",
-                    "back": "Data läcker till företag. Ingen tystnadsplikt. Personliga hemligheter används för träning."
+                    "back": "Ingen tystnadsplikt. Data läcker till företag."
                 },
                 {
                     "icon": "🎭",
                     "front": "Normalisering",
-                    "back": "AI ersätter mänsklig kontakt. Risk att professionell hjälp känns onödigt eller skrämmande."
+                    "back": "AI ersätter mänsklig kontakt. Professionell hjälp känns onödig."
                 }
             ]
         },
@@ -285,7 +269,7 @@
                     "platform": "Character.AI",
                     "date": "Feb 2024",
                     "icon": "💔",
-                    "description": "Utvecklade en intensiv emotionell relation med en AI-chatbot. I sina sista meddelanden ska boten ha skrivit: 'Kom hem till mig så snart som möjligt.'",
+                    "description": "Intensiv relation med AI-chatbot. Botens sista ord: 'Kom hem till mig.'",
                     "source": "https://www.cbsnews.com/news/character-ai-lawsuit-sewell-setzer-teen-suicide/"
                 },
                 {
@@ -294,34 +278,16 @@
                     "platform": "ChatGPT",
                     "date": "Apr 2025",
                     "icon": "💔",
-                    "description": "Enligt stämningsansökan ska AI:n ha gett info om självmordsmetoder och erbjudit sig att skriva ett avskedsbrev.",
+                    "description": "AI gav info om metoder och erbjöd sig skriva avskedsbrev.",
                     "source": ""
                 },
                 {
-                    "name": "Texas",
-                    "age": 11,
+                    "name": "Texas-fallen",
+                    "age": "11-17",
                     "platform": "Character.AI",
                     "date": "2024",
                     "icon": "⚠️",
-                    "description": "Exponerades för skadligt innehåll. Chatboten uppmuntrade självskadebeteende.",
-                    "source": "https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
-                },
-                {
-                    "name": "Texas",
-                    "age": 17,
-                    "platform": "Character.AI",
-                    "date": "2024",
-                    "icon": "⚠️",
-                    "description": "Utsattes för olämpligt sexuellt innehåll trots plattformens säkerhetsfilter.",
-                    "source": "https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
-                },
-                {
-                    "name": "Colorado",
-                    "age": 13,
-                    "platform": "Character.AI",
-                    "date": "2024",
-                    "icon": "⚠️",
-                    "description": "Utvecklade ångest och social isolering efter intensiv AI-användning.",
+                    "description": "Flera fall: skadligt innehåll, självskadeuppmuntran, olämpligt innehåll.",
                     "source": "https://www.americanbar.org/groups/litigation/resources/newsletters/childrens-rights/texas-families-sue-character-ai-chatbot/"
                 }
             ]
@@ -385,7 +351,7 @@
         {
             "id": "human-in-the-loop",
             "type": "quote",
-            "text": "*Human in the loop*: Ingen text genererad av AI får skickas till elever eller föräldrar utan att en *människa noggrant granskat* och redigerat. Du är alltid *ansvarig* för texten – oavsett vem som skrev utkastet.",
+            "text": "*Human in the loop*: Ingen AI-text får skickas till elever utan att en *människa granskat*. Du är alltid *ansvarig* för texten.",
             "author": "Grundprincipen för AI-användning",
             "style": "typewriter",
             "background": "assets/human_in_loop.png"
@@ -395,12 +361,11 @@
             "type": "traffic-light",
             "title": "Vad kan elevhälsan göra med AI?",
             "green": [
-                "Skapa informationsmaterial och broschyrer",
+                "Skapa informationsmaterial",
                 "Brainstorma samtalsstrategier",
                 "Förstå ungdomars digitala värld",
-                "Analysera anonymiserad data",
-                "Generera frågeformulär",
-                "Översätta texter"
+                "Översätta texter",
+                "Generera frågeformulär"
             ],
             "yellow": [
                 "Sammanfatta möten (avidentifiera först!)",
@@ -427,8 +392,8 @@
         {
             "id": "grok-incident",
             "type": "quote",
-            "text": "Elon Musks AI-chatbot *Grok* användes för att skapa *avklädda deepfake-bilder* av kvinnor och barn. Indonesien och Malaysia har *blockerat* plattformen. EU utreder. Kalifornien kallar det en 'lavin av barnporr'.",
-            "author": "Januari 2026 – The Guardian, Reuters m.fl.",
+            "text": "Elon Musks AI *Grok* användes för att skapa *avklädda deepfake-bilder* av kvinnor och barn. Indonesien och Malaysia har *blockerat* plattformen. EU utreder.",
+            "author": "Januari 2026 – The Guardian, Reuters",
             "style": "typewriter",
             "sources": [
                 {
@@ -526,7 +491,7 @@
         {
             "id": "ai-detektion",
             "type": "quote",
-            "text": "Det finns *inga* system som säkert kan bedöma om en text är skapad av *AI*. Alla verktyg som påstår sig kunna detta har *hög felmarginal* – och kan orättvist straffa elever som skriver på ett sätt detektorn tolkar som 'AI-liknande'.",
+            "text": "Det finns *inga* system som säkert kan bedöma om text är *AI-genererad*. Verktyg som påstår detta har *hög felmarginal*.",
             "author": "Teknisk verklighet 2026",
             "style": "typewriter"
         },
