@@ -90,13 +90,13 @@
         {
             "id": "rand-statistik",
             "type": "stat",
-            "value": "20%",
-            "label": "av unga vuxna (18-21 år) använder AI-chattbotar för råd om psykisk hälsa. 93% uppger att de fann råden hjälpsamma.",
+            "value": "1 av 5",
+            "label": "unga vuxna (18-21 år) använder AI-chatbotar för råd om psykisk hälsa. Bland tonåringar (14-17 år) är siffran 13%.",
             "source": "RAND Corporation, 2025",
             "sources": [
                 {
                     "name": "RAND: One in Eight Adolescents Use AI Chatbots for Mental Health",
-                    "url": "https://www.rand.org/news/press/2025/11/one-in-eight-adolescents-and-young-adults-use-ai-chatbots.html"
+                    "url": "https://www.rand.org/pubs/research_reports/RRA3007-1.html"
                 }
             ]
         },
